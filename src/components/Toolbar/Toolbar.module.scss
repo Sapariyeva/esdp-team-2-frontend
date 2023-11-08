@@ -1,0 +1,23 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #ffffff;
+
+	.logo {
+		color: #BA55D3;
+		cursor: pointer;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 23px;
+		transition: transform 0.3s;
+	}
+	.logo:hover {
+		transform: scale(1.1); 
+	  }
+
+	.menu {
+		display: flex;
+		align-items: center;
+	}
+}
