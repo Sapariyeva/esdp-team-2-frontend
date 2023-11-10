@@ -22,8 +22,9 @@ const initialState = {
 
 type Props = {
 	submit: (submitData: SubmitNewUserData) => void;
+	buttonText: string;
 };
-const RegistrationForm = ({ submit }: Props) => {
+const AuthForm = ({ submit, buttonText }: Props) => {
 	const [registrationMethod, setRegistrationMethod] = useState('email');
 	const [state, setState] = useState<RegisterFormState>(initialState);
 
@@ -120,11 +121,11 @@ const RegistrationForm = ({ submit }: Props) => {
 					htmlType="submit"
 					style={{ background: '#88ff00', color: '#000' }}
 				>
-					Зарегистрироваться
+					{buttonText}
 				</Button>
 			</Form.Item>
 		</Form>
 	);
 };
 
-export default RegistrationForm;
+export default AuthForm;

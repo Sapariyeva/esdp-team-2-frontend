@@ -3,14 +3,9 @@ import { axiosInstance } from '../../api/axiosInstance';
 import { IUser } from '../../interfaces/IUser';
 import { AxiosError, isAxiosError } from 'axios';
 
-type RegisterUserData = {
+type AuthUserData = {
 	email: string;
 	phone: string;
-	password: string;
-};
-
-type userRequest = {
-	username: string;
 	password: string;
 };
 
@@ -24,9 +19,9 @@ type UserResponseValidateError = {
 
 export const registerUser = createAsyncThunk<
 	IUser,
-	RegisterUserData,
+	AuthUserData,
 	{ rejectValue: userResponseError | UserResponseValidateError }
->('auth/register', async (userData: RegisterUserData, { rejectWithValue }) => {
+>('auth/register', async (userData: AuthUserData, { rejectWithValue }) => {
 	try {
 		const response = await axiosInstance.post('/auth/register', userData);
 		return response.data;
@@ -43,11 +38,11 @@ export const registerUser = createAsyncThunk<
 
 export const loginUser = createAsyncThunk<
 	IUser,
-	userRequest,
+	AuthUserData,
 	{ rejectValue: string }
 >('auth.login', async (userData, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.post<IUser>('auth/sessions', userData);
+		const response = await axiosInstance.post('auth/sessions', userData);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {

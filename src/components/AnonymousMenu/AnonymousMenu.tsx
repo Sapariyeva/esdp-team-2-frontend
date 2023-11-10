@@ -17,6 +17,9 @@ export const AnonymousMenu: React.FC = () => {
 					<Item key="login">
 						<NavLink to="/login">Login</NavLink>
 					</Item>
+					<Item key="register">
+						<NavLink to="/register">Sign Up</NavLink>
+					</Item>
 				</SubMenu>
 			</Menu>
 		</div>

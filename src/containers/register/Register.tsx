@@ -1,10 +1,8 @@
 import { Layout, Space, Typography, Alert } from 'antd';
-import RegistrationForm, {
-	SubmitNewUserData,
-} from '../../components/Form/RegistrationForm';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { registerUser } from '../../features/user/userSlice';
 import { RootState } from '../../store';
+import AuthForm, { SubmitNewUserData } from '../../components/Form/AuthForm';
 const Register = () => {
 	const dispatch = useAppDispatch();
 	const { registerError } = useAppSelector((state: RootState) => state.user);
@@ -46,7 +44,7 @@ const Register = () => {
 				>
 					Регистрация
 				</Typography>
-				<RegistrationForm submit={submitNewUser} />
+				<AuthForm buttonText="Зарегистрироваться" submit={submitNewUser} />
 			</Space>
 		</Layout>
 	);
