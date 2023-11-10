@@ -8,6 +8,13 @@ import { RootState } from '../../store';
 const Register = () => {
 	const dispatch = useAppDispatch();
 	const { registerError } = useAppSelector((state: RootState) => state.user);
+
+	const getErrorsBy = (name: string) => {
+		if (Array.isArray(registerError)) {
+			const error = registerError.find(({ type }) => type === name);
+			return error?.messages.join(',');
+		}
+	};
 	const submitNewUser = (userData: SubmitNewUserData) => {
 		dispatch(registerUser(userData));
 	};
@@ -25,7 +32,7 @@ const Register = () => {
 				{registerError && (
 					<Alert
 						message="Error Text"
-						description={registerError}
+						description={getErrorsBy('email')}
 						type="error"
 						closable
 						onClose={() => {
