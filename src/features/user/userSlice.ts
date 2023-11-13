@@ -9,7 +9,7 @@ type AuthUserData = {
 	password: string;
 };
 
-type userResponseError = {
+type UserResponseError = {
 	message: string;
 };
 type UserResponseValidateError = {
@@ -20,14 +20,14 @@ type UserResponseValidateError = {
 export const registerUser = createAsyncThunk<
 	IUser,
 	AuthUserData,
-	{ rejectValue: userResponseError | UserResponseValidateError }
+	{ rejectValue: UserResponseError | UserResponseValidateError }
 >('auth/register', async (userData: AuthUserData, { rejectWithValue }) => {
 	try {
 		const response = await axiosInstance.post('/auth/register', userData);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
-			const error: AxiosError<userResponseError> = err;
+			const error: AxiosError<UserResponseError> = err;
 			return rejectWithValue(
 				error.response?.data || { message: 'An error occurred' }
 			);
@@ -46,7 +46,7 @@ export const loginUser = createAsyncThunk<
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
-			const error: AxiosError<userResponseError> = err;
+			const error: AxiosError<UserResponseError> = err;
 			return rejectWithValue(
 				error.response?.data.message || 'Internet connection error'
 			);
@@ -55,7 +55,7 @@ export const loginUser = createAsyncThunk<
 	}
 });
 
-interface userState {
+interface UserState {
 	userInfo: IUser | null;
 	loading: boolean;
 	registerError: null | UserResponseValidateError;
@@ -63,7 +63,7 @@ interface userState {
 	logged: boolean;
 }
 
-const initialState: userState = {
+const initialState: UserState = {
 	userInfo: null,
 	registerError: null,
 	loginError: null,
@@ -72,7 +72,7 @@ const initialState: userState = {
 };
 
 const userSlice = createSlice({
-	name: 'users',
+	name: 'user',
 	initialState,
 	reducers: {},
 
@@ -120,4 +120,4 @@ const userSlice = createSlice({
 	},
 });
 
-export const userReducer = userSlice.reducer;
+export default userSlice;
