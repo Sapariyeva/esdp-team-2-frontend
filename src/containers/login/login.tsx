@@ -23,6 +23,7 @@ function Login() {
 			style={{
 				display: 'flex',
 				alignItems: 'center',
+				background: 'white',
 			}}
 		>
 			<Space

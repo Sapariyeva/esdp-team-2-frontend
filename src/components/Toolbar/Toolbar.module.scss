@@ -1,11 +1,13 @@
+@import '../../assets/styles/config.scss';
+
 .header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #ffffff;
+	@extend %bgcolor-white;
 
 	.logo {
-		color: #BA55D3;
+		@extend %color-purple;
 		cursor: pointer;
 		text-decoration: none;
 		font-weight: bold;
@@ -13,8 +15,8 @@
 		transition: transform 0.3s;
 	}
 	.logo:hover {
-		transform: scale(1.1); 
-	  }
+		transform: scale(1.1);
+	}
 
 	.menu {
 		display: flex;
