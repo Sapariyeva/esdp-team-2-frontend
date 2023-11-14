@@ -1,17 +1,19 @@
+@import '../../assets/styles/config.scss';
 .menu {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 }
 
-.customIcon {
-	font-size: 20px;
-	color: #ffffff;
-	background-color: #ba55d3;
-	border-radius: 50%;
-	padding: 8px;
+.subMenu_customIcon {
+	@extend %bgcolor-white;
+
+	.customIcon {
+		font-size: 20px;
+		@extend %color-white;
+		@extend %bgcolor-purple;
+		border-radius: 50%;
+		padding: 8px;
+	}
 }
 
-.customIcon::after {
-	content: '';
-}
