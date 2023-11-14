@@ -4,6 +4,7 @@ import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import Register from './containers/register/Register';
 import Login from './containers/login/login';
 import { HomePage } from './components/HomePage/HomePage';
+import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
 
 const App = () => {
 	return (
@@ -14,6 +15,7 @@ const App = () => {
 					<Route path="/login" element={<Login />} />
 					<Route path="*" element={<PageNotFound />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/psychologist/form" element={<PsychologistForm />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

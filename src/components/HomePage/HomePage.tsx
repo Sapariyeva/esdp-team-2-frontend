@@ -34,7 +34,7 @@ export const HomePage = () => {
 						/>
 					</div>
 				</div>
-				<Title className={styles.articles_title}>
+				<Title level={2} className={styles.articles_title}>
 					Полезные статьи о терапии
 				</Title>
 				<div className={styles.articles_container}>
@@ -79,7 +79,7 @@ export const HomePage = () => {
 					))}
 				</div>
 				<div className={styles.ask_container}>
-					<Title className={styles.ask_title}>
+					<Title level={2} className={styles.ask_title}>
 						Реши свой вопрос в один клик
 					</Title>
 					<Button type="primary" className={styles.ask_button}>
