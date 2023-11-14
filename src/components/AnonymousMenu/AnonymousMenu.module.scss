@@ -1,8 +1,8 @@
 @import '../../assets/styles/config.scss';
 .menu {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
+	min-width: 0;
+    flex: 1;
+    justify-content: end;
 }
 
 .subMenu_customIcon {

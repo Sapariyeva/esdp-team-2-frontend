@@ -1,0 +1,23 @@
+@import '../../assets/styles/config.scss';
+
+.psychologistform_layout {
+	@extend %bgcolor-light-gray;
+	.psychologistform_title {
+		text-align: center;
+		margin: 15px 0 30px 0;
+	}
+	.psychologistform {
+		width: 100%;
+		max-width: 550px;
+		margin: 40px auto;
+		border-radius: 8px;
+		padding: 45px 55px;
+		@extend %bgcolor-white;
+
+		.psychologistform_button {
+			font-size: 16px;
+			height: 40px;
+			@extend %bgcolor-purple;
+		}
+	}
+}
