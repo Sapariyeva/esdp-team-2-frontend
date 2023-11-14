@@ -21,6 +21,7 @@ const Register = () => {
 			style={{
 				display: 'flex',
 				alignItems: 'center',
+				background: 'white',
 			}}
 		>
 			<Space
