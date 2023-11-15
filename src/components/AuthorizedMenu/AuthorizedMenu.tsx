@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { Menu } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AuthorizedMenu.module.scss';
 
@@ -58,6 +58,9 @@ export const AuthorizedMenu: FC = () => {
 				</Item>
 				<Item key="register">
 					<NavLink to="/register">Sign Up</NavLink>
+				</Item>
+				<Item key="personal">
+					<NavLink to="/pacient/form">Форма пациента</NavLink>
 				</Item>
 			</SubMenu>
 		</Menu>

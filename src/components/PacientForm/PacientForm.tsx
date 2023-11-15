@@ -6,6 +6,7 @@ import {
 	Input,
 	Layout,
 	Select,
+	Slider,
 	TimePicker,
 	Typography,
 } from 'antd';
@@ -25,13 +26,24 @@ export const PacienttForm = () => {
 	const onFinish = (values: IPacientForm) => {
 		const value = {
 			...values,
-			date: values.date.format('YYYY-MM-DD') as string,
-			time: values.time.format('HH:mm') as string,
+			date: values.date.format('YYYY-MM-DD'),
+			time: values.time.format('HH:mm'),
 		};
 		// eslint-disable-next-line no-console
 		console.log('Received values:', value);
 	};
-
+	function range(start: number, end: number) {
+		const result = [];
+		for (let i = start; i < end; i++) {
+			result.push(i);
+		}
+		return result;
+	}
+	function disabledDateTime() {
+		return {
+			disabledHours: () => range(0, 8),
+		};
+	}
 	const plainOptions = [
 		'Тревожность',
 		'Панические атаки',
@@ -81,15 +93,48 @@ export const PacienttForm = () => {
 				</Form.Item>
 
 				<Form.Item name="date" label="Дата" {...config}>
-					<DatePicker />
+					<DatePicker placeholder="Дата" />
 				</Form.Item>
 
 				<Form.Item name="time" label="Время" {...config}>
-					<TimePicker format={format} />
+					<TimePicker
+						disabledTime={disabledDateTime}
+						minuteStep={30}
+						placeholder="Время"
+						format={format}
+					/>
 				</Form.Item>
 
-				<Form.Item label="Стоимость консультации" name="consultationCost">
-					<Input type="number" />
+				<Form.Item label="Предпочтения" name="preferences">
+					<Input />
+				</Form.Item>
+
+				<Form.Item label="Страхи" name="fear">
+					<Input />
+				</Form.Item>
+
+				<Form.Item
+					label="Какие у вас ожидания? Что вы хотите получить на сессии?"
+					name="expectations"
+				>
+					<Input />
+				</Form.Item>
+
+				<Form.Item name="consultationCost" label="Стоймость">
+					<Slider
+						max={80000}
+						marks={{
+							0: 'A',
+							10000: '10000',
+							20000: '20000',
+							30000: '30000',
+							40000: '40000',
+							50000: '50000',
+							60000: '60000',
+							70000: '70000',
+							80000: '80000',
+						}}
+					/>
 				</Form.Item>
 
 				<Form.Item>
