@@ -1,32 +1,48 @@
 import {
 	Button,
 	Checkbox,
+	DatePicker,
 	Form,
 	Input,
 	Layout,
 	Select,
+	TimePicker,
 	Typography,
 } from 'antd';
-import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import { IPacientForm } from './IPacientForm';
 import styles from './PacientForm.module.scss';
-
 const { Option } = Select;
 const { Title } = Typography;
+const config = {
+	rules: [
+		{ type: 'object' as const, required: true, message: 'Please select time!' },
+	],
+};
 
 export const PacienttForm = () => {
 	const [form] = Form.useForm();
-
+	const format = 'HH:mm';
 	const onFinish = (values: IPacientForm) => {
+		const value = {
+			...values,
+			date: values.date.format('YYYY-MM-DD') as string,
+			time: values.time.format('HH:mm') as string,
+		};
 		// eslint-disable-next-line no-console
-		console.log('Received values:', values);
+		console.log('Received values:', value);
 	};
 
-	const onChange = (checkedValues: CheckboxValueType[]) => {
-		console.log('checked = ', checkedValues);
-	};
-
-	const plainOptions = ['Тревожность', 'Pear', 'Orange'];
+	const plainOptions = [
+		'Тревожность',
+		'Панические атаки',
+		'Депрессия, апатия, низкая энергия',
+		'Ничего не хочу, не знаю что делать, как жить?',
+		'Измены',
+		'Семейный психолог',
+		'Детские психолог',
+		'Сексолог',
+		'Другое укажите проблему',
+	];
 
 	return (
 		<Layout className={styles.pacientform_layout}>
@@ -51,23 +67,10 @@ export const PacienttForm = () => {
 				</Form.Item>
 
 				<Form.Item label="Спецализация психолога" name="specialisation">
-					<Checkbox.Group options={plainOptions} onChange={onChange} />
-				</Form.Item>
-
-				<Form.Item
-					label="Телефон"
-					name="mobilePhone"
-					rules={[{ required: true }]}
-				>
-					<Input />
-				</Form.Item>
-
-				<Form.Item
-					label="Полное имя"
-					name="fullName"
-					rules={[{ required: true }]}
-				>
-					<Input />
+					<Checkbox.Group
+						className={styles.pacientCheckbox}
+						options={plainOptions}
+					/>
 				</Form.Item>
 
 				<Form.Item label="Формат консультации" name="consultationFormat">
@@ -77,44 +80,16 @@ export const PacienttForm = () => {
 					</Select>
 				</Form.Item>
 
+				<Form.Item name="date" label="Дата" {...config}>
+					<DatePicker />
+				</Form.Item>
+
+				<Form.Item name="time" label="Время" {...config}>
+					<TimePicker format={format} />
+				</Form.Item>
+
 				<Form.Item label="Стоимость консультации" name="consultationCost">
 					<Input type="number" />
-				</Form.Item>
-
-				<Form.Item label="Образование" name="education">
-					<Input />
-				</Form.Item>
-
-				<Form.Item label="Пол" name="gender">
-					<Select>
-						<Option value="male">Мужской</Option>
-						<Option value="female">Женский</Option>
-					</Select>
-				</Form.Item>
-
-				<Form.Item
-					label="Видео (ссылка)"
-					name="videoLink"
-					rules={[
-						{
-							type: 'url',
-							message: 'Пожалуйста, введите корректную ссылку на видео',
-						},
-					]}
-				>
-					<Input placeholder="Введите ссылку на видео" />
-				</Form.Item>
-
-				<Form.Item
-					label="Опыт работы (в годах)"
-					name="experienceYears"
-					rules={[{ type: 'number', min: 0 }]}
-				>
-					<Input type="number" />
-				</Form.Item>
-
-				<Form.Item label="О себе" name="aboutYourself">
-					<Input.TextArea />
 				</Form.Item>
 
 				<Form.Item>
