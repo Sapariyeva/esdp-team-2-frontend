@@ -1,54 +1,40 @@
-import { Layout, Space, Typography, Alert } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { registerUser } from '../../features/user/userSlice';
 import { RootState } from '../../store';
-import AuthForm, { SubmitNewUserData } from '../../components/Form/AuthForm';
-const Register = () => {
+import RegisterForm from '../../components/AuthForm/RegisterForm.tsx';
+import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
+import { useNavigate } from 'react-router-dom';
+
+interface Props {
+	role: 'patient' | 'psychologist';
+}
+function Register({ role }: Props) {
 	const dispatch = useAppDispatch();
-	const { registerError } = useAppSelector((state: RootState) => state.user);
+	const navigate = useNavigate();
+	const { registerError } = useAppSelector((state: RootState) => state.users);
 
-	const getErrorsBy = (name: string) => {
-		if (Array.isArray(registerError)) {
-			const error = registerError.find(({ type }) => type === name);
-			return error?.messages.join(',');
-		}
+	const submitUser = async (userData: SubmitAuthData) => {
+		await dispatch(registerUser(userData))
+			.unwrap()
+			.then(() => {
+				navigate('/');
+			});
 	};
-	const submitNewUser = (userData: SubmitNewUserData) => {
-		dispatch(registerUser(userData));
-	};
+	const title =
+		role === 'psychologist'
+			? 'Зарегистрироваться как психолог'
+			: 'Зарегистрироваться как пациент';
+
 	return (
-		<Layout
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				background: 'white',
-			}}
-		>
-			<Space
-				direction="vertical"
-				style={{ background: '#e0bcff', padding: 100 }}
-			>
-				{registerError && (
-					<Alert
-						message="Error Text"
-						description={getErrorsBy('email')}
-						type="error"
-						closable
-						onClose={() => {
-							!registerError;
-						}}
-					/>
-				)}
-
-				<Typography
-					style={{ color: '#88ff00', fontSize: '35px', textAlign: 'center' }}
-				>
-					Регистрация
-				</Typography>
-				<AuthForm buttonText="Зарегистрироваться" submit={submitNewUser} />
-			</Space>
-		</Layout>
+		<>
+			<RegisterForm
+				errors={registerError}
+				submit={submitUser}
+				title={title}
+				role={role}
+			/>
+		</>
 	);
-};
+}
 
 export default Register;
