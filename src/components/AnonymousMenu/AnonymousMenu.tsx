@@ -56,10 +56,10 @@ export const AnonymousMenu: React.FC = () => {
 				title={<HomeOutlined className={styles.customIcon} />}
 			>
 				<Item key="login">
-					<NavLink to="/login">Login</NavLink>
+					<NavLink to="auth/login">Вход</NavLink>
 				</Item>
 				<Item key="register">
-					<NavLink to="/register">Sign Up</NavLink>
+					<NavLink to="auth/register">Регистрация</NavLink>
 				</Item>
 			</SubMenu>
 		</Menu>

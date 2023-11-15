@@ -1,47 +1,73 @@
+$color-white: #ffffff;
+$color-black: #000000;
+$color-purple: #834eeb;
+$color-soft-purple: #e0bcff;
+$color-green: #88ff00;
+$color-gray: #3a3a3a;
+
+
+$bgcolor-white: #ffffff;
+$bgcolor-purple: #834eeb;
+$bgcolor-soft-purple: #e0bcff;
+$bgcolor-green: #88ff00;
+$bgcolor-gray: #3a3a3a;
+$bgcolor-light-gray: #f9f8f8;
+
+$hover-bgcolor: #88ff00;
+$hover-color: black;
+
 %color-white {
-	color: #ffffff;
+	color: $color-white;
 }
 
 %color-black {
-	color: #000000;
+	color: $color-black;
 }
 
 %color-purple {
-	color: #834eeb;
+	color: $color-purple;
 }
 
 %color-soft-purple {
-	color: #e0bcff;
+	color: $color-soft-purple;
 }
 
 %color-green {
-	color: #88ff00;
+	color: $color-green;
 }
 
 %color-gray {
-	color: #3a3a3a;
+	color: $color-gray;
 }
 
 %bgcolor-white {
-	background: #ffffff;
+	background: $bgcolor-white;
 }
 
 %bgcolor-purple {
-	background: #834eeb;
+	background: $bgcolor-purple;
 }
 
 %bgcolor-soft-purple {
-	background: #e0bcff;
+	background: $bgcolor-soft-purple;
 }
 
 %bgcolor-green {
-	background: #88ff00;
+	background: $bgcolor-green;
 }
 
 %bgcolor-gray {
-	background: #3a3a3a;
+	background: $bgcolor-gray;
 }
 
 %bgcolor-light-gray {
-    background: #f9f8f8;
+	background: $bgcolor-light-gray;
 }
+
+%hover {
+	background: $hover-bgcolor;
+	color: $hover-color;
+}
+
+
+
