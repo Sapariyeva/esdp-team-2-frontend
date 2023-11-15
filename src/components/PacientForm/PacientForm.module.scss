@@ -1,0 +1,23 @@
+@import '../../assets/styles/config.scss';
+
+.pacientform_layout {
+	@extend %bgcolor-light-gray;
+	.pacientform_title {
+		text-align: center;
+		margin: 15px 0 30px 0;
+	}
+	.pacientform {
+		width: 100%;
+		max-width: 550px;
+		margin: 40px auto;
+		border-radius: 8px;
+		padding: 45px 55px;
+		@extend %bgcolor-white;
+
+		.pacientform_button {
+			font-size: 16px;
+			height: 40px;
+			@extend %bgcolor-purple;
+		}
+	}
+}
