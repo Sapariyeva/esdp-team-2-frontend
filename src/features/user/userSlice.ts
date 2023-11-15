@@ -1,36 +1,28 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { axiosInstance } from '../../api/axiosInstance';
-import { IUser } from '../../interfaces/IUser';
+import { IUser } from '../../interfaces/IUser.ts';
+import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
+import { axiosInstance } from '../../api/axiosInstance.ts';
 import { AxiosError, isAxiosError } from 'axios';
 
-type AuthUserData = {
+interface AuthUserData {
 	email: string;
 	phone: string;
 	password: string;
-};
-
-type UserResponseError = {
-	message: string;
-};
-type UserResponseValidateError = {
-	message: string;
-	errors: { type: string; messages: string[] }[];
-};
+}
 
 export const registerUser = createAsyncThunk<
 	IUser,
 	AuthUserData,
-	{ rejectValue: UserResponseError | UserResponseValidateError }
->('auth/register', async (userData: AuthUserData, { rejectWithValue }) => {
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/Register.tsx', async (userData: AuthUserData, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.post('/auth/register', userData);
-		return response.data;
+		return await axiosInstance.post('/auth/register', userData);
 	} catch (err) {
 		if (isAxiosError(err)) {
-			const error: AxiosError<UserResponseError> = err;
-			return rejectWithValue(
-				error.response?.data || { message: 'An error occurred' }
-			);
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
 		}
 		throw err;
 	}
@@ -39,27 +31,27 @@ export const registerUser = createAsyncThunk<
 export const loginUser = createAsyncThunk<
 	IUser,
 	AuthUserData,
-	{ rejectValue: string }
->('auth.login', async (userData, { rejectWithValue }) => {
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/Login', async (userData, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.post('auth/sessions', userData);
+		const response = await axiosInstance.post('auth/login', userData);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
-			const error: AxiosError<UserResponseError> = err;
-			return rejectWithValue(
-				error.response?.data.message || 'Internet connection error'
-			);
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+			throw err;
 		}
-		throw err;
 	}
 });
 
 interface UserState {
 	userInfo: IUser | null;
 	loading: boolean;
-	registerError: null | UserResponseValidateError;
-	loginError: null | string;
+	registerError: ServerFormValidationResponse | null;
+	loginError: ServerFormValidationResponse | null;
 	logged: boolean;
 }
 
@@ -72,50 +64,41 @@ const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-	name: 'user',
+	name: 'users',
 	initialState,
 	reducers: {},
-
 	extraReducers(builder) {
 		builder
 			.addCase(registerUser.pending, (state) => {
 				state.loading = true;
 				state.registerError = null;
 			})
-			.addCase(registerUser.fulfilled, (state, action) => {
-				state.userInfo = { ...action.payload };
+			.addCase(registerUser.fulfilled, (state, { payload }) => {
+				state.userInfo = { ...payload };
 				state.loading = false;
 				state.registerError = null;
 			})
-			.addCase(registerUser.rejected, (state, action) => {
+			.addCase(registerUser.rejected, (state, { payload }) => {
 				state.loading = false;
-				if (Array.isArray(action.payload)) {
-					state.registerError = {
-						message: 'Validation error occurred',
-						errors: action.payload as { type: string; messages: string[] }[],
-					};
-				} else {
-					state.registerError = {
-						message: action.payload?.message ?? 'Error occurred',
-						errors: [], // You might want to provide some default value for errors array
-					};
-				}
+				state.registerError = {
+					message: payload?.message ?? 'Error occurred',
+					errors: payload?.errors ?? [],
+				};
 			})
-
 			.addCase(loginUser.pending, (state) => {
 				state.loading = true;
 				state.loginError = null;
 			})
-			.addCase(loginUser.fulfilled, (state, action) => {
+			.addCase(loginUser.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.loginError = null;
 				state.logged = true;
-				state.userInfo = action.payload;
+				state.userInfo = payload;
 			})
-			.addCase(loginUser.rejected, (state, action) => {
+			.addCase(loginUser.rejected, (state, { payload }) => {
 				state.loading = false;
 				state.logged = false;
-				state.loginError = action.payload || null;
+				state.loginError = payload || null;
 			});
 	},
 });
