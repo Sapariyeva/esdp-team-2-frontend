@@ -15,9 +15,13 @@ export const registerUser = createAsyncThunk<
 	IUser,
 	AuthUserData,
 	{ rejectValue: ServerFormValidationResponse }
->('auth/Register.tsx', async (userData: AuthUserData, { rejectWithValue }) => {
+>('auth/Register', async (userData, { rejectWithValue }) => {
 	try {
-		return await axiosInstance.post('/auth/register', userData);
+		const response = await axiosInstance.post<IUser>(
+			'/auth/register',
+			userData
+		);
+		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
 			const error: AxiosError<ServerFormValidationResponse> = err;
@@ -35,7 +39,7 @@ export const loginUser = createAsyncThunk<
 	{ rejectValue: ServerFormValidationResponse }
 >('auth/Login', async (userData, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.post('auth/login', userData);
+		const response = await axiosInstance.post<IUser>('auth/login', userData);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
@@ -43,8 +47,8 @@ export const loginUser = createAsyncThunk<
 			if (error.response?.data) {
 				return rejectWithValue(error.response.data);
 			}
-			throw err;
 		}
+		throw err;
 	}
 });
 
@@ -113,11 +117,12 @@ const userSlice = createSlice({
 			})
 			.addCase(loginUser.rejected, (state, { payload }) => {
 				state.loading = false;
-				state.logged = false;
-				state.loginError = payload || null;
+				state.loginError = {
+					message: payload?.message ?? 'Error occurred',
+					errors: payload?.errors ?? [],
+				};
 			})
 			.addCase(logoutUser.fulfilled, () => {
-				localStorage.removeItem('users');
 				return initialState;
 			});
 	},
