@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AnonymousMenu } from '../AnonymousMenu/AnonymousMenu';
-import { AuthorizedMenu } from '../AuthorizedMenu/AuthorizedMenu';
 import styles from './Toolbar.module.scss';
+import Menu from '../Menu/Menu';
 
 interface ToolbarProps {
 	isAuthenticated: boolean;
@@ -14,7 +13,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ isAuthenticated }) => {
 			<Link to="/" className={styles.logo}>
 				GAMMA
 			</Link>
-			{isAuthenticated ? <AnonymousMenu /> : <AuthorizedMenu />}
+			<Menu isAuthenticated={isAuthenticated} />
 		</div>
 	);
 };
