@@ -9,12 +9,11 @@ import { useAppSelector } from '../../store/hooks';
 const { Header, Content, Footer } = AntLayout;
 
 export const CustomLayout: FC = () => {
-	const user = useAppSelector((state) => state.users.logged);
-	console.log(!user);
+	const logged = useAppSelector((state) => state.users.logged);
 	return (
 		<AntLayout className={styles.layout_container}>
 			<Header className={styles.layout_header}>
-				<Toolbar isAuthenticated={!user} />
+				<Toolbar isAuthenticated={!logged} />
 			</Header>
 			<Content className={styles.layout_main_pages}>
 				<Outlet />
