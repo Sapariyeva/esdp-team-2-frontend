@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { CustomLayout } from './components/Layout/Layout';
-import { PageNotFound } from './components/PageNotFound/PageNotFound';
-import { HomePage } from './components/HomePage/HomePage';
-import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
-import Register from './containers/register/Register.tsx';
+import { HomePage } from './components/HomePage/HomePage';
+import { CustomLayout } from './components/Layout/Layout';
+import { PacienttForm } from './components/PacientForm/PacientForm.tsx';
+import { PageNotFound } from './components/PageNotFound/PageNotFound';
+import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
 import Login from './containers/login/Login.tsx';
 
+import Register from './containers/register/Register.tsx';
 const App = () => {
 	return (
 		<BrowserRouter>
@@ -26,6 +27,7 @@ const App = () => {
 					/>
 					<Route path="*" element={<PageNotFound />} />
 					<Route path="/psychologist/form" element={<PsychologistForm />} />
+					<Route path="/pacient/form" element={<PacienttForm />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
