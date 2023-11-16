@@ -7,6 +7,7 @@ import { PacienttForm } from './components/PacientForm/PacientForm.tsx';
 import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
 import Login from './containers/login/Login.tsx';
+
 import Register from './containers/register/Register.tsx';
 const App = () => {
 	return (

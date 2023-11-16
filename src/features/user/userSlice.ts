@@ -3,6 +3,7 @@ import { IUser } from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { axiosInstance } from '../../api/axiosInstance.ts';
 import { AxiosError, isAxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 interface AuthUserData {
 	email: string;
@@ -45,6 +46,20 @@ export const loginUser = createAsyncThunk<
 			throw err;
 		}
 	}
+});
+
+export const logoutUser = createAsyncThunk('auth/logout', async () => {
+	const refreshToken = Cookies.get('refreshToken');
+	const response = await axiosInstance.post(
+		'/auth/logout',
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${refreshToken}`,
+			},
+		}
+	);
+	return response.data;
 });
 
 interface UserState {
@@ -99,6 +114,10 @@ const userSlice = createSlice({
 				state.loading = false;
 				state.logged = false;
 				state.loginError = payload || null;
+			})
+			.addCase(logoutUser.fulfilled, () => {
+				localStorage.removeItem('users');
+				return initialState;
 			});
 	},
 });

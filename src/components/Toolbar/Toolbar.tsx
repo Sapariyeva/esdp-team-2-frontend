@@ -14,7 +14,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ isAuthenticated }) => {
 			<Link to="/" className={styles.logo}>
 				GAMMA
 			</Link>
-			{isAuthenticated ? <AuthorizedMenu /> : <AnonymousMenu />}
+			{isAuthenticated ? <AnonymousMenu /> : <AuthorizedMenu />}
 		</div>
 	);
 };
