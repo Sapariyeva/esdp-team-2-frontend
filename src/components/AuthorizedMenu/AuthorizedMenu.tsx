@@ -12,7 +12,6 @@ export const AuthorizedMenu: FC = () => {
 	const dispatch = useAppDispatch();
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		console.log('выйти');
 	};
 	return (
 		<Menu mode="horizontal" className={styles.menu}>
