@@ -91,6 +91,7 @@ const userSlice = createSlice({
 			.addCase(registerUser.fulfilled, (state, { payload }) => {
 				state.userInfo = { ...payload };
 				state.loading = false;
+				state.logged = true;
 				state.registerError = null;
 			})
 			.addCase(registerUser.rejected, (state, { payload }) => {
