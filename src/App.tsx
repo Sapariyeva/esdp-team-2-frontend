@@ -7,6 +7,7 @@ import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
 import Register from './containers/register/Register.tsx';
 import Login from './containers/login/Login.tsx';
+
 const App = () => {
 	return (
 		<BrowserRouter>

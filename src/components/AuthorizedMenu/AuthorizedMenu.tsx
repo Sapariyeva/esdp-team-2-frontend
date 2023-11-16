@@ -3,10 +3,17 @@ import { Menu } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
 import styles from './AuthorizedMenu.module.scss';
+import { useAppDispatch } from '../../store/hooks';
+import { logoutUser } from '../../features/user/userSlice';
 
 const { SubMenu, Item } = Menu;
 
 export const AuthorizedMenu: FC = () => {
+	const dispatch = useAppDispatch();
+	const logoutHandler = () => {
+		dispatch(logoutUser());
+		console.log('выйти');
+	};
 	return (
 		<Menu mode="horizontal" className={styles.menu}>
 			<SubMenu key="servis" title={'О сервисе'}>
@@ -53,11 +60,10 @@ export const AuthorizedMenu: FC = () => {
 				key="auth"
 				title={<HomeOutlined className={styles.customIcon} />}
 			>
-				<Item key="login">
-					<NavLink to="/login">Login</NavLink>
-				</Item>
-				<Item key="register">
-					<NavLink to="/register">Sign Up</NavLink>
+				<Item key="logout">
+					<NavLink onClick={logoutHandler} to="/">
+						Выйти
+					</NavLink>
 				</Item>
 			</SubMenu>
 		</Menu>
