@@ -20,17 +20,17 @@ export const PsychologistsList: React.FC = () => {
 				<Table.Column dataIndex="lastName" title="Last name" />
 				<Table.Column
 					dataIndex="status"
-					title="status"
+					title="Status"
 					render={(value) => <TagField value={value} />}
 				/>
 				<Table.Column
 					dataIndex="birthday"
-					title="birthday"
+					title="Birthday"
 					render={(value) => <DateField format="LLL" value={value} />}
 				/>
 				<Table.Column<IPsychologistsAdmin>
-					title="Actions"
 					dataIndex="actions"
+					title="Actions"
 					render={(_text, record): React.ReactNode => {
 						return (
 							<Space>

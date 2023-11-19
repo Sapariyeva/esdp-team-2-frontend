@@ -16,15 +16,15 @@ export const PostList: React.FC = () => {
 	return (
 		<List>
 			<Table {...tableProps} rowKey="id">
-				<Table.Column dataIndex="title" title="title" />
+				<Table.Column dataIndex="title" title="Title" />
 				<Table.Column
 					dataIndex="status"
-					title="status"
+					title="Status"
 					render={(value) => <TagField value={value} />}
 				/>
 				<Table.Column
 					dataIndex="createdAt"
-					title="createdAt"
+					title="Created at"
 					render={(value) => <DateField format="LLL" value={value} />}
 				/>
 				<Table.Column<IPostAdmin>
