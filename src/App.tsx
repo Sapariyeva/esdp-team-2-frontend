@@ -8,6 +8,7 @@ import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
+import { AdminPanel } from './components/AdminPanel/AdminPanel.tsx';
 const App = () => {
 	return (
 		<BrowserRouter>
@@ -28,6 +29,7 @@ const App = () => {
 					<Route path="/psychologist/form" element={<PsychologistForm />} />
 					<Route path="/pacient/form" element={<PacienttForm />} />
 				</Route>
+				<Route path="/posts" element={<AdminPanel />} />
 			</Routes>
 		</BrowserRouter>
 	);
