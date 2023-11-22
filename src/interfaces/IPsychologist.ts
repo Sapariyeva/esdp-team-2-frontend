@@ -1,3 +1,4 @@
+import { ICertificate } from './ICertificate.ts';
 import { ICity } from './ICity.ts';
 
 export interface IPsychologist {
@@ -12,5 +13,6 @@ export interface IPsychologist {
 	description: string;
 	education: string;
 	isPublish: boolean;
-	city?: ICity;
+	city: ICity;
+	certificates: ICertificate[];
 }
