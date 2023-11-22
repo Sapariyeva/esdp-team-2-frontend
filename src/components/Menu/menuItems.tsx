@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { HomeOutlined } from '@ant-design/icons';
 import LogoutBtn from '../UI/LogoutBtn';
 
-type MenuItem = Required<MenuProps>['items'][number];
+export type MenuItem = Required<MenuProps>['items'][number];
 
 type Options = {
 	label?: React.ReactNode;
@@ -19,7 +19,7 @@ type Options = {
 
 type GetItem = (options: Options) => MenuItem;
 
-const getItem: GetItem = ({
+export const getItem: GetItem = ({
 	key,
 	label,
 	isLink = false,
@@ -139,6 +139,11 @@ const authItems: MenuProps['items'] = [
 		children: [
 			getItem({ label: <LogoutBtn />, key: 'logout' }),
 			getItem({ label: 'Форма пациента', key: '/pacient/form', isLink: true }),
+			getItem({
+				label: 'Кабинет Психолога',
+				key: '/my-account/psychologist',
+				isLink: true,
+			}),
 		],
 	}),
 ];
