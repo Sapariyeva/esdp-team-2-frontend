@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import { IPsychologist } from '../../interfaces/IPsychologist';
 import { HeartOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -12,6 +13,7 @@ interface PsychologistCardProps {
 export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 	psychologist,
 }) => {
+	const navigate = useNavigate();
 	const {
 		fullName,
 		education,
@@ -25,7 +27,9 @@ export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 
 	return (
 		<Card
-			style={{ width: 300, position: 'relative' }}
+			hoverable
+			onClick={() => navigate('/psychologists/catalog/:id')}
+			style={{ width: 300, position: 'relative', cursor: 'pointer' }}
 			cover={
 				<div style={{ position: 'relative', width: '100%', height: 200 }}>
 					<div style={{ position: 'absolute', top: 9, right: 14 }}>

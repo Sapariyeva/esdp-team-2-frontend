@@ -6,7 +6,7 @@ import {
 	TeamOutlined,
 } from '@ant-design/icons';
 
-import { MenuItem, getItem } from '../../Menu/menuItems';
+import { MenuItem, getItem } from '../../../Menu/menuItems';
 import { useState } from 'react';
 
 const { Sider } = Layout;
