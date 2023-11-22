@@ -8,6 +8,7 @@ import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
+import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
 import { PsychologistsList } from './containers/psychologists/PsychologistsContainer.tsx';
 
 const App = () => {
@@ -20,6 +21,10 @@ const App = () => {
 					<Route
 						path="auth/login/psychologist"
 						element={<Login role="psychologist" />}
+					/>
+					<Route
+						path="/my-account/psychologist"
+						element={<PsychologistAccountPage />}
 					/>
 					<Route path="/auth/register" element={<Register role="patient" />} />
 					<Route
