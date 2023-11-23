@@ -4,6 +4,8 @@ import { IPsychologist } from '../../interfaces/IPsychologist';
 import { HeartOutlined } from '@ant-design/icons';
 import psychologistsMock from '../../mocks/psychologists';
 import styles from './PsychologistCard.module.scss';
+import { useNavigate } from 'react-router-dom';
+
 
 const { Meta } = Card;
 
@@ -14,6 +16,7 @@ interface PsychologistCardProps {
 export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 	psychologist,
 }) => {
+	const navigate = useNavigate();
 	const {
 		fullName,
 		education,
@@ -28,6 +31,9 @@ export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 	return (
 		<Card
 			className={styles.card}
+			hoverable
+			onClick={() => navigate('/psychologists/catalog/:id')}
+			style={{ width: 300, position: 'relative', cursor: 'pointer' }}
 			cover={
 				<div className={styles.cover}>
 					<span className={styles.heart}>

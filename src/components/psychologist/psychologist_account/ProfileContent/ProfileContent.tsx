@@ -1,7 +1,7 @@
 import { Button, Avatar, Typography, Tag, Row, Col } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import YouTube, { YouTubeProps } from 'react-youtube';
-import { psychologist } from '../../../mocks/psychologistProfile';
+import { psychologist } from '../../../../mocks/psychologistProfile';
 import youtubeVideoId from 'youtube-video-id';
 import './ProfileContent.scss';
 import EditProfileModal, {

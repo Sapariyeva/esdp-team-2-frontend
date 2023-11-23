@@ -1,5 +1,6 @@
 export const psychologist = {
 	fullName: 'Эрен Йегер',
+	gender: 'male',
 	format: ['online', 'offline'],
 	cost: '1000 - 7 ????? ',
 	video: 'https://www.youtube.com/watch?v=J9Xh9bm6LVc&t=6s',
@@ -13,6 +14,10 @@ export const psychologist = {
 		'Супервизия',
 		'Системная семейная терапия',
 	],
+	description:
+		'Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame. Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame . Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame',
+	experience:
+		'Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame. Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame . Lorem ipsum dolor sit amet, consectetur adip eum. Lorem ipsum dolor sit amet, consect et dolor. Lorem ipsum dolor sit amet sit ame',
 };
 
 interface Event {

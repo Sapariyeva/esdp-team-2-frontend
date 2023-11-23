@@ -9,7 +9,9 @@ import { PsychologistForm } from './components/PsychologistForm/PsychologistForm
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
-import { PsychologistsList } from './containers/psychologists/catalog/PsychologistsList.tsx';
+import { PsychologistsList } from './containers/psychologists/PsychologistsContainer.tsx';
+import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
+
 
 const App = () => {
 	return (
@@ -37,6 +39,10 @@ const App = () => {
 					<Route
 						path="/psychologists/catalog"
 						element={<PsychologistsList />}
+					/>
+					<Route
+						path="/psychologists/catalog/:id"
+						element={<PsychologistDetailedProfile />}
 					/>
 				</Route>
 			</Routes>

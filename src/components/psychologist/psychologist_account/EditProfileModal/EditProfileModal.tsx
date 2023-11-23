@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Select } from 'antd';
-import { psychologist } from '../../../mocks/psychologistProfile';
+import { psychologist } from '../../../../mocks/psychologistProfile';
 
 export interface ModalFormState {
 	fullName: string;
