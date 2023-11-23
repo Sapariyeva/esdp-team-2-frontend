@@ -1,7 +1,7 @@
 import { Layout, message, Popconfirm, Popover, Table, Typography } from 'antd';
 const { Title } = Typography;
 
-import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.css';
+import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.scss';
 import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';

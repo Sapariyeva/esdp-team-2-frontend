@@ -2,7 +2,7 @@ import { ColumnsType } from 'antd/es/table';
 import { Col, Input, Pagination, Popover, Row, Table, Typography } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.css';
+import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.scss';
 import { MdStar } from 'react-icons/md';
 const { Title } = Typography;
 
