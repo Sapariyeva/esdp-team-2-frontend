@@ -2,6 +2,8 @@ import React from 'react';
 import { Card } from 'antd';
 import { IPsychologist } from '../../interfaces/IPsychologist';
 import { HeartOutlined } from '@ant-design/icons';
+import psychologistsMock from '../../mocks/psychologists';
+import styles from './PsychologistCard.module.scss';
 
 const { Meta } = Card;
 
@@ -16,27 +18,26 @@ export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 		fullName,
 		education,
 		description,
+		photo,
 		city,
 		cost,
-		photo,
 		experienceYears,
 		format,
 	} = psychologist;
 
 	return (
 		<Card
-			style={{ width: 300, position: 'relative' }}
+			className={styles.card}
 			cover={
-				<div style={{ position: 'relative', width: '100%', height: 200 }}>
-					<div style={{ position: 'absolute', top: 9, right: 14 }}>
-						<span style={{ fontSize: '21px' }}>
-							<HeartOutlined />
-						</span>
-					</div>
+				<div className={styles.cover}>
+					<span className={styles.heart}>
+						<HeartOutlined />
+					</span>
+
 					<img
 						alt={fullName}
-						src={photo}
-						style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+						src={psychologistsMock.api.psychologists + photo}
+						className={styles.img}
 					/>
 				</div>
 			}
