@@ -1,11 +1,11 @@
 import { Layout } from 'antd';
 import SideBar, {
 	ActiveTab,
-} from '../../../components/PsychologistAccount/SideBar/SideBar';
+} from '../../../components/psychologist/psychologist_account/SideBar/SideBar';
 import { useState } from 'react';
-import ProfileContent from '../../../components/PsychologistAccount/ProfileContent/ProfileContent';
-import Schedule from '../../../components/PsychologistAccount/Schedule/Schedule';
-import ClientsTable from '../../../components/PsychologistAccount/ClientsTable/ClientsTable';
+import ProfileContent from '../../../components/psychologist/psychologist_account/ProfileContent/ProfileContent';
+import Schedule from '../../../components/psychologist/psychologist_account/Schedule/Schedule';
+import ClientsTable from '../../../components/psychologist/psychologist_account/ClientsTable/ClientsTable';
 
 const { Content } = Layout;
 

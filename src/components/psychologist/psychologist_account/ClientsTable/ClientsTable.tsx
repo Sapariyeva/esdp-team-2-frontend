@@ -1,5 +1,5 @@
 import { Table, Typography } from 'antd';
-import { clients } from '../../../mocks/psychologistProfile';
+import { clients } from '../../../../mocks/psychologistProfile';
 
 const { Text } = Typography;
 

@@ -8,7 +8,7 @@ import {
 	Select,
 	TimePicker,
 } from 'antd';
-import { events } from '../../../mocks/psychologistProfile';
+import { events } from '../../../../mocks/psychologistProfile';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 const { Option } = Select;
