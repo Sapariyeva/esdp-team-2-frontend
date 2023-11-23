@@ -12,6 +12,7 @@ import PsychologistAccountPage from './containers/psychologist/personal_account/
 import { PsychologistsList } from './containers/psychologists/PsychologistsContainer.tsx';
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 
+
 const App = () => {
 	return (
 		<BrowserRouter>
