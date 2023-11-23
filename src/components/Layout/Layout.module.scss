@@ -1,13 +1,16 @@
 @import '../../assets/styles/config.scss';
 
 .layout_header {
-	@extend %bgcolor-white;
+	background-color: $color-white;
 }
 
 .layout_main_pages {
-	@extend %bgcolor-white;
+	background-color: $color-white;
+	padding: 20px 100px;
 }
 
 .layout_footer {
-	@extend %bgcolor-white;
+	background-color: $color-white;
 }
+
+
