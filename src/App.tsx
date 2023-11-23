@@ -12,6 +12,7 @@ import PsychologistAccountPage from './containers/psychologist/personal_account/
 
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 import { PsychologistsList } from './containers/psychologists/catalog/PsychologistsList.tsx';
+import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
 
 const App = () => {
 	return (
@@ -28,6 +29,7 @@ const App = () => {
 						path="/my-account/psychologist"
 						element={<PsychologistAccountPage />}
 					/>
+					<Route path="/my-account/patient" element={<PatientAccountPage />} />
 					<Route path="/auth/register" element={<Register role="patient" />} />
 					<Route
 						path="auth/register/psychologist"
