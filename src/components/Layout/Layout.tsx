@@ -13,7 +13,7 @@ export const CustomLayout: FC = () => {
 	return (
 		<AntLayout className={styles.layout_container}>
 			<Header className={styles.layout_header}>
-				<Toolbar isAuthenticated={!logged} />
+				<Toolbar isAuthenticated={logged} />
 			</Header>
 			<Content className={styles.layout_main_pages}>
 				<Outlet />
