@@ -24,6 +24,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							colorPrimary: '#88ff00',
 							algorithm: true,
 						},
+						Layout: {
+							bodyBg: '#ffffff !important',
+							borderRadius: 9,
+						},
+						Table: {
+							colorBgContainer: '#fafaff',
+							headerBg: '#a48ce7',
+							headerColor: '#f9f8f9',
+							rowHoverBg: '#f7f6f9',
+						},
 					},
 				}}
 			>
