@@ -144,6 +144,11 @@ const authItems: MenuProps['items'] = [
 				key: '/my-account/psychologist',
 				isLink: true,
 			}),
+			getItem({
+				label: 'Личный кабинет',
+				key: '/my-account/patient',
+				isLink: true,
+			}),
 		],
 	}),
 ];
