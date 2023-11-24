@@ -66,7 +66,6 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 						closable
 					/>
 				)}
-
 				{method === 'email' ? (
 					<Form.Item
 						name="email"
@@ -135,9 +134,8 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 				>
 					<Input.Password placeholder="Password" size="large" />
 				</Form.Item>
-
 				<Form.Item>
-					<Form.Item name="remember" valuePropName="checked" noStyle>
+					<Form.Item valuePropName="checked" noStyle>
 						{method === 'email' ? (
 							<Typography
 								onClick={() => handleMethodButtonClick('phone')}
@@ -153,15 +151,15 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 								Войти по электронной почте
 							</Typography>
 						)}
-						<Checkbox>Запомнить меня</Checkbox>
+						<Form.Item name="remember" valuePropName="checked" noStyle>
+							<Checkbox>Запомнить меня</Checkbox>
+						</Form.Item>
 						<a className="login-form-forgot" href="#">
 							Забыли пароль?
 						</a>
 					</Form.Item>
 				</Form.Item>
-
 				<Button
-					// loading={auth.loading}
 					className={styles.button}
 					type="primary"
 					htmlType="submit"

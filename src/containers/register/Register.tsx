@@ -18,7 +18,8 @@ function Register({ role }: Props) {
 			.unwrap()
 			.then(() => {
 				navigate('/');
-			});
+			})
+			.catch((e) => e);
 	};
 	const title =
 		role === 'psychologist'

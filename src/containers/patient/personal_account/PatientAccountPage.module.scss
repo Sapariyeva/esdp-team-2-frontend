@@ -1,0 +1,96 @@
+@import '../../../assets/styles/_config.scss';
+
+
+.colum{
+    text-align: center !important;
+    color: #656565;
+}
+.colum::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 1.6em;
+    transform: translateY(-50%);
+    transition: background-color 0.2s;
+    visibility: hidden;
+}
+
+
+.cardContainer {
+    position: relative;
+    width: 100%;
+    background-color: #fafaff;
+    gap: 40px;
+}
+
+
+.calendarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+
+}
+.cardTitle{
+    color: $color-purple !important;
+}
+
+.svg{
+    font-size: 25px;
+    text-align: center;
+    cursor: pointer;
+    color: $color-purple !important;
+}
+
+.title {
+    width: 200px;
+    color: $color-purple !important;
+    justify-items: center;
+    font-weight: 700;
+    font-size: 37px;
+    margin: 0 !important;
+    cursor: context-menu;
+}
+.ant-popover-content p:hover {
+    position: absolute !important;
+    top: 100px !important;
+    left: 100px;
+}
+.buttonGroup {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+.btnClose{
+    border-radius: 100px;
+}
+.closeButtonContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    top: 20px;
+    right: 20px;
+}
+
+.btn {
+    border-color: #5d4df1;
+    color: #5d4df1;
+    &:hover{
+        border-color: tomato;
+        color: tomato;
+    }
+}
+
+.description{
+    color: $color-purple !important;
+    margin-bottom: 10px;
+    font-weight: 600;
+}

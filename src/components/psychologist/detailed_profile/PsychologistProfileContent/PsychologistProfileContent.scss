@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/_config.scss";
+
+.psychologist-profile-content {
+	padding: 20px;
+	width: 60%;
+	@media screen and (max-width: 680px) {
+		width: 100%;
+	}
+	.male-gender {
+		color: $color-purple;
+	}
+	.female-gender {
+		color: deeppink;
+	}
+	.title {
+		justify-content: center;
+		display: flex;
+		gap: 10px;
+	}
+	.education {
+		color: #aba9a9;
+	}
+}

@@ -18,7 +18,8 @@ function Login({ role }: Props) {
 			.unwrap()
 			.then(() => {
 				navigate('/');
-			});
+			})
+			.catch((e) => e);
 	};
 	const title =
 		role === 'psychologist' ? 'Вход для психолога' : 'Вход для пациента';
