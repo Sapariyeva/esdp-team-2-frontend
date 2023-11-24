@@ -10,7 +10,6 @@ import {
 import { IPsychologistsAdmin } from '../../../interfaces/IAdminPanel';
 
 const { Option } = Select;
-
 export const PsychologistsCreate: React.FC = () => {
 	const { formProps, saveButtonProps } = useForm<IPsychologistsAdmin>();
 
