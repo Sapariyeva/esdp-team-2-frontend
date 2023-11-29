@@ -1,12 +1,12 @@
 import { articles } from '../../mocks/HomePage';
 import styles from './HomePage.module.scss';
-import { Layout, Typography, Button, Card, Tooltip } from 'antd';
+import { Typography, Button, Card, Tooltip } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
 export const HomePage = () => {
 	return (
-		<Layout className={styles.homepage}>
+		<div className={styles.homepage}>
 			<div className={styles.homepage_container}>
 				<div className={styles.homepage_container_text}>
 					<Title level={1} className={styles.homepage_title}>
@@ -84,6 +84,6 @@ export const HomePage = () => {
 					Спросить
 				</Button>
 			</div>
-		</Layout>
+		</div>
 	);
 };

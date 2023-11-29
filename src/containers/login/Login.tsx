@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loginUser } from '../../features/user/userSlice';
 import { RootState } from '../../store';
 import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
-import LoginForm from '../../components/AuthForm/LoginForm.tsx';
+import LoginForm from '../../components/auth_form/LoginForm.tsx';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {

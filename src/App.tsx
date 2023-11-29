@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
-import { HomePage } from './components/HomePage/HomePage';
-import { CustomLayout } from './components/Layout/Layout';
-import { PacienttForm } from './components/PacientForm/PacientForm.tsx';
-import { PageNotFound } from './components/PageNotFound/PageNotFound';
-import { PsychologistForm } from './components/PsychologistForm/PsychologistForm';
+import { HomePage } from './components/home_page/HomePage.tsx';
+import { CustomLayout } from './components/layout/Layout.tsx';
+import { PacienttForm } from './components/pacient_form/PacientForm.tsx';
+import { PageNotFound } from './components/page_not_found/PageNotFound.tsx';
+import { PsychologistForm } from './components/psychologist_form/PsychologistForm.tsx';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
-
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 import { PsychologistsList } from './containers/psychologists/catalog/PsychologistsList.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
+import { BusinessPage } from './components/business_page/BusinessPage.tsx';
 
 const App = () => {
 	return (
@@ -46,6 +46,7 @@ const App = () => {
 						path="/psychologists/catalog/:id"
 						element={<PsychologistDetailedProfile />}
 					/>
+					<Route path="/business" element={<BusinessPage />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

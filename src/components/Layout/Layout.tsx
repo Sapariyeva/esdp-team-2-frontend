@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Layout as AntLayout } from 'antd';
-import { Toolbar } from '../Toolbar/Toolbar';
+import { Toolbar } from '../toolbar/Toolbar';
 import styles from './Layout.module.scss';
-import { FooterMenu } from '../Footer/Footer';
+import { FooterMenu } from '../footer/Footer';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
 

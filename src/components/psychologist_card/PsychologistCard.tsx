@@ -6,7 +6,6 @@ import psychologistsMock from '../../mocks/psychologists';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 
-
 const { Meta } = Card;
 
 interface PsychologistCardProps {

@@ -1,4 +1,4 @@
-import { MenuItem } from '../../../Menu/menuItems.tsx';
+import { MenuItem } from '../../../menu/menuItems.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../../store/hooks.ts';
 import { logoutUser } from '../../../../features/user/userSlice.ts';
