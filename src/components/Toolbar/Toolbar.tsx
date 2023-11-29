@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Toolbar.module.scss';
-import Menu from '../Menu/Menu';
+import Menu from '../menu/Menu';
 
 interface ToolbarProps {
 	isAuthenticated: boolean;
