@@ -1,6 +1,6 @@
 import { Divider, Form, Select, Slider, Space } from 'antd';
 import psychologistsMock from '../../../mocks/psychologists';
-import { PsychologistCard } from '../../../components/psychologist_card/PsychologistCard';
+import { PsychologistCard } from '../psychologistCard/PsychologistCard';
 import styles from './PsychologistsList.module.scss';
 const { Option } = Select;
 

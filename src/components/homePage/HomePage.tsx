@@ -1,10 +1,12 @@
-import { articles } from '../../mocks/HomePage';
+import { articles } from '../../mocks/articles';
+import { ArticleCard } from '../article/articleCard/ArticleCard';
 import styles from './HomePage.module.scss';
-import { Typography, Button, Card, Tooltip } from 'antd';
+import { Typography, Button } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
 export const HomePage = () => {
+	const lastThreeArticles = articles.slice(-3);
 	return (
 		<div className={styles.homepage}>
 			<div className={styles.homepage_container}>
@@ -36,44 +38,8 @@ export const HomePage = () => {
 				Полезные статьи о терапии
 			</Title>
 			<div className={styles.articles_container}>
-				{articles.map((article, index) => (
-					<Card
-						key={index}
-						hoverable
-						style={{ width: 420, margin: 16 }}
-						cover={
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									alignItems: 'center',
-									height: '100%',
-								}}
-							>
-								<img
-									alt={article.title}
-									src={article.image}
-									style={{ maxWidth: '90%' }}
-								/>
-							</div>
-						}
-					>
-						<Card.Meta
-							title={
-								<Tooltip
-									title={article.title}
-									style={{
-										lineHeight: 1.5,
-										maxHeight: 'none',
-										overflow: 'visible',
-									}}
-								>
-									{article.title}
-								</Tooltip>
-							}
-							description={article.content}
-						/>
-					</Card>
+				{lastThreeArticles.map((article, index) => (
+					<ArticleCard key={index} article={article} />
 				))}
 			</div>
 			<div className={styles.ask_container}>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card } from 'antd';
-import { IPsychologist } from '../../interfaces/IPsychologist';
+import { IPsychologist } from '../../../interfaces/IPsychologist';
 import { HeartOutlined } from '@ant-design/icons';
-import psychologistsMock from '../../mocks/psychologists';
+import psychologistsMock from '../../../mocks/psychologists';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +32,6 @@ export const PsychologistCard: React.FC<PsychologistCardProps> = ({
 			className={styles.card}
 			hoverable
 			onClick={() => navigate('/psychologists/catalog/:id')}
-			style={{ width: 300, position: 'relative', cursor: 'pointer' }}
 			cover={
 				<div className={styles.cover}>
 					<span className={styles.heart}>
