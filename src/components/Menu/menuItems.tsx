@@ -44,10 +44,7 @@ const commonItems: MenuProps['items'] = [
 	getItem({
 		label: 'О сервисе',
 		key: 'service',
-		children: [
-			getItem({ label: 'Статьи', key: '/articles', isLink: true }),
-			getItem({ label: 'Page', key: '/page', isLink: true }),
-		],
+		children: [getItem({ label: 'Статьи', key: '/articles', isLink: true })],
 	}),
 	getItem({
 		label: 'Психологи',
