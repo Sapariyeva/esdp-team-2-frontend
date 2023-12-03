@@ -12,9 +12,9 @@ import PsychologistAccountPage from './containers/psychologist/personal_account/
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
 import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
-import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
+import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 
 const App = () => {
 	return (
@@ -41,11 +41,11 @@ const App = () => {
 					<Route path="/psychologist/form" element={<PsychologistForm />} />
 					<Route path="/pacient/form" element={<PacienttForm />} />
 					<Route
-						path="/psychologists/catalog"
+						path="/psychologists/"
 						element={<PsychologistsListContainer />}
 					/>
 					<Route
-						path="/psychologists/catalog/:id"
+						path="/psychologists/:id"
 						element={<PsychologistDetailedProfile />}
 					/>
 					<Route path="/business" element={<BusinessPage />} />
