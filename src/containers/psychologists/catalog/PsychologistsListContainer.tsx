@@ -12,6 +12,9 @@ export const PsychologistsListContainer = () => {
 	const loading = useAppSelector(
 		(state: RootState) => state.psychologist.loading
 	);
+	const error = useAppSelector(
+		(state: RootState) => state.psychologist.psychologistError
+	);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -20,6 +23,18 @@ export const PsychologistsListContainer = () => {
 
 	if (loading) {
 		return <div>LOADING...</div>;
+	}
+
+	if (error || psychologists.length === 0) {
+		return (
+			<div>
+				{error ? (
+					<p>There was an error fetching data. Please try again later.</p>
+				) : (
+					<p>No psychologists available.</p>
+				)}
+			</div>
+		);
 	}
 
 	return (

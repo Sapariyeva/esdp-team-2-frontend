@@ -22,12 +22,12 @@ const PsychologistDetailedProfile = () => {
 		if (id) {
 			dispatch(getPsychologistById(id));
 		}
-	}, [dispatch]);
+	}, [id, dispatch]);
 
 	if (loading) {
 		return <div>LOADING...</div>;
 	}
-	console.log(psychologist);
+
 	return (
 		<Layout style={{ padding: 20 }} className="detailed-profile_content">
 			{psychologist ? (

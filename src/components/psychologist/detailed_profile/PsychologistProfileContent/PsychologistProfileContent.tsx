@@ -2,6 +2,9 @@ import { Typography } from 'antd';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import './PsychologistProfileContent.scss';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
+import { ISymptom } from '../../../../interfaces/ISymptom';
+import { ITechnique } from '../../../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
 
 type PsychologistProfileContentProps = {
 	psychologist: IPsychologist;
@@ -10,7 +13,9 @@ type PsychologistProfileContentProps = {
 const PsychologistProfileContent = ({
 	psychologist,
 }: PsychologistProfileContentProps) => {
-	console.log(`проверка PsychologistProfileContent ${psychologist.birthday}`);
+	if (!psychologist || Object.keys(psychologist).length === 0) {
+		return null;
+	}
 	return (
 		<div className="psychologist-profile-content">
 			<Typography.Title level={2} className="title">
@@ -32,6 +37,40 @@ const PsychologistProfileContent = ({
 			<Typography.Paragraph className="experience">
 				{psychologist.experienceYears}
 			</Typography.Paragraph>
+			{psychologist.therapyMethod && psychologist.therapyMethod.length > 0 && (
+				<>
+					<Typography.Title level={5}>Технологические методы</Typography.Title>
+					{psychologist.therapyMethod.map(
+						(therapyMethod: ITherapyMethod, index: number) => (
+							<Typography.Paragraph key={index} className="therapyMethod">
+								{therapyMethod.name}
+							</Typography.Paragraph>
+						)
+					)}
+				</>
+			)}
+			{psychologist.techniques && psychologist.techniques.length > 0 && (
+				<>
+					<Typography.Title level={5}>Технологические техники</Typography.Title>
+					{psychologist.techniques.map(
+						(technique: ITechnique, index: number) => (
+							<Typography.Paragraph key={index} className="technique">
+								{technique.name}
+							</Typography.Paragraph>
+						)
+					)}
+				</>
+			)}
+			{psychologist.symptoms && psychologist.symptoms.length > 0 && (
+				<>
+					<Typography.Title level={5}>Симптомы</Typography.Title>
+					{psychologist.symptoms.map((symptom: ISymptom, index: number) => (
+						<Typography.Paragraph key={index} className="symptom">
+							{symptom.name}
+						</Typography.Paragraph>
+					))}
+				</>
+			)}
 		</div>
 	);
 };

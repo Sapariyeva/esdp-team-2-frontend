@@ -11,6 +11,9 @@ type PsychologistCardProps = {
 };
 
 const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
+	if (!psychologist || Object.keys(psychologist).length === 0) {
+		return null;
+	}
 	const opts: YouTubeProps['opts'] = {
 		width: '100%',
 		height: '300px',
