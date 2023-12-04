@@ -1,48 +1,61 @@
-import React from 'react';
 import {
 	Form,
 	Input,
 	Button,
-	Checkbox,
-	Select,
-	Layout,
+	Upload,
 	Typography,
+	Select,
 	DatePicker,
 } from 'antd';
-import { FormValues } from './IFormValues';
-import { Certificates } from './Certificates';
-import { Avatar } from './Avatar';
-import styles from './PsychologistForm.module.scss';
+import { UploadOutlined } from '@ant-design/icons';
+import {
+	ICertificates,
+	IPsychologistFormRegister,
+} from '../../interfaces/ICertificate';
 
-const { Option } = Select;
 const { Title } = Typography;
+const { Option } = Select;
 
-export const PsychologistForm: React.FC = () => {
-	const [form] = Form.useForm();
+export const PsychologistForm = () => {
+	const onFinish = async (values: string[]) => {
+		console.log(values);
+	};
 
-	const onFinish = (values: FormValues) => {
-		// eslint-disable-next-line no-console
-		console.log('Received values:', values);
+	const handleCertificates = (e: IPsychologistFormRegister) => {
+		if (Array.isArray(e.fileList)) {
+			const certificatesName = e.fileList.map((item: ICertificates) => {
+				return item.name;
+			});
+			return certificatesName;
+		}
+		return e && e.fileList;
+	};
+
+	const handlePhotos = (e: IPsychologistFormRegister) => {
+		if (Array.isArray(e.fileList)) {
+			const photosName = e.fileList.map((item: ICertificates) => {
+				return item.name;
+			});
+			return photosName;
+		}
+		return e && e.fileList;
 	};
 
 	return (
-		<Layout className={styles.psychologistform_layout}>
+		<>
+			<Title level={2} style={{ textAlign: 'center', margin: '20px' }}>
+				Анкета для психолога
+			</Title>
 			<Form
-				className={styles.psychologistform}
-				form={form}
-				name="PsychologistForm"
-				initialValues={{ remember: true }}
+				name="file-upload-form"
 				onFinish={onFinish}
-				layout="vertical"
+				labelCol={{ span: 6 }}
+				wrapperCol={{ span: 12 }}
 			>
-				<Title level={1} className={styles.psychologistform_title}>
-					Анкета психолога
-				</Title>
-
 				<Form.Item
-					label="Полное имя"
-					name="fullName"
-					rules={[{ required: true }]}
+					label="ФИО"
+					name="fullname"
+					rules={[{ required: true, message: 'Введите имя пользователя!' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -66,33 +79,36 @@ export const PsychologistForm: React.FC = () => {
 					<Input />
 				</Form.Item>
 
-				<Form.Item label="О себе" name="description">
+				<Form.Item
+					label="О себе"
+					name="description"
+					rules={[{ required: true }]}
+				>
 					<Input.TextArea />
 				</Form.Item>
 
 				<Form.Item
 					label="Видео (ссылка)"
-					name="videoLink"
+					name="video"
 					rules={[
 						{
 							type: 'url',
 							message: 'Пожалуйста, введите корректную ссылку на видео',
 						},
-						{ required: true },
 					]}
 				>
-					<Input placeholder="Введите ссылку на видео" />
+					<Input />
 				</Form.Item>
 
 				<Form.Item
-					label="Опыт работы (в годах)"
+					label="Опыт работы"
 					name="experienceYears"
 					rules={[{ required: true }]}
 				>
 					<Input type="number" />
 				</Form.Item>
 
-				<Form.Item label="Язык" name="languages">
+				<Form.Item label="Язык" name="languages" rules={[{ required: true }]}>
 					<Select>
 						<Option value="kazakh">Казахский</Option>
 						<Option value="russian">Русский</Option>
@@ -100,22 +116,34 @@ export const PsychologistForm: React.FC = () => {
 					</Select>
 				</Form.Item>
 
-				<Form.Item label="Образование" name="education">
+				<Form.Item
+					label="Образование"
+					name="education"
+					rules={[{ required: true }]}
+				>
 					<Input />
 				</Form.Item>
 
-				<Form.Item label="Формат консультации" name="format">
+				<Form.Item
+					label="Форма приема"
+					name="format"
+					rules={[{ required: true }]}
+				>
 					<Select>
 						<Option value="online">Онлайн</Option>
-						<Option value="offline">Офлайн</Option>
+						<Option value="offline">Оффлайн</Option>
 					</Select>
 				</Form.Item>
 
-				<Form.Item label="Стоимость консультации, тг" name="cost">
+				<Form.Item label="Стоимость" name="cost" rules={[{ required: true }]}>
 					<Input type="number" />
 				</Form.Item>
 
-				<Form.Item label="Форма консультации" name="consultationType">
+				<Form.Item
+					label="Вид консультации"
+					name="consultationType"
+					rules={[{ required: true }]}
+				>
 					<Select>
 						<Option value="solo">Один человек</Option>
 						<Option value="duo">Вдвоем</Option>
@@ -137,41 +165,44 @@ export const PsychologistForm: React.FC = () => {
 					</Select>
 				</Form.Item>
 
-				<Form.Item label="Сертификат" name="certificates">
-					<Certificates />
-				</Form.Item>
-
-				<Form.Item label="Город" name="cityId">
-					<Select>
-						<Option value="city1">Город 1</Option>
-						<Option value="city2">Город 2</Option>
-					</Select>
-				</Form.Item>
-
-				<Form.Item label="Фотография" name="photos">
-					<Avatar />
+				<Form.Item
+					label="Сертификаты"
+					name="handleCertificates"
+					valuePropName="filePhoto"
+					getValueFromEvent={handleCertificates}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					]}
+				>
+					<Upload
+						name="certificates"
+						listType="picture"
+						beforeUpload={() => false}
+					>
+						<Button icon={<UploadOutlined />}>Выберите файлы</Button>
+					</Upload>
 				</Form.Item>
 
 				<Form.Item
-					label="Согласие с политикой обработки персональных данных"
-					name="personalDataAgreement"
-					valuePropName="checked"
+					label="Фото"
+					name="photos"
+					valuePropName="filePhoto"
+					getValueFromEvent={handlePhotos}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					]}
 				>
-					<Checkbox>
-						Я согласен с политикой обработки персональных данных
-					</Checkbox>
+					<Upload name="photos" listType="picture" beforeUpload={() => false}>
+						<Button icon={<UploadOutlined />}>Выберите файлы</Button>
+					</Upload>
 				</Form.Item>
 
-				<Form.Item>
-					<Button
-						type="primary"
-						htmlType="submit"
-						className={styles.psychologistform_button}
-					>
+				<Form.Item wrapperCol={{ offset: 6, span: 12 }}>
+					<Button type="primary" htmlType="submit">
 						Отправить
 					</Button>
 				</Form.Item>
 			</Form>
-		</Layout>
+		</>
 	);
 };
