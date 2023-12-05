@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { Empty, Typography } from 'antd';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import './PsychologistProfileContent.scss';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
@@ -14,7 +14,7 @@ const PsychologistProfileContent = ({
 	psychologist,
 }: PsychologistProfileContentProps) => {
 	if (!psychologist || Object.keys(psychologist).length === 0) {
-		return null;
+		return <Empty description="No psychologist details found" />;
 	}
 	return (
 		<div className="psychologist-profile-content">

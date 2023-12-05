@@ -2,38 +2,35 @@ import { Layout } from 'antd';
 import PsychologistCard from '../../../components/psychologist/detailed_profile/PsychologistCard/PsychologistCard';
 import './PsychologistDetailedProfile.scss';
 import PsychologistProfileContent from '../../../components/psychologist/detailed_profile/PsychologistProfileContent/PsychologistProfileContent';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { RootState } from '../../../store';
-import { useEffect } from 'react';
-import { getPsychologistById } from '../../../features/psychologist/psychologistSlice';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { IPsychologist } from '../../../interfaces/IPsychologist';
+import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
+import { axiosInstance } from '../../../api/axiosInstance';
 
 const PsychologistDetailedProfile = () => {
-	const psychologist = useAppSelector(
-		(state: RootState) => state.psychologist.psychologistOne
-	);
-	const loading = useAppSelector(
-		(state: RootState) => state.psychologist.loading
-	);
 	const { id } = useParams();
-	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		if (id) {
-			dispatch(getPsychologistById(id));
-		}
-	}, [id, dispatch]);
+	const psychologistQuery = useQuery<
+		IPsychologist,
+		ServerFormValidationResponse
+	>(['psychologist', id], async () => {
+		const response = await axiosInstance.get<IPsychologist>(
+			`/psychologists/${id}`
+		);
+		return response.data;
+	});
 
-	if (loading) {
+	if (psychologistQuery.isLoading) {
 		return <div>LOADING...</div>;
 	}
 
 	return (
 		<Layout style={{ padding: 20 }} className="detailed-profile_content">
-			{psychologist ? (
+			{psychologistQuery.data ? (
 				<>
-					<PsychologistProfileContent psychologist={psychologist} />
-					<PsychologistCard psychologist={psychologist} />
+					<PsychologistProfileContent psychologist={psychologistQuery.data} />
+					<PsychologistCard psychologist={psychologistQuery.data} />
 				</>
 			) : (
 				<div>No psychologist found for the given ID.</div>
