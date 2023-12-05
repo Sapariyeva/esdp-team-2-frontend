@@ -6,6 +6,7 @@ import {
 	Typography,
 	Select,
 	DatePicker,
+	Layout,
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import {
@@ -19,9 +20,14 @@ import {
 	getTechniques,
 	getTherapyMethod,
 } from '../../features/certificates/certificatesSlice';
+import styles from './PsychologistForm.module.scss';
 
 const { Title } = Typography;
 const { Option } = Select;
+
+const initialValues = {
+	lgbt: '0',
+};
 
 export const PsychologistForm = () => {
 	const { techniques, therapyMethod, symptoms } = useAppSelector(
@@ -58,21 +64,18 @@ export const PsychologistForm = () => {
 		}
 		return e && e.fileList;
 	};
-	const initialValues = {
-		lgbt: '0',
-	};
 
 	return (
-		<>
-			<Title level={2} style={{ textAlign: 'center', margin: '20px' }}>
+		<Layout className={styles.psychologistform_layout}>
+			<Title level={1} className={styles.psychologistform_title}>
 				Анкета для психолога
 			</Title>
 			<Form
 				name="file-upload-form"
 				onFinish={onFinish}
-				labelCol={{ span: 6 }}
-				wrapperCol={{ span: 12 }}
+				layout="vertical"
 				initialValues={initialValues}
+				className={styles.psychologistform}
 			>
 				<Form.Item
 					label="ФИО"
@@ -281,11 +284,15 @@ export const PsychologistForm = () => {
 				</Form.Item>
 
 				<Form.Item wrapperCol={{ offset: 6, span: 12 }}>
-					<Button type="primary" htmlType="submit">
+					<Button
+						type="primary"
+						htmlType="submit"
+						className={styles.psychologistform_button}
+					>
 						Отправить
 					</Button>
 				</Form.Item>
 			</Form>
-		</>
+		</Layout>
 	);
 };
