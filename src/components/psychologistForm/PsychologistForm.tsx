@@ -12,11 +12,29 @@ import {
 	ICertificates,
 	IPsychologistFormRegister,
 } from '../../interfaces/ICertificate';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useEffect } from 'react';
+import {
+	getSymptoms,
+	getTechniques,
+	getTherapyMethod,
+} from '../../features/certificates/certificatesSlice';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 export const PsychologistForm = () => {
+	const { techniques, therapyMethod, symptoms } = useAppSelector(
+		(state) => state.certificates
+	);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (techniques !== undefined) dispatch(getTechniques());
+		if (therapyMethod !== undefined) dispatch(getTherapyMethod());
+		if (symptoms !== undefined) dispatch(getSymptoms());
+	}, []);
+
 	const onFinish = async (values: string[]) => {
 		console.log(values);
 	};
@@ -40,6 +58,9 @@ export const PsychologistForm = () => {
 		}
 		return e && e.fileList;
 	};
+	const initialValues = {
+		lgbt: '0',
+	};
 
 	return (
 		<>
@@ -51,6 +72,7 @@ export const PsychologistForm = () => {
 				onFinish={onFinish}
 				labelCol={{ span: 6 }}
 				wrapperCol={{ span: 12 }}
+				initialValues={initialValues}
 			>
 				<Form.Item
 					label="ФИО"
@@ -95,6 +117,7 @@ export const PsychologistForm = () => {
 							type: 'url',
 							message: 'Пожалуйста, введите корректную ссылку на видео',
 						},
+						{ required: true },
 					]}
 				>
 					<Input />
@@ -195,6 +218,66 @@ export const PsychologistForm = () => {
 					<Upload name="photos" listType="picture" beforeUpload={() => false}>
 						<Button icon={<UploadOutlined />}>Выберите файлы</Button>
 					</Upload>
+				</Form.Item>
+
+				<Form.Item
+					label="Психологические техники"
+					name="techniques"
+					rules={[{ required: true }]}
+				>
+					<Select mode="multiple">
+						{techniques && techniques.length !== 0 ? (
+							<>
+								{techniques.map((technique, index) => (
+									<Option key={index} value={technique.id}>
+										{technique.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					label="Методы терапии"
+					name="therapyMethod"
+					rules={[{ required: true }]}
+				>
+					<Select mode="multiple">
+						{therapyMethod && therapyMethod.length !== 0 ? (
+							<>
+								{therapyMethod.map((method, index) => (
+									<Option key={index} value={method.id}>
+										{method.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					label="Симптомы"
+					name="symptoms"
+					rules={[{ required: true }]}
+				>
+					<Select mode="multiple">
+						{symptoms && symptoms.length !== 0 ? (
+							<>
+								{symptoms.map((symptom, index) => (
+									<Option key={index} value={symptom.id}>
+										{symptom.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
 				</Form.Item>
 
 				<Form.Item wrapperCol={{ offset: 6, span: 12 }}>
