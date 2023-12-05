@@ -80,12 +80,16 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="ФИО"
 					name="fullname"
-					rules={[{ required: true, message: 'Введите имя пользователя!' }]}
+					rules={[{ required: true, message: 'Введите имя пользователя' }]}
 				>
 					<Input />
 				</Form.Item>
 
-				<Form.Item label="Пол" name="gender" rules={[{ required: true }]}>
+				<Form.Item
+					label="Пол"
+					name="gender"
+					rules={[{ required: true, message: 'Выберите возраст' }]}
+				>
 					<Select>
 						<Option value="male">Мужской</Option>
 						<Option value="female">Женский</Option>
@@ -95,19 +99,23 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Дата рождения"
 					name="birthday"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите дату рождения' }]}
 				>
 					<DatePicker />
 				</Form.Item>
 
-				<Form.Item label="Адрес" name="address" rules={[{ required: true }]}>
+				<Form.Item
+					label="Адрес"
+					name="address"
+					rules={[{ required: true, message: 'Введите адрес' }]}
+				>
 					<Input />
 				</Form.Item>
 
 				<Form.Item
 					label="О себе"
 					name="description"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите данные о себе' }]}
 				>
 					<Input.TextArea />
 				</Form.Item>
@@ -120,7 +128,7 @@ export const PsychologistForm = () => {
 							type: 'url',
 							message: 'Пожалуйста, введите корректную ссылку на видео',
 						},
-						{ required: true },
+						{ required: true, message: 'Введите ссылку на видео' },
 					]}
 				>
 					<Input />
@@ -129,12 +137,16 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Опыт работы"
 					name="experienceYears"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите Ваш опыт работы' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
 
-				<Form.Item label="Язык" name="languages" rules={[{ required: true }]}>
+				<Form.Item
+					label="Язык"
+					name="languages"
+					rules={[{ required: true, message: 'Выберите язык' }]}
+				>
 					<Select>
 						<Option value="kazakh">Казахский</Option>
 						<Option value="russian">Русский</Option>
@@ -145,7 +157,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Образование"
 					name="education"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите образование' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -153,7 +165,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Форма приема"
 					name="format"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите форму приема' }]}
 				>
 					<Select>
 						<Option value="online">Онлайн</Option>
@@ -161,14 +173,18 @@ export const PsychologistForm = () => {
 					</Select>
 				</Form.Item>
 
-				<Form.Item label="Стоимость" name="cost" rules={[{ required: true }]}>
+				<Form.Item
+					label="Стоимость"
+					name="cost"
+					rules={[{ required: true, message: 'Введите стоимость' }]}
+				>
 					<Input type="number" />
 				</Form.Item>
 
 				<Form.Item
 					label="Вид консультации"
 					name="consultationType"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите вид консультации' }]}
 				>
 					<Select>
 						<Option value="solo">Один человек</Option>
@@ -179,7 +195,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Личная терапия (в годах)"
 					name="selfTherapy"
-					rules={[{ required: true }]}
+					rules={[{ required: true, message: 'Введите личную терапию' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -226,7 +242,9 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Психологические техники"
 					name="techniques"
-					rules={[{ required: true }]}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы одну технику!' },
+					]}
 				>
 					<Select mode="multiple">
 						{techniques && techniques.length !== 0 ? (
@@ -246,7 +264,9 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Методы терапии"
 					name="therapyMethod"
-					rules={[{ required: true }]}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы один метод терапии!' },
+					]}
 				>
 					<Select mode="multiple">
 						{therapyMethod && therapyMethod.length !== 0 ? (
@@ -266,7 +286,9 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Симптомы"
 					name="symptoms"
-					rules={[{ required: true }]}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы один симптом!' },
+					]}
 				>
 					<Select mode="multiple">
 						{symptoms && symptoms.length !== 0 ? (
