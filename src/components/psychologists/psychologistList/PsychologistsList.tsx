@@ -1,4 +1,4 @@
-import { Divider, Form, Select, Slider, Space } from 'antd';
+import { Divider, Empty, Form, Select, Slider, Space } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
@@ -62,15 +62,19 @@ export const PsychologistsList = ({ psychologists }: Props) => {
 			</Form>
 
 			<Divider />
-			<Space className={styles.list}>
-				{psychologists &&
-					psychologists.map((psychologist) => (
+
+			{psychologists.length > 0 ? (
+				<Space className={styles.list}>
+					{psychologists.map((psychologist) => (
 						<PsychologistCard
 							psychologist={psychologist}
 							key={psychologist.id}
 						/>
 					))}
-			</Space>
+				</Space>
+			) : (
+				<Empty description="No psychologists found" />
+			)}
 		</div>
 	);
 };

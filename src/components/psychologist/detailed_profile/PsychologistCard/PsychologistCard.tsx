@@ -1,4 +1,4 @@
-import { Button, Card, Tag, Typography } from 'antd';
+import { Button, Card, Tag, Typography, Empty } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { AimOutlined, WifiOutlined } from '@ant-design/icons';
 import './PsychologistCard.scss';
@@ -12,14 +12,16 @@ type PsychologistCardProps = {
 
 const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 	if (!psychologist || Object.keys(psychologist).length === 0) {
-		return null;
+		return <Empty description="No psychologist details found" />;
 	}
+
 	const opts: YouTubeProps['opts'] = {
 		width: '100%',
 		height: '300px',
 	};
 
 	const videoId = youtubeVideoId(psychologist.video);
+
 	return (
 		<div className="psychologist-profile_container">
 			<Card
