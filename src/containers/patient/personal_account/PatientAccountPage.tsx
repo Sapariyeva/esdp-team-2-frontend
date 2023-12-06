@@ -4,11 +4,22 @@ import SideBar from '../../../components/Patient/Patient_account/SideBar/SideBar
 import HistoryTable from '../../../components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
 import Favorites from '../../../components/Patient/Patient_account/Favorites/Favorites.tsx';
 import Records from '../../../components/Patient/Patient_account/Records/Records.tsx';
+import { useQuery } from 'react-query';
+import { axiosInstance } from '../../../api/axiosInstance.ts';
+import { IPatient } from '../../../interfaces/IPatient.ts';
 
 export type ActiveTabPatient = 'myRecords' | 'history' | 'favorites';
 
 const PatientAccountPage = () => {
 	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('myRecords');
+	const PatientQuery = useQuery<IPatient>('favourites', async () => {
+		const response = await axiosInstance.get(`/patients/11`);
+		return response.data;
+	});
+
+	if (PatientQuery.isLoading) {
+		return <div>LOADING...</div>;
+	}
 
 	const renderContent = () => {
 		switch (activeTab) {
@@ -17,7 +28,7 @@ const PatientAccountPage = () => {
 			case 'history':
 				return <HistoryTable />;
 			case 'favorites':
-				return <Favorites />;
+				return <Favorites psychologists={PatientQuery.data?.favorites} />;
 			default:
 				return null;
 		}

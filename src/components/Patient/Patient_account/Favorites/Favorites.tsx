@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
 	Card,
 	Image,
@@ -16,52 +15,46 @@ import {
 	ArrowRightOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { IPsychologist } from '../../../../interfaces/IPsychologist';
+import { useMutation } from 'react-query';
+import { axiosInstance } from '../../../../api/axiosInstance';
 
 const { Text } = Typography;
 
-const Favorites: React.FC = () => {
+interface Props {
+	psychologists: IPsychologist[] | undefined;
+}
+interface Form {
+	psychologistId: number;
+}
+
+const Favorites = ({ psychologists }: Props) => {
 	const navigate = useNavigate();
-	const [profiles, setProfiles] = useState([
-		{
-			id: 1,
-			name: 'Рахиля Беркiнбай',
-			img: 'https://plan-baby.ru/storage/temp/public/fa7/900/fdc/thumb_124_1400_0_0_0_crop__1400.jpg',
-			description:
-				'Я работаю с людьми, которые столкнулись с потерей близкого человека, разводом, насилием в семье, травмами, потерей работы',
-			liked: true,
-		},
+	const mutation = useMutation((form: Form) =>
+		axiosInstance.post('http://localhost:8000/patients/11/favorites', form)
+	);
 
-		{
-			id: 2,
-			name: 'Алимберли Дильназ',
-			img: 'https://n1s1.hsmedia.ru/1e/e2/3a/1ee23a077365f02b501d0c815126785c/728x546_1_7dd3ae90748f9a461d8e98347f765534@1616x1212_0xac120003_18985384621638440665.jpeg',
-			description:
-				'Я работаю с людьми, которые столкнулись с потерей близкого человека, разводом, насилием в семье, травмами, потерей работы',
-			liked: true,
-		},
-	]);
+	// const handleLikeToggle = (id: number) => {
+	// 	setProfiles((prevProfiles) =>
+	// 		prevProfiles?.map((profile) =>
+	// 			profile.id === id ? { ...profile, liked: !profile.liked } : profile
+	// 		)
+	// 	);
 
-	const handleLikeToggle = (id: number) => {
-		setProfiles((prevProfiles) =>
-			prevProfiles.map((profile) =>
-				profile.id === id ? { ...profile, liked: !profile.liked } : profile
-			)
-		);
-		message.success('Психолог был успешно исключен из списка избранных.');
-	};
+	// };
 
 	const handleRemoveProfile = (id: number) => {
-		setProfiles((prevProfiles) =>
-			prevProfiles.filter((profile) => profile.id !== id)
-		);
+		mutation.mutate({ psychologistId: id });
+		message.success('Психолог был успешно исключен из списка избранных.');
 	};
+	console.log(psychologists);
 
 	return (
 		<div style={{ display: 'flex', gap: '3%', flexWrap: 'wrap' }}>
-			{profiles.length ? (
-				profiles.map((profile) => (
+			{psychologists?.length ? (
+				psychologists.map((psychologists) => (
 					<Card
-						key={profile.id}
+						key={psychologists.id}
 						style={{
 							width: '280px',
 							borderRadius: '8px',
@@ -72,8 +65,12 @@ const Favorites: React.FC = () => {
 						cover={
 							<>
 								<Image
-									alt="Avatar"
-									src={profile.img}
+									alt={psychologists.fullName}
+									src={
+										psychologists.photos && psychologists.photos.length > 0
+											? `http://localhost:8000/uploads/${psychologists.photos[0].photo}`
+											: ''
+									}
 									preview={true}
 									style={{ position: 'relative', minHeight: '220px' }}
 								/>
@@ -85,11 +82,11 @@ const Favorites: React.FC = () => {
 										cursor: 'pointer',
 									}}
 									onClick={() => {
-										handleLikeToggle(profile.id);
-										handleRemoveProfile(profile.id); // Переместите удаление сюда, чтобы удалять только при клике на сердечко
+										// handleLikeToggle(psychologists.id);
+										handleRemoveProfile(psychologists.id); // Переместите удаление сюда, чтобы удалять только при клике на сердечко
 									}}
 								>
-									{profile.liked ? (
+									{psychologists ? (
 										<HeartFilled
 											style={{
 												marginLeft: '20px',
@@ -117,7 +114,7 @@ const Favorites: React.FC = () => {
 									marginBottom: '10px',
 								}}
 							>
-								{profile.name}
+								{psychologists.fullName}
 							</Text>
 							<Text
 								style={{
@@ -127,7 +124,7 @@ const Favorites: React.FC = () => {
 									fontSize: '12px',
 								}}
 							>
-								{profile.description}
+								{psychologists.description}
 							</Text>
 						</Space>
 						<Row
