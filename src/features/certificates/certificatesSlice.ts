@@ -9,6 +9,7 @@ const initialState: IInitialCertificateState = {
 	techniques: null,
 	therapyMethod: null,
 	symptoms: null,
+	cities: null,
 	loading: false,
 };
 
@@ -73,6 +74,16 @@ export const getSymptoms = createAsyncThunk(
 	}
 );
 
+export const getCities = createAsyncThunk('getCities', async (_, thunkApi) => {
+	const { rejectWithValue } = thunkApi;
+	try {
+		const response = await axiosInstance.get('/cities');
+		return response.data;
+	} catch (e) {
+		return rejectWithValue('HTTP get cities error');
+	}
+});
+
 export const certificatesSlice = createSlice({
 	name: 'certificates',
 	initialState,
@@ -120,6 +131,17 @@ export const certificatesSlice = createSlice({
 				state.symptoms = action.payload;
 			})
 			.addCase(getSymptoms.rejected, (state) => {
+				state.loading = false;
+				state.error = 'Fetch failed...';
+			})
+			.addCase(getCities.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(getCities.fulfilled, (state, action) => {
+				state.loading = false;
+				state.cities = action.payload;
+			})
+			.addCase(getCities.rejected, (state) => {
 				state.loading = false;
 				state.error = 'Fetch failed...';
 			}),

@@ -16,6 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
 import {
+	getCities,
 	getSymptoms,
 	getTechniques,
 	getTherapyMethod,
@@ -30,7 +31,7 @@ const initialValues = {
 };
 
 export const PsychologistForm = () => {
-	const { techniques, therapyMethod, symptoms } = useAppSelector(
+	const { techniques, therapyMethod, symptoms, cities } = useAppSelector(
 		(state) => state.certificates
 	);
 	const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ export const PsychologistForm = () => {
 		if (techniques !== undefined) dispatch(getTechniques());
 		if (therapyMethod !== undefined) dispatch(getTherapyMethod());
 		if (symptoms !== undefined) dispatch(getSymptoms());
+		if (cities !== undefined) dispatch(getCities());
 	}, []);
 
 	const onFinish = async (values: string[]) => {
@@ -102,6 +104,26 @@ export const PsychologistForm = () => {
 					rules={[{ required: true, message: 'Введите дату рождения' }]}
 				>
 					<DatePicker />
+				</Form.Item>
+
+				<Form.Item
+					label="Город"
+					name="cityId"
+					rules={[{ required: true, message: 'Выберите хотя бы один город!' }]}
+				>
+					<Select>
+						{cities && cities.length !== 0 ? (
+							<>
+								{cities.map((city, index) => (
+									<Option key={index} value={city.id}>
+										{city.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
 				</Form.Item>
 
 				<Form.Item

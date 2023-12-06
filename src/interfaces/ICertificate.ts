@@ -3,6 +3,12 @@ interface IMethod {
 	name: string;
 }
 
+interface ICity {
+	id: number;
+	name: string;
+	country: string;
+}
+
 export interface ICertificate {
 	id: number;
 	certificate: string;
@@ -16,6 +22,7 @@ export interface IInitialCertificateState {
 	techniques: IMethod[] | null;
 	therapyMethod: IMethod[] | null;
 	symptoms: IMethod[] | null;
+	cities: ICity[] | null;
 }
 
 export interface IPsychologistFormRegister {
