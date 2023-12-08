@@ -1,4 +1,4 @@
-import { ICertificate } from '../interfaces/ICertificate';
+import { ICertificate } from '../interfaces/IPsychologistForm';
 import { IPsychologist } from '../interfaces/IPsychologist';
 
 const randomNumber: (max: number) => () => number = (max) => {

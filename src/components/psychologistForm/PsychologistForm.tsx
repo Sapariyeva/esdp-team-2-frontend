@@ -2,26 +2,25 @@ import {
 	Form,
 	Input,
 	Button,
-	Upload,
 	Typography,
 	Select,
 	DatePicker,
 	Layout,
+	Upload,
+	UploadFile,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import {
-	ICertificates,
-	IPsychologistFormRegister,
-} from '../../interfaces/ICertificate';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
+import styles from './PsychologistForm.module.scss';
 import {
-	getCities,
-	getSymptoms,
 	getTechniques,
 	getTherapyMethod,
-} from '../../features/certificates/certificatesSlice';
-import styles from './PsychologistForm.module.scss';
+	getSymptoms,
+	getCities,
+	postPsychologistForm,
+} from '../../features/psychologistRegistration/psychologistRegistrationSlice';
+import { UploadOutlined } from '@ant-design/icons';
+import { IPsychologistForm } from '../../interfaces/IPsychologist';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,7 +31,7 @@ const initialValues = {
 
 export const PsychologistForm = () => {
 	const { techniques, therapyMethod, symptoms, cities } = useAppSelector(
-		(state) => state.certificates
+		(state) => state.psychologistRegistration
 	);
 	const dispatch = useAppDispatch();
 
@@ -41,31 +40,77 @@ export const PsychologistForm = () => {
 		if (therapyMethod !== undefined) dispatch(getTherapyMethod());
 		if (symptoms !== undefined) dispatch(getSymptoms());
 		if (cities !== undefined) dispatch(getCities());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onFinish = async (values: string[]) => {
-		console.log(values);
+	const handleUpload = async (values: IPsychologistForm) => {
+		const formData = new FormData();
+		formData.append('address', values.address);
+		formData.append('birthday', values.birthday);
+		formData.append('cityId', values.cityId);
+		formData.append('consultationType', values.consultationType);
+		formData.append('cost', values.cost);
+		formData.append('description', values.description);
+		formData.append('education', values.education);
+		formData.append('experienceYears', values.experienceYears);
+		formData.append('format', values.format);
+		formData.append('fullName', values.fullname);
+		formData.append('gender', values.gender);
+		formData.append('languages', values.languages);
+		formData.append('lgbt', values.lgbt);
+		formData.append('selfTherapy', values.selfTherapy);
+		formData.append('video', values.video);
+
+		if (values.photos && values.photos.fileList) {
+			values.photos.fileList.forEach((file: UploadFile) => {
+				formData.append('photos', file.originFileObj as Blob);
+			});
+		}
+
+		if (values.certificates && values.certificates.fileList) {
+			values.certificates.fileList.forEach((file: UploadFile) => {
+				formData.append('certificates', file.originFileObj as Blob);
+			});
+		}
+
+		if (values.symptomIds) {
+			const symptomIds = Array.isArray(values.symptomIds)
+				? values.symptomIds.map((symptomId: number) => String(symptomId))
+				: [String(values.symptomIds)];
+
+			symptomIds.forEach((symptomId: string) => {
+				formData.append('symptomIds', symptomId);
+			});
+		}
+
+		if (values.techniqueIds && values.techniqueIds.length > 0) {
+			values.techniqueIds.forEach((techniqueIds: number) => {
+				formData.append('techniqueIds', String(techniqueIds));
+			});
+		}
+
+		if (values.therapyMethodIds && values.therapyMethodIds.length > 0) {
+			values.therapyMethodIds.forEach((therapyMethodIds: number) => {
+				formData.append('therapyMethodIds', String(therapyMethodIds));
+			});
+		}
+
+		await dispatch(postPsychologistForm(formData));
 	};
 
-	const handleCertificates = (e: IPsychologistFormRegister) => {
-		if (Array.isArray(e.fileList)) {
-			const certificatesName = e.fileList.map((item: ICertificates) => {
-				return item.name;
-			});
-			return certificatesName;
-		}
-		return e && e.fileList;
-	};
+	// const handleCertificates = (e: File) => {
+	// 	console.log(e);
+	// };
 
-	const handlePhotos = (e: IPsychologistFormRegister) => {
-		if (Array.isArray(e.fileList)) {
-			const photosName = e.fileList.map((item: ICertificates) => {
-				return item.name;
-			});
-			return photosName;
-		}
-		return e && e.fileList;
-	};
+	// const handlePhotos = (e: IPsychologistFormRegister) => {
+	// 	if (Array.isArray(e.fileList)) {
+	// 		const photosName = e.fileList.map((item: ICertificates) => {
+	// 			return item.name;
+	// 		});
+	// 		return photosName;
+	// 	}
+	// 	return e && e.fileList;
+	// };
 
 	return (
 		<Layout className={styles.psychologistform_layout}>
@@ -74,15 +119,15 @@ export const PsychologistForm = () => {
 			</Title>
 			<Form
 				name="file-upload-form"
-				onFinish={onFinish}
 				layout="vertical"
 				initialValues={initialValues}
 				className={styles.psychologistform}
+				onFinish={handleUpload}
 			>
 				<Form.Item
 					label="ФИО"
 					name="fullname"
-					rules={[{ required: true, message: 'Введите имя пользователя' }]}
+					// rules={[{ required: true, message: 'Введите имя пользователя' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -90,7 +135,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Пол"
 					name="gender"
-					rules={[{ required: true, message: 'Выберите возраст' }]}
+					// rules={[{ required: true, message: 'Выберите возраст' }]}
 				>
 					<Select>
 						<Option value="male">Мужской</Option>
@@ -101,7 +146,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Дата рождения"
 					name="birthday"
-					rules={[{ required: true, message: 'Введите дату рождения' }]}
+					// rules={[{ required: true, message: 'Введите дату рождения' }]}
 				>
 					<DatePicker />
 				</Form.Item>
@@ -109,7 +154,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Город"
 					name="cityId"
-					rules={[{ required: true, message: 'Выберите хотя бы один город!' }]}
+					// rules={[{ required: true, message: 'Выберите хотя бы один город!' }]}
 				>
 					<Select>
 						{cities && cities.length !== 0 ? (
@@ -129,7 +174,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Адрес"
 					name="address"
-					rules={[{ required: true, message: 'Введите адрес' }]}
+					// rules={[{ required: true, message: 'Введите адрес' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -137,7 +182,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="О себе"
 					name="description"
-					rules={[{ required: true, message: 'Введите данные о себе' }]}
+					// rules={[{ required: true, message: 'Введите данные о себе' }]}
 				>
 					<Input.TextArea />
 				</Form.Item>
@@ -145,13 +190,13 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Видео (ссылка)"
 					name="video"
-					rules={[
-						{
-							type: 'url',
-							message: 'Пожалуйста, введите корректную ссылку на видео',
-						},
-						{ required: true, message: 'Введите ссылку на видео' },
-					]}
+					// rules={[
+					// 	{
+					// 		type: 'url',
+					// 		message: 'Пожалуйста, введите корректную ссылку на видео',
+					// 	},
+					// 	{ required: true, message: 'Введите ссылку на видео' },
+					// ]}
 				>
 					<Input />
 				</Form.Item>
@@ -159,7 +204,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Опыт работы"
 					name="experienceYears"
-					rules={[{ required: true, message: 'Введите Ваш опыт работы' }]}
+					// rules={[{ required: true, message: 'Введите Ваш опыт работы' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -167,7 +212,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Язык"
 					name="languages"
-					rules={[{ required: true, message: 'Выберите язык' }]}
+					// rules={[{ required: true, message: 'Выберите язык' }]}
 				>
 					<Select>
 						<Option value="kazakh">Казахский</Option>
@@ -179,7 +224,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Образование"
 					name="education"
-					rules={[{ required: true, message: 'Введите образование' }]}
+					// rules={[{ required: true, message: 'Введите образование' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -187,7 +232,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Форма приема"
 					name="format"
-					rules={[{ required: true, message: 'Введите форму приема' }]}
+					// rules={[{ required: true, message: 'Введите форму приема' }]}
 				>
 					<Select>
 						<Option value="online">Онлайн</Option>
@@ -198,7 +243,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Стоимость"
 					name="cost"
-					rules={[{ required: true, message: 'Введите стоимость' }]}
+					// rules={[{ required: true, message: 'Введите стоимость' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -206,7 +251,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Вид консультации"
 					name="consultationType"
-					rules={[{ required: true, message: 'Введите вид консультации' }]}
+					// rules={[{ required: true, message: 'Введите вид консультации' }]}
 				>
 					<Select>
 						<Option value="solo">Один человек</Option>
@@ -217,7 +262,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Личная терапия (в годах)"
 					name="selfTherapy"
-					rules={[{ required: true, message: 'Введите личную терапию' }]}
+					// rules={[{ required: true, message: 'Введите личную терапию' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -228,15 +273,15 @@ export const PsychologistForm = () => {
 						<Option value="1">Да</Option>
 					</Select>
 				</Form.Item>
-
+				{/* <input type="file" onChange={onChangeCertificates} multiple />
+				<input type="file" onChange={onChangePhotos} multiple /> */}
 				<Form.Item
 					label="Сертификаты"
-					name="handleCertificates"
+					name="certificates"
 					valuePropName="filePhoto"
-					getValueFromEvent={handleCertificates}
-					rules={[
-						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
-					]}
+					// rules={[
+					// 	{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					// ]}
 				>
 					<Upload
 						name="certificates"
@@ -251,10 +296,10 @@ export const PsychologistForm = () => {
 					label="Фото"
 					name="photos"
 					valuePropName="filePhoto"
-					getValueFromEvent={handlePhotos}
-					rules={[
-						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
-					]}
+
+					// rules={[
+					// 	{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					// ]}
 				>
 					<Upload name="photos" listType="picture" beforeUpload={() => false}>
 						<Button icon={<UploadOutlined />}>Выберите файлы</Button>
@@ -263,10 +308,10 @@ export const PsychologistForm = () => {
 
 				<Form.Item
 					label="Психологические техники"
-					name="techniques"
-					rules={[
-						{ required: true, message: 'Выберите хотя бы одну технику!' },
-					]}
+					name="techniqueIds"
+					// rules={[
+					// 	{ required: true, message: 'Выберите хотя бы одну технику!' },
+					// ]}
 				>
 					<Select mode="multiple">
 						{techniques && techniques.length !== 0 ? (
@@ -285,10 +330,10 @@ export const PsychologistForm = () => {
 
 				<Form.Item
 					label="Методы терапии"
-					name="therapyMethod"
-					rules={[
-						{ required: true, message: 'Выберите хотя бы один метод терапии!' },
-					]}
+					name="therapyMethodIds"
+					// rules={[
+					// 	{ required: true, message: 'Выберите хотя бы один метод терапии!' },
+					// ]}
 				>
 					<Select mode="multiple">
 						{therapyMethod && therapyMethod.length !== 0 ? (
@@ -307,10 +352,10 @@ export const PsychologistForm = () => {
 
 				<Form.Item
 					label="Симптомы"
-					name="symptoms"
-					rules={[
-						{ required: true, message: 'Выберите хотя бы один симптом!' },
-					]}
+					name="symptomIds"
+					// rules={[
+					// 	{ required: true, message: 'Выберите хотя бы один симптом!' },
+					// ]}
 				>
 					<Select mode="multiple">
 						{symptoms && symptoms.length !== 0 ? (

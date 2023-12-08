@@ -1,36 +1,39 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IInitialCertificateState } from '../../interfaces/ICertificate';
+import {
+	IInitialCertificateState,
+	ITokenPsychologist,
+} from '../../interfaces/IPsychologistForm';
 import { axiosInstance } from '../../api/axiosInstance';
-import Cookies from 'js-cookie';
 
 const initialState: IInitialCertificateState = {
-	certificate: null,
-	error: null,
+	psychologistForm: null,
 	techniques: null,
 	therapyMethod: null,
 	symptoms: null,
 	cities: null,
 	loading: false,
+	error: null,
 };
 
-export const postCertificate = createAsyncThunk(
-	'postCertificate',
-	async (certificateImg: string, thunkApi) => {
-		const refreshToken = Cookies.get('refreshToken');
-		const { rejectWithValue } = thunkApi;
+export const postPsychologistForm = createAsyncThunk(
+	'postPsychologistForm',
+	async (psychologistForm: FormData, thunkApi) => {
+		const { rejectWithValue, getState } = thunkApi;
 		try {
+			const token = getState() as ITokenPsychologist;
 			const response = await axiosInstance.post(
-				'/certificates/create',
-				certificateImg,
+				'/psychologists/create',
+				psychologistForm,
 				{
 					headers: {
-						Authorization: `${refreshToken}`,
+						Authorization: `${token!.users.userInfo.accessToken}`,
 					},
 				}
 			);
+
 			return response.data;
 		} catch (e) {
-			return rejectWithValue('HTTP post certificate error');
+			return rejectWithValue(e);
 		}
 	}
 );
@@ -84,20 +87,20 @@ export const getCities = createAsyncThunk('getCities', async (_, thunkApi) => {
 	}
 });
 
-export const certificatesSlice = createSlice({
-	name: 'certificates',
+export const psychologistRegistrationSlice = createSlice({
+	name: 'psychologistRegistration',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) =>
 		builder
-			.addCase(postCertificate.pending, (state) => {
+			.addCase(postPsychologistForm.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(postCertificate.fulfilled, (state, action) => {
+			.addCase(postPsychologistForm.fulfilled, (state, action) => {
 				state.loading = false;
-				state.certificate = action.payload;
+				state.psychologistForm = action.payload;
 			})
-			.addCase(postCertificate.rejected, (state) => {
+			.addCase(postPsychologistForm.rejected, (state) => {
 				state.loading = false;
 				state.error = 'Fetch failed...';
 			})
