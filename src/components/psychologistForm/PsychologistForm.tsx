@@ -98,20 +98,6 @@ export const PsychologistForm = () => {
 		await dispatch(postPsychologistForm(formData));
 	};
 
-	// const handleCertificates = (e: File) => {
-	// 	console.log(e);
-	// };
-
-	// const handlePhotos = (e: IPsychologistFormRegister) => {
-	// 	if (Array.isArray(e.fileList)) {
-	// 		const photosName = e.fileList.map((item: ICertificates) => {
-	// 			return item.name;
-	// 		});
-	// 		return photosName;
-	// 	}
-	// 	return e && e.fileList;
-	// };
-
 	return (
 		<Layout className={styles.psychologistform_layout}>
 			<Title level={1} className={styles.psychologistform_title}>
@@ -127,7 +113,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="ФИО"
 					name="fullname"
-					// rules={[{ required: true, message: 'Введите имя пользователя' }]}
+					rules={[{ required: true, message: 'Введите имя пользователя' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -135,7 +121,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Пол"
 					name="gender"
-					// rules={[{ required: true, message: 'Выберите возраст' }]}
+					rules={[{ required: true, message: 'Выберите пол' }]}
 				>
 					<Select>
 						<Option value="male">Мужской</Option>
@@ -146,7 +132,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Дата рождения"
 					name="birthday"
-					// rules={[{ required: true, message: 'Введите дату рождения' }]}
+					rules={[{ required: true, message: 'Введите дату рождения' }]}
 				>
 					<DatePicker />
 				</Form.Item>
@@ -154,7 +140,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Город"
 					name="cityId"
-					// rules={[{ required: true, message: 'Выберите хотя бы один город!' }]}
+					rules={[{ required: true, message: 'Выберите хотя бы один город!' }]}
 				>
 					<Select>
 						{cities && cities.length !== 0 ? (
@@ -174,7 +160,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Адрес"
 					name="address"
-					// rules={[{ required: true, message: 'Введите адрес' }]}
+					rules={[{ required: true, message: 'Введите адрес' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -182,7 +168,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="О себе"
 					name="description"
-					// rules={[{ required: true, message: 'Введите данные о себе' }]}
+					rules={[{ required: true, message: 'Введите данные о себе' }]}
 				>
 					<Input.TextArea />
 				</Form.Item>
@@ -190,13 +176,13 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Видео (ссылка)"
 					name="video"
-					// rules={[
-					// 	{
-					// 		type: 'url',
-					// 		message: 'Пожалуйста, введите корректную ссылку на видео',
-					// 	},
-					// 	{ required: true, message: 'Введите ссылку на видео' },
-					// ]}
+					rules={[
+						{
+							type: 'url',
+							message: 'Пожалуйста, введите корректную ссылку на видео',
+						},
+						{ required: true, message: 'Введите ссылку на видео' },
+					]}
 				>
 					<Input />
 				</Form.Item>
@@ -204,7 +190,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Опыт работы"
 					name="experienceYears"
-					// rules={[{ required: true, message: 'Введите Ваш опыт работы' }]}
+					rules={[{ required: true, message: 'Введите Ваш опыт работы' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -212,7 +198,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Язык"
 					name="languages"
-					// rules={[{ required: true, message: 'Выберите язык' }]}
+					rules={[{ required: true, message: 'Выберите язык' }]}
 				>
 					<Select>
 						<Option value="kazakh">Казахский</Option>
@@ -224,7 +210,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Образование"
 					name="education"
-					// rules={[{ required: true, message: 'Введите образование' }]}
+					rules={[{ required: true, message: 'Введите образование' }]}
 				>
 					<Input />
 				</Form.Item>
@@ -232,7 +218,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Форма приема"
 					name="format"
-					// rules={[{ required: true, message: 'Введите форму приема' }]}
+					rules={[{ required: true, message: 'Введите форму приема' }]}
 				>
 					<Select>
 						<Option value="online">Онлайн</Option>
@@ -243,7 +229,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Стоимость"
 					name="cost"
-					// rules={[{ required: true, message: 'Введите стоимость' }]}
+					rules={[{ required: true, message: 'Введите стоимость' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -251,7 +237,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Вид консультации"
 					name="consultationType"
-					// rules={[{ required: true, message: 'Введите вид консультации' }]}
+					rules={[{ required: true, message: 'Введите вид консультации' }]}
 				>
 					<Select>
 						<Option value="solo">Один человек</Option>
@@ -262,7 +248,7 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Личная терапия (в годах)"
 					name="selfTherapy"
-					// rules={[{ required: true, message: 'Введите личную терапию' }]}
+					rules={[{ required: true, message: 'Введите личную терапию' }]}
 				>
 					<Input type="number" />
 				</Form.Item>
@@ -273,15 +259,14 @@ export const PsychologistForm = () => {
 						<Option value="1">Да</Option>
 					</Select>
 				</Form.Item>
-				{/* <input type="file" onChange={onChangeCertificates} multiple />
-				<input type="file" onChange={onChangePhotos} multiple /> */}
+
 				<Form.Item
 					label="Сертификаты"
 					name="certificates"
 					valuePropName="filePhoto"
-					// rules={[
-					// 	{ required: true, message: 'Выберите хотя бы одну фотографию!' },
-					// ]}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					]}
 				>
 					<Upload
 						name="certificates"
@@ -296,10 +281,9 @@ export const PsychologistForm = () => {
 					label="Фото"
 					name="photos"
 					valuePropName="filePhoto"
-
-					// rules={[
-					// 	{ required: true, message: 'Выберите хотя бы одну фотографию!' },
-					// ]}
+					rules={[
+						{ required: true, message: 'Выберите хотя бы одну фотографию!' },
+					]}
 				>
 					<Upload name="photos" listType="picture" beforeUpload={() => false}>
 						<Button icon={<UploadOutlined />}>Выберите файлы</Button>
@@ -309,9 +293,20 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Психологические техники"
 					name="techniqueIds"
-					// rules={[
-					// 	{ required: true, message: 'Выберите хотя бы одну технику!' },
-					// ]}
+					rules={[
+						{ required: true, message: 'Выберите не менее двух техник!' },
+						({ getFieldValue }) => ({
+							validator() {
+								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								if (selectedTechniques.length >= 2) {
+									return Promise.resolve();
+								}
+								return Promise.reject(
+									new Error('Выберите не менее двух техник!')
+								);
+							},
+						}),
+					]}
 				>
 					<Select mode="multiple">
 						{techniques && techniques.length !== 0 ? (
@@ -331,9 +326,23 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Методы терапии"
 					name="therapyMethodIds"
-					// rules={[
-					// 	{ required: true, message: 'Выберите хотя бы один метод терапии!' },
-					// ]}
+					rules={[
+						{
+							required: true,
+							message: 'Выберите не менее двух методов терапии!',
+						},
+						({ getFieldValue }) => ({
+							validator() {
+								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								if (selectedTechniques.length >= 2) {
+									return Promise.resolve();
+								}
+								return Promise.reject(
+									new Error('Выберите не менее двух техник!')
+								);
+							},
+						}),
+					]}
 				>
 					<Select mode="multiple">
 						{therapyMethod && therapyMethod.length !== 0 ? (
@@ -353,9 +362,20 @@ export const PsychologistForm = () => {
 				<Form.Item
 					label="Симптомы"
 					name="symptomIds"
-					// rules={[
-					// 	{ required: true, message: 'Выберите хотя бы один симптом!' },
-					// ]}
+					rules={[
+						{ required: true, message: 'Выберите не менее двух симптомов!' },
+						({ getFieldValue }) => ({
+							validator() {
+								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								if (selectedTechniques.length >= 2) {
+									return Promise.resolve();
+								}
+								return Promise.reject(
+									new Error('Выберите не менее двух техник!')
+								);
+							},
+						}),
+					]}
 				>
 					<Select mode="multiple">
 						{symptoms && symptoms.length !== 0 ? (
