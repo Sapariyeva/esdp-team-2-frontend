@@ -15,7 +15,7 @@ import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 

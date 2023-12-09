@@ -1,31 +1,24 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
-import { useQuery } from 'react-query';
 import { axiosInstance } from '../../../api/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
 export const PsychologistsListContainer = () => {
-	const psychologistsQuery = useQuery<
-		IPsychologist[],
-		ServerFormValidationResponse
-	>('psychologists', async () => {
-		const response =
-			await axiosInstance.get<IPsychologist[]>('/psychologists/');
-		return response.data;
+	const { data, error, isLoading } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist[]>(`/psychologists`);
+		},
+		queryKey: ['GetPsychologist'],
 	});
 
-	if (psychologistsQuery.isLoading) {
+	if (isLoading) {
 		return <div>LOADING...</div>;
 	}
 
-	if (
-		psychologistsQuery.isError ||
-		!psychologistsQuery.data ||
-		psychologistsQuery.data.length === 0
-	) {
+	if (error || !data?.data || data?.data.length === 0) {
 		return (
 			<div>
-				{psychologistsQuery.isError ? (
+				{error ? (
 					<p>There was an error fetching data. Please try again later.</p>
 				) : (
 					<p>No psychologists available.</p>
@@ -36,7 +29,7 @@ export const PsychologistsListContainer = () => {
 
 	return (
 		<>
-			<PsychologistsList psychologists={psychologistsQuery.data} />
+			<PsychologistsList psychologists={data.data} />
 		</>
 	);
 };

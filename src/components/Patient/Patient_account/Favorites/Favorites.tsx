@@ -15,39 +15,39 @@ import {
 	ArrowRightOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { IPsychologist } from '../../../../interfaces/IPsychologist';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../api/axiosInstance';
+import { IPatient } from '../../../../interfaces/IPatient';
 
 const { Text } = Typography;
 
-interface Props {
-	psychologists: IPsychologist[] | undefined;
-}
-interface Form {
-	psychologistId: number;
-}
-
-const Favorites = ({ psychologists }: Props) => {
+const Favorites = () => {
 	const navigate = useNavigate();
-	const mutation = useMutation((form: Form) =>
-		axiosInstance.post('http://localhost:8000/patients/11/favorites', form)
-	);
-
-	// const handleLikeToggle = (id: number) => {
-	// 	setProfiles((prevProfiles) =>
-	// 		prevProfiles?.map((profile) =>
-	// 			profile.id === id ? { ...profile, liked: !profile.liked } : profile
-	// 		)
-	// 	);
-
-	// };
+	const client = useQueryClient();
+	const { data, isLoading } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPatient>(`/patients/11`);
+		},
+		queryKey: ['GetFavourites'],
+	});
+	const psychologists = data?.data.favorites;
+	const { mutate: removeFavourite } = useMutation({
+		mutationFn: async (id: number) => {
+			const data = { psychologistId: id };
+			return await axiosInstance.post('patients/11/favorites', data);
+		},
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: ['GetFavourites'] });
+		},
+	});
 
 	const handleRemoveProfile = (id: number) => {
-		mutation.mutate({ psychologistId: id });
+		removeFavourite(id);
 		message.success('Психолог был успешно исключен из списка избранных.');
 	};
-	console.log(psychologists);
+	if (isLoading) {
+		return <div>Loading</div>;
+	}
 
 	return (
 		<div style={{ display: 'flex', gap: '3%', flexWrap: 'wrap' }}>
@@ -82,8 +82,7 @@ const Favorites = ({ psychologists }: Props) => {
 										cursor: 'pointer',
 									}}
 									onClick={() => {
-										// handleLikeToggle(psychologists.id);
-										handleRemoveProfile(psychologists.id); // Переместите удаление сюда, чтобы удалять только при клике на сердечко
+										handleRemoveProfile(psychologists.id);
 									}}
 								>
 									{psychologists ? (
@@ -141,7 +140,7 @@ const Favorites = ({ psychologists }: Props) => {
 									padding: '1rem',
 									cursor: 'pointer',
 								}}
-								onClick={() => navigate('/psychologist/1')}
+								onClick={() => navigate(`/psychologists/${psychologists.id}`)}
 							>
 								<Space>
 									<Text
