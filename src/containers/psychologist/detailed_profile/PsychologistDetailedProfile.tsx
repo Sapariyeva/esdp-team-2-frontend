@@ -16,7 +16,6 @@ const PsychologistDetailedProfile = () => {
 		},
 		queryKey: ['GetPsychologist'],
 	});
-	console.log(data?.data);
 
 	if (isLoading) {
 		return <div>LOADING...</div>;

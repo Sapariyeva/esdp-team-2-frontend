@@ -1,12 +1,12 @@
 import { Divider, Empty, Form, Select, Slider, Space } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
-import { IPsychologist } from '../../../interfaces/IPsychologist';
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 
 const { Option } = Select;
 
 type Props = {
-	psychologists: IPsychologist[];
+	psychologists: IPsychologistWithLikes[];
 };
 
 export const PsychologistsList = ({ psychologists }: Props) => {
