@@ -11,49 +11,60 @@ import PsychologistAccountPage from './containers/psychologist/personal_account/
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
 import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
-import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
+import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route element={<CustomLayout />}>
-					<Route path="/" element={<HomePage />} />
-					<Route path="/auth/login" element={<Login role="patient" />} />
-					<Route
-						path="auth/login/psychologist"
-						element={<Login role="psychologist" />}
-					/>
-					<Route
-						path="/my-account/psychologist"
-						element={<PsychologistAccountPage />}
-					/>
-					<Route path="/my-account/patient" element={<PatientAccountPage />} />
-					<Route path="/auth/register" element={<Register role="patient" />} />
-					<Route
-						path="auth/register/psychologist"
-						element={<Register role="psychologist" />}
-					/>
-					<Route path="*" element={<PageNotFound />} />
-					<Route path="/psychologist/form" element={<PsychologistForm />} />
-					<Route path="/pacient/form" element={<PacienttForm />} />
-					<Route
-						path="/psychologists/catalog"
-						element={<PsychologistsListContainer />}
-					/>
-					<Route
-						path="/psychologists/catalog/:id"
-						element={<PsychologistDetailedProfile />}
-					/>
-					<Route path="/business" element={<BusinessPage />} />
-					<Route path="/articles" element={<ArticlePageContainer />} />
-					<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
-				</Route>
-			</Routes>
-		</BrowserRouter>
+		<QueryClientProvider client={queryClient}>
+			<BrowserRouter>
+				<Routes>
+					<Route element={<CustomLayout />}>
+						<Route path="/" element={<HomePage />} />
+						<Route path="/auth/login" element={<Login role="patient" />} />
+						<Route
+							path="auth/login/psychologist"
+							element={<Login role="psychologist" />}
+						/>
+						<Route
+							path="/my-account/psychologist"
+							element={<PsychologistAccountPage />}
+						/>
+						<Route
+							path="/my-account/patient"
+							element={<PatientAccountPage />}
+						/>
+						<Route
+							path="/auth/register"
+							element={<Register role="patient" />}
+						/>
+						<Route
+							path="auth/register/psychologist"
+							element={<Register role="psychologist" />}
+						/>
+						<Route path="*" element={<PageNotFound />} />
+						<Route path="/psychologist/form" element={<PsychologistForm />} />
+						<Route path="/pacient/form" element={<PacienttForm />} />
+						<Route
+							path="/psychologists/"
+							element={<PsychologistsListContainer />}
+						/>
+						<Route
+							path="/psychologists/:id"
+							element={<PsychologistDetailedProfile />}
+						/>
+						<Route path="/business" element={<BusinessPage />} />
+						<Route path="/articles" element={<ArticlePageContainer />} />
+						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</QueryClientProvider>
 	);
 };
 

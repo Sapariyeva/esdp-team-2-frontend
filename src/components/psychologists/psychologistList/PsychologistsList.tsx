@@ -1,10 +1,15 @@
-import { Divider, Form, Select, Slider, Space } from 'antd';
-import psychologistsMock from '../../../mocks/psychologists';
-import { PsychologistCard } from '../psychologistCard/PsychologistCard';
+import { Divider, Empty, Form, Select, Slider, Space } from 'antd';
 import styles from './PsychologistsList.module.scss';
+import { PsychologistCard } from '../psychologistCard/PsychologistCard';
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
+
 const { Option } = Select;
 
-export const PsychologistsList: React.FC = () => {
+type Props = {
+	psychologists: IPsychologistWithLikes[];
+};
+
+export const PsychologistsList = ({ psychologists }: Props) => {
 	const [form] = Form.useForm();
 
 	const onFinish = () => {
@@ -57,11 +62,19 @@ export const PsychologistsList: React.FC = () => {
 			</Form>
 
 			<Divider />
-			<Space className={styles.list}>
-				{psychologistsMock.psychologists.map((psychologist) => (
-					<PsychologistCard key={psychologist.id} psychologist={psychologist} />
-				))}
-			</Space>
+
+			{psychologists.length > 0 ? (
+				<Space className={styles.list}>
+					{psychologists.map((psychologist) => (
+						<PsychologistCard
+							psychologist={psychologist}
+							key={psychologist.id}
+						/>
+					))}
+				</Space>
+			) : (
+				<Empty description="No psychologists found" />
+			)}
 		</div>
 	);
 };

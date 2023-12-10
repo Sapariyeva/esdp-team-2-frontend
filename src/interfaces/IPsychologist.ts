@@ -1,21 +1,4 @@
 import { UploadFile } from 'antd';
-import { ICertificate, ICity } from './IPsychologistForm.ts';
-
-export interface IPsychologist {
-	id: number;
-	fullName: string;
-	format: 'online' | 'offline';
-	cost: number;
-	gender: 'male' | 'female';
-	video: string;
-	photo: string;
-	experienceYears: number;
-	description: string;
-	education: string;
-	isPublish: boolean;
-	city: ICity;
-	certificates: ICertificate[];
-}
 
 export interface IPsychologistForm {
 	id: number;

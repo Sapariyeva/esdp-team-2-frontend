@@ -52,7 +52,7 @@ const commonItems: MenuProps['items'] = [
 		children: [
 			getItem({
 				label: 'Каталог психологов',
-				key: '/psychologists/catalog',
+				key: '/psychologists/',
 				isLink: true,
 			}),
 			getItem({

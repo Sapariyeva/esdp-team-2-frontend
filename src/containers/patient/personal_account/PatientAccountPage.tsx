@@ -9,7 +9,6 @@ export type ActiveTabPatient = 'myRecords' | 'history' | 'favorites';
 
 const PatientAccountPage = () => {
 	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('myRecords');
-
 	const renderContent = () => {
 		switch (activeTab) {
 			case 'myRecords':
