@@ -2,35 +2,31 @@ import { Layout } from 'antd';
 import PsychologistCard from '../../../components/psychologist/detailed_profile/PsychologistCard/PsychologistCard';
 import './PsychologistDetailedProfile.scss';
 import PsychologistProfileContent from '../../../components/psychologist/detailed_profile/PsychologistProfileContent/PsychologistProfileContent';
-import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
 import { axiosInstance } from '../../../api/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
 const PsychologistDetailedProfile = () => {
 	const { id } = useParams();
 
-	const psychologistQuery = useQuery<
-		IPsychologist,
-		ServerFormValidationResponse
-	>(['psychologist', id], async () => {
-		const response = await axiosInstance.get<IPsychologist>(
-			`/psychologists/${id}`
-		);
-		return response.data;
+	const { data, isLoading } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist>(`/psychologists/${id}`);
+		},
+		queryKey: ['GetPsychologist'],
 	});
 
-	if (psychologistQuery.isLoading) {
+	if (isLoading) {
 		return <div>LOADING...</div>;
 	}
 
 	return (
 		<Layout style={{ padding: 20 }} className="detailed-profile_content">
-			{psychologistQuery.data ? (
+			{data?.data ? (
 				<>
-					<PsychologistProfileContent psychologist={psychologistQuery.data} />
-					<PsychologistCard psychologist={psychologistQuery.data} />
+					<PsychologistProfileContent psychologist={data.data} />
+					<PsychologistCard psychologist={data.data} />
 				</>
 			) : (
 				<div>No psychologist found for the given ID.</div>
