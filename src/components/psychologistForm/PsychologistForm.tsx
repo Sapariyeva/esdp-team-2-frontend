@@ -157,11 +157,7 @@ export const PsychologistForm = () => {
 					</Select>
 				</Form.Item>
 
-				<Form.Item
-					label="Адрес"
-					name="address"
-					rules={[{ required: true, message: 'Введите адрес' }]}
-				>
+				<Form.Item label="Адрес" name="address">
 					<Input />
 				</Form.Item>
 
@@ -200,7 +196,7 @@ export const PsychologistForm = () => {
 					name="languages"
 					rules={[{ required: true, message: 'Выберите язык' }]}
 				>
-					<Select>
+					<Select mode="multiple">
 						<Option value="kazakh">Казахский</Option>
 						<Option value="russian">Русский</Option>
 						<Option value="english">Английский</Option>
@@ -220,7 +216,7 @@ export const PsychologistForm = () => {
 					name="format"
 					rules={[{ required: true, message: 'Введите форму приема' }]}
 				>
-					<Select>
+					<Select mode="multiple">
 						<Option value="online">Онлайн</Option>
 						<Option value="offline">Оффлайн</Option>
 					</Select>
@@ -239,7 +235,7 @@ export const PsychologistForm = () => {
 					name="consultationType"
 					rules={[{ required: true, message: 'Введите вид консультации' }]}
 				>
-					<Select>
+					<Select mode="multiple">
 						<Option value="solo">Один человек</Option>
 						<Option value="duo">Вдвоем</Option>
 					</Select>
