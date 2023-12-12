@@ -4,7 +4,6 @@ import {
 	ITokenPsychologist,
 } from '../../interfaces/IPsychologistForm';
 import { axiosInstance } from '../../api/axiosInstance';
-import { ModalFormState } from '../../components/psychologist/psychologist_account/EditProfileModal/EditProfileModal';
 
 const initialState: IInitialCertificateState = {
 	psychologistForm: null,
@@ -31,30 +30,6 @@ export const postPsychologistForm = createAsyncThunk(
 					},
 				}
 			);
-
-			return response.data;
-		} catch (e) {
-			return rejectWithValue(e);
-		}
-	}
-);
-
-export const editPsychologist = createAsyncThunk(
-	'editPsychologist',
-	async (psychologist: ModalFormState, thunkApi) => {
-		const { rejectWithValue, getState } = thunkApi;
-		try {
-			const token = getState() as ITokenPsychologist;
-			const response = await axiosInstance.put(
-				'/psychologists/edit',
-				psychologist,
-				{
-					headers: {
-						Authorization: `${token!.users.userInfo.accessToken}`,
-					},
-				}
-			);
-			console.log('slice', response.data);
 
 			return response.data;
 		} catch (e) {
@@ -126,17 +101,6 @@ export const psychologistRegistrationSlice = createSlice({
 				state.psychologistForm = action.payload;
 			})
 			.addCase(postPsychologistForm.rejected, (state) => {
-				state.loading = false;
-				state.error = 'Fetch failed...';
-			})
-			.addCase(editPsychologist.pending, (state) => {
-				state.loading = true;
-			})
-			.addCase(editPsychologist.fulfilled, (state, action) => {
-				state.loading = false;
-				state.psychologistForm = action.payload;
-			})
-			.addCase(editPsychologist.rejected, (state) => {
 				state.loading = false;
 				state.error = 'Fetch failed...';
 			})

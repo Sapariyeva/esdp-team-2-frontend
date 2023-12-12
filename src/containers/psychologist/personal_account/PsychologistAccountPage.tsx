@@ -17,11 +17,14 @@ const { Content } = Layout;
 const PsychologistAccountPage = () => {
 	const [activeTab, setActiveTab] = useState<ActiveTab>('profile');
 	const userInfo = useAppSelector((state: RootState) => state.users.userInfo);
-	console.log(userInfo);
 
 	const psychologistId = userInfo?.psychologist?.id;
 
-	const { data, error, isLoading } = useQuery({
+	const {
+		data: psychologist,
+		error,
+		isLoading,
+	} = useQuery({
 		queryFn: () => {
 			return axiosInstance.get<IPsychologist>(
 				`/psychologists/${psychologistId}`
@@ -34,15 +37,16 @@ const PsychologistAccountPage = () => {
 		return <div>LOADING...</div>;
 	}
 
-	if (error || !data) {
+	if (error || !psychologist) {
 		return <div>Error loading psychologist data</div>;
 	}
-	console.log(data.data);
 
 	const renderContent = () => {
 		switch (activeTab) {
 			case 'profile':
-				return data ? <ProfileContent psychologist={data.data} /> : null;
+				return psychologist ? (
+					<ProfileContent psychologist={psychologist.data} />
+				) : null;
 			case 'clients':
 				return <ClientsTable />;
 			case 'calendar':

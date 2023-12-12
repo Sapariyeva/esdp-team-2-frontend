@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { ITechnique } from '../../../../interfaces/ITechnique';
 import { ISymptom } from '../../../../interfaces/ISymptom';
 import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../api/axiosInstance';
 import { Image } from 'antd';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
@@ -16,6 +16,7 @@ import {
 	EditProfileModal,
 	ModalFormState,
 } from '../EditProfileModal/EditProfileModal';
+import { useAppSelector } from '../../../../store/hooks';
 
 type PsychologistProfile = {
 	psychologist: IPsychologist;
@@ -30,6 +31,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		width: '100%',
 		maxWidth: 800,
 	};
+	const client = useQueryClient();
 
 	const { data: techniquesData } = useQuery({
 		queryFn: () => {
@@ -63,6 +65,27 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 	});
 	const cities = citiesData?.data ?? [];
 
+	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
+
+	const { mutate: psychologistEdit } = useMutation({
+		mutationFn: async (psychologist: ModalFormState) => {
+			const response = await axiosInstance.put(
+				'/psychologists/edit',
+				psychologist,
+				{
+					headers: {
+						Authorization: `${token}`,
+					},
+				}
+			);
+
+			return response.data;
+		},
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
+		},
+	});
+
 	const handleEdit = () => {
 		setEditModalVisible(true);
 	};
@@ -72,7 +95,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 	};
 
 	const handleSaveEdit = async (values: ModalFormState) => {
-		console.log('Saved:', values);
+		psychologistEdit(values);
 		setEditModalVisible(false);
 	};
 

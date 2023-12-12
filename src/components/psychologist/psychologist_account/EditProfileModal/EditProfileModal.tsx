@@ -4,8 +4,8 @@ import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../../../interfaces/ISymptom';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { ICity } from '../../../../interfaces/IPsychologistForm';
-import { editPsychologist } from '../../../../features/psychologistRegistration/psychologistRegistrationSlice';
-import { useAppDispatch } from '../../../../store/hooks';
+import { useState } from 'react';
+import { Dayjs } from 'dayjs';
 
 export interface ModalFormState {
 	fullName: string;
@@ -21,7 +21,7 @@ export interface ModalFormState {
 	cost: number;
 	consultationType: string[];
 	selfTherapy: number;
-	lgbt: 0 | 1;
+	lgbt: '0' | '1';
 	cityId: number;
 	symptomIds: number[];
 	therapyMethodIds: number[];
@@ -52,19 +52,18 @@ export const EditProfileModal = ({
 	cities,
 }: Props) => {
 	const [form] = Form.useForm();
-	const dispatch = useAppDispatch();
+	const [time, setTime] = useState<Dayjs | null>(null);
 
 	const handleSave = async () => {
 		try {
 			const values = await form.validateFields();
-			console.log(values);
+			values.birthday = time;
 			await onSave(values);
-			await dispatch(editPsychologist(values));
-			console.log('проверка');
 		} catch (error) {
 			console.error('Save failed:', error);
 		}
 	};
+
 	return (
 		<Modal
 			title="Редактировать профиль"
@@ -75,7 +74,7 @@ export const EditProfileModal = ({
 			<Form form={form} layout="vertical" initialValues={psychologist}>
 				<Form.Item
 					label="ФИО"
-					name="fullname"
+					name="fullName"
 					rules={[{ required: true, message: 'Введите имя пользователя' }]}
 				>
 					<Input />
@@ -93,12 +92,11 @@ export const EditProfileModal = ({
 				</Form.Item>
 
 				<Form.Item
-					label="Дата рождения"
+					label="Дата и время рождения"
 					name="birthday"
 					rules={[{ required: true, message: 'Введите дату рождения' }]}
 				>
-					<br />
-					<DatePicker />
+					<DatePicker onChange={(date) => setTime(date)} />
 					<br />
 				</Form.Item>
 
@@ -110,8 +108,8 @@ export const EditProfileModal = ({
 					<Select>
 						{cities && cities.length !== 0 ? (
 							<>
-								{cities.map((city) => (
-									<Option key={city.id} value={city.id}>
+								{cities.map((city, index) => (
+									<Option key={index} value={city.id}>
 										{city.name}
 									</Option>
 								))}
@@ -122,11 +120,7 @@ export const EditProfileModal = ({
 					</Select>
 				</Form.Item>
 
-				<Form.Item
-					label="Адрес"
-					name="address"
-					rules={[{ required: true, message: 'Введите адрес' }]}
-				>
+				<Form.Item label="Адрес" name="address">
 					<Input />
 				</Form.Item>
 
@@ -136,6 +130,20 @@ export const EditProfileModal = ({
 					rules={[{ required: true, message: 'Введите данные о себе' }]}
 				>
 					<Input.TextArea />
+				</Form.Item>
+
+				<Form.Item
+					label="Видео (ссылка)"
+					name="video"
+					rules={[
+						{
+							type: 'url',
+							message: 'Пожалуйста, введите корректную ссылку на видео',
+						},
+						{ required: true, message: 'Введите ссылку на видео' },
+					]}
+				>
+					<Input />
 				</Form.Item>
 
 				<Form.Item
@@ -171,17 +179,10 @@ export const EditProfileModal = ({
 					name="format"
 					rules={[{ required: true, message: 'Введите форму приема' }]}
 				>
-					<Select>
+					<Select mode="multiple">
 						<Option value="online">Онлайн</Option>
 						<Option value="offline">Оффлайн</Option>
 					</Select>
-				</Form.Item>
-				<Form.Item
-					label="Видео"
-					name="video"
-					rules={[{ required: true, message: 'Введите ссылку' }]}
-				>
-					<Input type="string" />
 				</Form.Item>
 
 				<Form.Item
@@ -197,7 +198,7 @@ export const EditProfileModal = ({
 					name="consultationType"
 					rules={[{ required: true, message: 'Введите вид консультации' }]}
 				>
-					<Select>
+					<Select mode="multiple">
 						<Option value="solo">Один человек</Option>
 						<Option value="duo">Вдвоем</Option>
 					</Select>
@@ -211,12 +212,8 @@ export const EditProfileModal = ({
 					<Input type="number" />
 				</Form.Item>
 
-				<Form.Item
-					label="Опыт работы с лгбт"
-					name="lgbt"
-					rules={[{ required: true, message: 'Выберите да или нет' }]}
-				>
-					<Select mode="multiple">
+				<Form.Item label="Опыт работы с лгбт" name="lgbt">
+					<Select>
 						<Option value="0">Нет</Option>
 						<Option value="1">Да</Option>
 					</Select>
@@ -312,8 +309,8 @@ export const EditProfileModal = ({
 					<Select mode="multiple">
 						{symptoms && symptoms.length !== 0 ? (
 							<>
-								{symptoms.map((symptom, index) => (
-									<Option key={index} value={symptom.id}>
+								{symptoms.map((symptom) => (
+									<Option key={symptom.id} value={symptom.id}>
 										{symptom.name}
 									</Option>
 								))}
