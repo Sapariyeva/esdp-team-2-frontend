@@ -18,7 +18,7 @@ export interface ICertificate {
 }
 export interface IPhoto {
 	id: number;
-	photos: string;
+	photo: string;
 	psychologistId: number;
 }
 

@@ -1,17 +1,19 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Card, message } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { IPsychologistCardProps } from '../../../interfaces/IPsychologist';
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../../api/axiosInstance';
 
 const { Meta } = Card;
 
-export const PsychologistCard: FC<IPsychologistCardProps> = ({
-	psychologist,
-}) => {
+interface Props {
+	psychologist: IPsychologistWithLikes;
+}
+
+export const PsychologistCard = ({ psychologist }: Props) => {
 	const navigate = useNavigate();
 	const [psychologistWithLike, setPsychologistWithLike] = useState(false);
 	const onClickReadMore = () => {
@@ -70,7 +72,7 @@ export const PsychologistCard: FC<IPsychologistCardProps> = ({
 						<p>{`Опыт: ${psychologist.experienceYears} лет`}</p>
 						<p>{`Формат: ${psychologist.format}`}</p>
 						<p>{`Стоимость: ${psychologist.cost} тг`}</p>
-						<p>{`Город: ${psychologist.city.name}`}</p>
+						{/* <p>{`Город: ${psychologist.city.name}`}</p> */}
 						<p>{`О себе: ${psychologist.description}`}</p>
 						<div
 							style={{ padding: 10, backgroundColor: 'grey', width: '100%' }}
