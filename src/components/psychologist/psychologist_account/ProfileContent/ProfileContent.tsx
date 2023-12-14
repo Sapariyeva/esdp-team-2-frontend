@@ -1,5 +1,5 @@
-import { Button, Typography, Tag, Row, Col } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Button, Typography, Tag, Row, Col, UploadFile } from 'antd';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
 import './ProfileContent.scss';
@@ -17,13 +17,28 @@ import {
 	ModalFormState,
 } from '../EditProfileModal/EditProfileModal';
 import { useAppSelector } from '../../../../store/hooks';
+import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
+import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
 
 type PsychologistProfile = {
 	psychologist: IPsychologist;
 };
 
+export interface photoCreate {
+	photos: {
+		fileList: UploadFile[];
+	};
+}
+export interface certificateCreate {
+	certificates: {
+		fileList: UploadFile[];
+	};
+}
 const Profile = ({ psychologist }: PsychologistProfile) => {
 	const [editModalVisible, setEditModalVisible] = useState(false);
+	const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
+	const [isCertificateModalVisible, setIsCertificateModalVisible] =
+		useState(false);
 	const [error] = useState<string | null>(null);
 	const videoId = psychologist.video ? youtubeVideoId(psychologist.video) : '';
 	const opts: YouTubeProps['opts'] = {
@@ -67,6 +82,19 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 
 	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
 
+	const handleEdit = () => {
+		setEditModalVisible(true);
+	};
+
+	const handleCancelEdit = () => {
+		setEditModalVisible(false);
+	};
+
+	const handleSaveEdit = async (values: ModalFormState) => {
+		psychologistEdit(values);
+		setEditModalVisible(false);
+	};
+
 	const { mutate: psychologistEdit } = useMutation({
 		mutationFn: async (psychologist: ModalFormState) => {
 			const response = await axiosInstance.put(
@@ -86,17 +114,84 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		},
 	});
 
-	const handleEdit = () => {
-		setEditModalVisible(true);
+	const showModalPhoto = () => {
+		setIsPhotoModalVisible(true);
 	};
 
-	const handleCancelEdit = () => {
-		setEditModalVisible(false);
+	const handleCancelPhoto = () => {
+		setIsPhotoModalVisible(false);
 	};
 
-	const handleSaveEdit = async (values: ModalFormState) => {
-		psychologistEdit(values);
-		setEditModalVisible(false);
+	const photoCreate = async (values: photoCreate) => {
+		const formData = new FormData();
+		if (values.photos && values.photos.fileList) {
+			values.photos.fileList.forEach((file: UploadFile) => {
+				formData.append('photo', file.originFileObj as Blob);
+			});
+		}
+
+		try {
+			await axiosInstance.post('/photos/create', formData, {
+				headers: {
+					Authorization: `${token}`,
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
+			setIsPhotoModalVisible(false);
+		} catch (error) {
+			console.error('Error uploading photo:', error);
+		}
+	};
+
+	const handleDeletePhoto = async (id: number) => {
+		await axiosInstance.delete(`/photos/${id}`, {
+			headers: {
+				Authorization: `${token}`,
+			},
+		});
+		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
+	};
+
+	const showModalCertificate = () => {
+		setIsCertificateModalVisible(true);
+	};
+
+	const handleCancelCertificate = () => {
+		setIsCertificateModalVisible(false);
+	};
+
+	const certificateCreate = async (certificate: certificateCreate) => {
+		console.log(certificate);
+
+		const formData = new FormData();
+		if (certificate.certificates && certificate.certificates.fileList) {
+			certificate.certificates.fileList.forEach((file: UploadFile) => {
+				formData.append('certificate', file.originFileObj as Blob);
+			});
+		}
+
+		try {
+			await axiosInstance.post('/certificates/create', formData, {
+				headers: {
+					Authorization: `${token}`,
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
+			setIsCertificateModalVisible(false);
+		} catch (error) {
+			console.error('Error uploading certificate:', error);
+		}
+	};
+
+	const handleDeleteCertificate = async (id: number) => {
+		await axiosInstance.delete(`/certificates/${id}`, {
+			headers: {
+				Authorization: `${token}`,
+			},
+		});
+		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
 
 	return (
@@ -104,16 +199,40 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 			<Image.PreviewGroup>
 				{psychologist.photos && psychologist.photos.length > 0 ? (
 					psychologist.photos.map((photo) => (
-						<Image
+						<div
 							key={photo.id}
-							width={200}
-							src={`http://localhost:8000/uploads/${photo.photo}`}
-						/>
+							style={{
+								display: 'inline-block',
+								marginRight: 8,
+								marginBottom: 8,
+								position: 'relative',
+							}}
+						>
+							<Image
+								width={200}
+								src={`http://localhost:8000/uploads/${photo.photo}`}
+							/>
+							<Button
+								onClick={() => handleDeletePhoto(photo.id)}
+								style={{
+									position: 'absolute',
+									top: 5,
+									right: 5,
+									background: 'none',
+									border: 'none',
+									color: 'red',
+									cursor: 'pointer',
+								}}
+								icon={<DeleteOutlined />}
+							/>
+						</div>
 					))
 				) : (
 					<span>Фотографий нет</span>
 				)}
 			</Image.PreviewGroup>
+			<Button type="link" icon={<PlusOutlined />} onClick={showModalPhoto} />
+
 			<Typography.Title className="user-info" level={4}>
 				{psychologist.fullName}
 			</Typography.Title>
@@ -173,11 +292,11 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 					<Typography.Paragraph className="paragraph">
 						<strong>Самотерапия:</strong> {psychologist.selfTherapy}
 					</Typography.Paragraph>
-					{psychologist.therapyMethods &&
-						psychologist.therapyMethods.length > 0 && (
+					{psychologist.therapyMethod &&
+						psychologist.therapyMethod.length > 0 && (
 							<>
 								<Typography.Title level={5}>Методы</Typography.Title>
-								{psychologist.therapyMethods.map(
+								{psychologist.therapyMethod.map(
 									(therapyMethods: ITherapyMethod) => (
 										<Typography.Paragraph
 											key={therapyMethods.id}
@@ -220,19 +339,58 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 					<Image.PreviewGroup>
 						{psychologist.certificates &&
 						psychologist.certificates.length > 0 ? (
-							psychologist.certificates.map((photo) => (
-								<Image
-									key={photo.id}
-									width={200}
-									src={`http://localhost:8000/uploads/${photo.certificate}`}
-								/>
+							psychologist.certificates.map((certificate) => (
+								<div
+									key={certificate.id}
+									style={{
+										position: 'relative',
+										display: 'inline-block',
+										marginRight: 8,
+										marginBottom: 8,
+									}}
+								>
+									<Image
+										width={200}
+										src={`http://localhost:8000/uploads/${certificate.certificate}`}
+									/>
+									<button
+										onClick={() => handleDeleteCertificate(certificate.id)}
+										style={{
+											position: 'absolute',
+											top: 5,
+											right: 5,
+											background: 'none',
+											border: 'none',
+											color: 'red',
+											cursor: 'pointer',
+										}}
+									>
+										<DeleteOutlined />
+									</button>
+								</div>
 							))
 						) : (
 							<span>Сертификатов нет</span>
 						)}
 					</Image.PreviewGroup>
+					<Button
+						type="link"
+						icon={<PlusOutlined />}
+						onClick={showModalCertificate}
+					/>
 				</Col>
 			</Row>
+			<CreatePhoto
+				open={isPhotoModalVisible}
+				onCancel={handleCancelPhoto}
+				onSave={photoCreate}
+			/>
+
+			<CreateCertificate
+				open={isCertificateModalVisible}
+				onCancel={handleCancelCertificate}
+				onSave={certificateCreate}
+			/>
 			<EditProfileModal
 				open={editModalVisible}
 				onCancel={handleCancelEdit}

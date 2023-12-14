@@ -16,9 +16,9 @@ const { Content } = Layout;
 
 const PsychologistAccountPage = () => {
 	const [activeTab, setActiveTab] = useState<ActiveTab>('profile');
-	const userInfo = useAppSelector((state: RootState) => state.users.userInfo);
-
-	const psychologistId = userInfo?.psychologist?.id;
+	const psychologistId = useAppSelector(
+		(state: RootState) => state.users.userInfo?.psychologist?.id
+	);
 
 	const {
 		data: psychologist,
