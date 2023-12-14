@@ -55,6 +55,7 @@ export interface IPsychologist {
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
+	like?: boolean;
 }
 
 export interface IPsychologistCardProps {
@@ -64,9 +65,9 @@ export interface IPsychologistCardProps {
 		experienceYears: number;
 		format: string;
 		cost: number;
-		city: { name: string };
+		city: ICity;
 		description: string;
-		photos: { photo: string }[];
+		photos: IPhoto[];
 		id: number;
 		like: boolean;
 	};
