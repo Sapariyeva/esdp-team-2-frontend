@@ -9,18 +9,16 @@ import {
 	Upload,
 	UploadFile,
 } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useEffect } from 'react';
+import { useAppSelector } from '../../store/hooks';
 import styles from './PsychologistForm.module.scss';
-import {
-	getTechniques,
-	getTherapyMethod,
-	getSymptoms,
-	getCities,
-	postPsychologistForm,
-} from '../../features/psychologistRegistration/psychologistRegistrationSlice';
 import { UploadOutlined } from '@ant-design/icons';
 import { IPsychologistForm } from '../../interfaces/IPsychologist';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { axiosInstance } from '../../api/axiosInstance';
+import { ITechnique } from '../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
+import { ISymptom } from '../../interfaces/ISymptom';
+import { ICity } from '../../interfaces/IPsychologistForm';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -30,18 +28,51 @@ const initialValues = {
 };
 
 export const PsychologistForm = () => {
-	const { techniques, therapyMethod, symptoms, cities } = useAppSelector(
-		(state) => state.psychologistRegistration
-	);
-	const dispatch = useAppDispatch();
+	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
+	const { data: techniquesData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ITechnique[]>('techniques');
+		},
+		queryKey: ['GetTechniques'],
+	});
+	const techniques = techniquesData?.data ?? [];
 
-	useEffect(() => {
-		if (techniques !== undefined) dispatch(getTechniques());
-		if (therapyMethod !== undefined) dispatch(getTherapyMethod());
-		if (symptoms !== undefined) dispatch(getSymptoms());
-		if (cities !== undefined) dispatch(getCities());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const { data: therapyMethodsData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ITherapyMethod[]>(`methods`);
+		},
+		queryKey: ['GetTherapyMethod'],
+	});
+	const therapyMethod = therapyMethodsData?.data ?? [];
+
+	const { data: symptomsData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ISymptom[]>(`symptoms`);
+		},
+		queryKey: ['GetSymptoms'],
+	});
+	const symptoms = symptomsData?.data ?? [];
+
+	const { data: citiesData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ICity[]>(`cities`);
+		},
+		queryKey: ['GetCities'],
+	});
+	const cities = citiesData?.data ?? [];
+	const { mutate: postPsychologist } = useMutation({
+		mutationFn: async (psychologistForm: FormData) => {
+			return await axiosInstance.post(
+				'psychologists/create',
+				psychologistForm,
+				{
+					headers: {
+						Authorization: `${token}`,
+					},
+				}
+			);
+		},
+	});
 
 	const handleUpload = async (values: IPsychologistForm) => {
 		const formData = new FormData();
@@ -95,7 +126,7 @@ export const PsychologistForm = () => {
 			});
 		}
 
-		await dispatch(postPsychologistForm(formData));
+		postPsychologist(formData);
 	};
 
 	return (
