@@ -39,7 +39,10 @@ const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date, refetch }) => {
 	const availableHours = Array.from({ length: 24 }, (_, i) => i);
 
 	const currentHour = new Date().getHours();
-	const filteredHours = availableHours.filter((hour) => hour >= currentHour);
+	const filterHours =
+		date === dayjs().format('YYYY-MM-DD')
+			? availableHours.filter((hour) => hour >= currentHour)
+			: availableHours;
 	const [time, setTime] = useState<string>('');
 	const [hours, setHours] = useState(currentHour);
 	const [minutes, setMinutes] = useState(0);
@@ -74,7 +77,7 @@ const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date, refetch }) => {
 					suffixIcon={null}
 					onChange={(value) => setHours(value)}
 				>
-					{filteredHours.map((hour) => (
+					{filterHours.map((hour) => (
 						<Select.Option key={hour} value={hour}>
 							{hour < 10 ? `0${hour}` : hour}
 						</Select.Option>
