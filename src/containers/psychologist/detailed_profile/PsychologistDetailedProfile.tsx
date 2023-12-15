@@ -4,6 +4,8 @@ import './PsychologistDetailedProfile.scss';
 import PsychologistProfileContent from '../../../components/psychologist/detailed_profile/PsychologistProfileContent/PsychologistProfileContent';
 import { useParams } from 'react-router-dom';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
+import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
+import axiosInstance from '../../../api/axiosInstance';
 import { axiosInstance } from '../../../api/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 

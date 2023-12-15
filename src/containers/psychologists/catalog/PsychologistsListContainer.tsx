@@ -1,5 +1,7 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
-import { axiosInstance } from '../../../api/axiosInstance';
+import { IPsychologist } from '../../../interfaces/IPsychologist';
+import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
+import axiosInstance from '../../../api/axiosInstance';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import IFilteringValues from '../../../interfaces/IFilteringValues';
 import { ITechnique } from '../../../interfaces/ITechnique';

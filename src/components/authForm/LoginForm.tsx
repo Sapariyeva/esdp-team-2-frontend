@@ -1,10 +1,10 @@
-import { Layout, Form, Input, Checkbox, Button, Typography, Alert } from 'antd';
-import { useEffect, useState } from 'react';
-import styles from './AuthForm.module.scss';
 import { LoginOutlined } from '@ant-design/icons';
+import { Alert, Button, Checkbox, Form, Input, Layout, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
+import styles from './AuthForm.module.scss';
 
 const { Title } = Typography;
 
@@ -24,6 +24,7 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 	useEffect(() => {
 		setLoginErrors(errors);
 	}, [errors]);
+
 	const handleMethodButtonClick = (method: 'email' | 'phone') => {
 		setMethod(method);
 		form.resetFields();
