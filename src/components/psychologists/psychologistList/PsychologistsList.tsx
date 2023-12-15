@@ -1,68 +1,40 @@
-import { Divider, Empty, Form, Select, Slider, Space } from 'antd';
+import { Empty, Space } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
-import { IPsychologist } from '../../../interfaces/IPsychologist';
-
-const { Option } = Select;
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
+import PsychologistFilterForm from '../../filteringForm/FilteringForm';
+import IFilteringValues from '../../../interfaces/IFilteringValues';
+import { ICity } from '../../../interfaces/IPsychologistForm';
+import { ISymptom } from '../../../interfaces/ISymptom';
+import { ITechnique } from '../../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
 
 type Props = {
-	psychologists: IPsychologist[];
+	psychologists: IPsychologistWithLikes[];
+	filterHandler: (values: IFilteringValues) => void;
+	cities: ICity[];
+	symptoms: ISymptom[];
+	techniques: ITechnique[];
+	therapyMethod: ITherapyMethod[];
 };
 
-export const PsychologistsList = ({ psychologists }: Props) => {
-	const [form] = Form.useForm();
-
-	const onFinish = () => {
-		// console.log('Received values:', values);
-	};
+export const PsychologistsList = ({
+	psychologists,
+	filterHandler,
+	cities,
+	symptoms,
+	techniques,
+	therapyMethod,
+}: Props) => {
 	return (
 		<div className={styles.container}>
-			<Form
-				form={form}
-				name="filtersForm"
-				initialValues={{
-					consultationFormat: undefined,
-					gender: undefined,
-					city: undefined,
-					consultationCost: [0, 80000],
-				}}
-				onFinish={onFinish}
-				layout="inline"
-			>
-				<Divider />
-				<Space direction="horizontal">
-					<Form.Item name="consultationFormat">
-						<Select style={{ width: 200 }} placeholder="Формат консультации">
-							<Option value="online">Онлайн</Option>
-							<Option value="offline">Офлайн</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="gender">
-						<Select style={{ width: 100 }} placeholder="Пол">
-							<Option value="male">Мужской</Option>
-							<Option value="female">Женский</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="city">
-						<Select style={{ width: 100 }} placeholder="Город">
-							<Option value="Almaty">Алматы</Option>
-							<Option value="Astana">Астана</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="consultationCost">
-						<Slider
-							style={{ width: 150 }}
-							range
-							min={0}
-							max={80000}
-							marks={{ 0: '0', 80000: '80000' }}
-						/>
-					</Form.Item>
-				</Space>
-			</Form>
-
-			<Divider />
-
+			<PsychologistFilterForm
+				onFilter={filterHandler}
+				cities={cities}
+				symptoms={symptoms}
+				techniques={techniques}
+				therapyMethods={therapyMethod}
+			/>
 			{psychologists.length > 0 ? (
 				<Space className={styles.list}>
 					{psychologists.map((psychologist) => (
