@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Button } from 'antd';
 import styles from './AddingTimeForm.module.scss';
-import axiosInstance from '../../../api/axiosInstance.ts';
+import { axiosInstance } from '../../../api/axiosInstance.ts';
 import { useAppSelector } from '../../../store/hooks.ts';
 import { tokenSelect } from '../../../features/user/userSlice.ts';
 import AddingTimeHeader from './addingTimeHeader/addingTimeHeader.tsx';

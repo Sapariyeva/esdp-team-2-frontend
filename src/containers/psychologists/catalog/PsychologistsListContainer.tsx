@@ -1,7 +1,5 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
-import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
-import axiosInstance from '../../../api/axiosInstance';
+import { axiosInstance } from '../../../api/axiosInstance';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import IFilteringValues from '../../../interfaces/IFilteringValues';
 import { ITechnique } from '../../../interfaces/ITechnique';
@@ -71,12 +69,13 @@ export const PsychologistsListContainer = () => {
 	});
 	const cities = citiesData?.data ?? [];
 
-	const addLike = (arr) => {
-		return [...arr].map((el) => {
-			el['like'] = false;
-			return el;
-		});
-	};
+	// const addLike = (arr) => {
+	// 	return [...arr].map((el) => {
+	// 		el['like'] = false;
+	// 		return el;
+	// 	});
+	// };
+	// чинить типизацию
 
 	const filterHandler = (values: IFilteringValues) => {
 		filterPsychologists(values);
@@ -97,15 +96,15 @@ export const PsychologistsListContainer = () => {
 			</div>
 		);
 	}
-
-	const psychologistsToDisplay = filteredPsychologists.length
-		? addLike(filteredPsychologists)
-		: addLike(psychologists?.data);
+	console.log(filteredPsychologists);
+	// const psychologistsToDisplay = filteredPsychologists.length
+	// 	? addLike(filteredPsychologists)
+	// 	: addLike(psychologists?.data);
 
 	return (
 		<>
 			<PsychologistsList
-				psychologists={psychologistsToDisplay}
+				psychologists={psychologists.data as IPsychologistWithLikes[]}
 				cities={cities}
 				filterHandler={filterHandler}
 				symptoms={symptoms}

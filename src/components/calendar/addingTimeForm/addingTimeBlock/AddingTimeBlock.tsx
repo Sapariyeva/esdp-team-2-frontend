@@ -3,7 +3,7 @@ import styles from '../AddingTimeForm.module.scss';
 import { Select } from 'antd';
 import dayjs from 'dayjs';
 import { useMutation } from '@tanstack/react-query';
-import axiosInstance from '../../../../api/axiosInstance.ts';
+import { axiosInstance } from '../../../../api/axiosInstance.ts';
 import { ITimeSlot, ITimeSlotDate } from '../../../../interfaces/ITimeSlot.ts';
 import { useAppSelector } from '../../../../store/hooks.ts';
 import { tokenSelect } from '../../../../features/user/userSlice.ts';
