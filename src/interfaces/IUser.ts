@@ -8,6 +8,6 @@ export interface IUser {
 	username: string;
 	patient?: IPatient;
 	psychologist?: IPsychologist;
-	token: string;
+	accessToken: string;
 	role: string;
 }

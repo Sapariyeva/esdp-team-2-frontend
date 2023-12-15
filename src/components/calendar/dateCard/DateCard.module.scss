@@ -1,0 +1,55 @@
+.card {
+	width: 150px;
+	height: 150px;
+	margin: 10px;
+	border-radius: 10px;
+	font-family: 'Montserrat', sans-serif !important;
+	color: #141414;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	padding: 10px;
+	background: rgba(134, 76, 233, 0.1);
+	cursor: pointer;
+}
+
+.pastDate {
+	background-color: rgba(245, 245, 245, 1) !important;
+	cursor: default !important;
+}
+
+.card_header {
+	display: flex;
+	justify-content: space-between;
+	h3 {
+		text-transform: capitalize;
+	}
+}
+
+.card_svg {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	font-size: 15px;
+	justify-content: space-between;
+}
+.card_main {
+	padding: 17px;
+	font-size: 35px;
+	text-align: center;
+	justify-content: space-between;
+	p {
+		font-size: 10px;
+	}
+}
+
+.card_footer {
+	display: inline-flex;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-size: 10px;
+	text-align: left;
+	background-color: #fff;
+	justify-content: space-between;
+}

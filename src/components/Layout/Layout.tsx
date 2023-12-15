@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Layout as AntLayout } from 'antd';
-import { Toolbar } from '../toolbar/Toolbar';
 import styles from './Layout.module.scss';
-import { FooterMenu } from '../footer/Footer';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
+import { Toolbar } from '../Toolbar/Toolbar.tsx';
+import { FooterMenu } from '../Footer/Footer.tsx';
 
 const { Header, Content, Footer } = AntLayout;
 

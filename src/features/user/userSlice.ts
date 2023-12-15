@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUser } from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
-import { axiosInstance } from '../../api/axiosInstance.ts';
+import axiosInstance from '../../api/axiosInstance.ts';
 import { AxiosError, isAxiosError } from 'axios';
 import Cookies from 'js-cookie';
+import { RootState } from '../../store';
 
 interface AuthUserData {
 	email: string;
@@ -127,5 +128,8 @@ const userSlice = createSlice({
 			});
 	},
 });
+export const tokenSelect = (state: RootState) => {
+	return state.users.userInfo?.accessToken;
+};
 
 export default userSlice;

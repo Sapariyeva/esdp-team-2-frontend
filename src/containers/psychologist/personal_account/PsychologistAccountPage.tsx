@@ -4,8 +4,8 @@ import SideBar, {
 } from '../../../components/psychologist/psychologist_account/SideBar/SideBar';
 import { useState } from 'react';
 import ProfileContent from '../../../components/psychologist/psychologist_account/ProfileContent/ProfileContent';
-import Schedule from '../../../components/psychologist/psychologist_account/Schedule/Schedule';
 import ClientsTable from '../../../components/psychologist/psychologist_account/ClientsTable/ClientsTable';
+import Calendars from '../../../components/psychologist/psychologist_account/calendar/Calendar.tsx';
 
 const { Content } = Layout;
 
@@ -19,7 +19,7 @@ const PsychologistAccountPage = () => {
 			case 'clients':
 				return <ClientsTable />;
 			case 'calendar':
-				return <Schedule />;
+				return <Calendars />;
 			default:
 				return null;
 		}

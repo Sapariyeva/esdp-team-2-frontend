@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
 import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
-import { axiosInstance } from '../../../api/axiosInstance';
+import axiosInstance from '../../../api/axiosInstance';
 
 const PsychologistDetailedProfile = () => {
 	const { id } = useParams();

@@ -2,7 +2,7 @@ import { PsychologistsList } from '../../../components/psychologists/psychologis
 import { IPsychologist } from '../../../interfaces/IPsychologist';
 import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse';
 import { useQuery } from 'react-query';
-import { axiosInstance } from '../../../api/axiosInstance';
+import axiosInstance from '../../../api/axiosInstance';
 
 export const PsychologistsListContainer = () => {
 	const psychologistsQuery = useQuery<
