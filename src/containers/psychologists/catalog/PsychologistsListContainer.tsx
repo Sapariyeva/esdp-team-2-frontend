@@ -6,16 +6,15 @@ import { ITechnique } from '../../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../../interfaces/ISymptom';
 import { ICity } from '../../../interfaces/IPsychologistForm';
-import {
-	IPsychologist,
-	IPsychologistWithLikes,
-} from '../../../interfaces/IPsychologist';
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useState } from 'react';
+import { Alert } from 'antd';
+import { AxiosError } from 'axios';
 
 export const PsychologistsListContainer = () => {
 	const [filteredPsychologists, setFilteredPsychologists] = useState<
-		IPsychologistWithLikes[]
-	>([]);
+		IPsychologistWithLikes[] | undefined
+	>(undefined);
 
 	const {
 		data: psychologists,
@@ -23,17 +22,17 @@ export const PsychologistsListContainer = () => {
 		isLoading,
 	} = useQuery({
 		queryFn: () => {
-			return axiosInstance.get<IPsychologist[]>(`/psychologists`);
+			return axiosInstance.get<IPsychologistWithLikes[]>(`/psychologists`);
 		},
 		queryKey: ['GetPsychologists'],
 	});
 
-	const { mutate: filterPsychologists } = useMutation({
+	const { mutate: filterPsychologists, error: filteringError } = useMutation({
 		mutationFn: async (values: IFilteringValues) => {
 			return await axiosInstance.post('/psychologists/filter', values);
 		},
 		onSuccess: (data) => {
-			setFilteredPsychologists(data.data);
+			setFilteredPsychologists(data?.data);
 		},
 	});
 
@@ -69,13 +68,12 @@ export const PsychologistsListContainer = () => {
 	});
 	const cities = citiesData?.data ?? [];
 
-	// const addLike = (arr) => {
-	// 	return [...arr].map((el) => {
-	// 		el['like'] = false;
-	// 		return el;
-	// 	});
-	// };
-	// чинить типизацию
+	const addLike = (arr: IPsychologistWithLikes[]) => {
+		return [...arr].map((el) => {
+			el['like'] = false;
+			return el;
+		});
+	};
 
 	const filterHandler = (values: IFilteringValues) => {
 		filterPsychologists(values);
@@ -96,15 +94,25 @@ export const PsychologistsListContainer = () => {
 			</div>
 		);
 	}
-	console.log(filteredPsychologists);
-	// const psychologistsToDisplay = filteredPsychologists.length
-	// 	? addLike(filteredPsychologists)
-	// 	: addLike(psychologists?.data);
+
+	const psychologistsWithLikes = Array.isArray(filteredPsychologists)
+		? addLike(filteredPsychologists)
+		: addLike(psychologists?.data);
 
 	return (
 		<>
+			{filteringError instanceof AxiosError && (
+				<Alert
+					closable
+					description={
+						filteringError.response?.data?.message || 'An error occurred.'
+					}
+					type="error"
+					showIcon
+				/>
+			)}
 			<PsychologistsList
-				psychologists={psychologists.data as IPsychologistWithLikes[]}
+				psychologists={psychologistsWithLikes}
 				cities={cities}
 				filterHandler={filterHandler}
 				symptoms={symptoms}
