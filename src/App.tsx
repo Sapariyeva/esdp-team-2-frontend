@@ -4,7 +4,6 @@ import './assets/styles/_reser.scss';
 import { HomePage } from './components/homePage/HomePage.tsx';
 import { PacienttForm } from './components/pacientForm/PacientForm.tsx';
 import { PageNotFound } from './components/pageNotFound/PageNotFound.tsx';
-import { PsychologistForm } from './components/PsychologistForm/PsychologistForm.tsx';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
@@ -16,6 +15,7 @@ import { ArticleDetailed } from './components/article/articleDetailed/ArticleDet
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
+import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 
 const queryClient = new QueryClient();
 
