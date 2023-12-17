@@ -7,14 +7,30 @@ import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../../interfaces/ISymptom';
 import { ICity } from '../../../interfaces/IPsychologistForm';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'antd';
 import { AxiosError } from 'axios';
 
 export const PsychologistsListContainer = () => {
+	const storedFilteredPsychologists = localStorage.getItem(
+		'filteredPsychologists'
+	);
+	const savedFilteredPsychologists = storedFilteredPsychologists
+		? JSON.parse(storedFilteredPsychologists)
+		: undefined;
+
 	const [filteredPsychologists, setFilteredPsychologists] = useState<
 		IPsychologistWithLikes[] | undefined
-	>(undefined);
+	>(savedFilteredPsychologists);
+
+	useEffect(() => {
+		if (filteredPsychologists) {
+			localStorage.setItem(
+				'filteredPsychologists',
+				JSON.stringify(filteredPsychologists)
+			);
+		}
+	}, [filteredPsychologists]);
 
 	const {
 		data: psychologists,
