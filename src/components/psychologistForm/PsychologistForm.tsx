@@ -113,7 +113,7 @@ export const PsychologistForm = () => {
 
 		if (values.languages) {
 			const languages = Array.isArray(values.languages)
-				? values.languages.map((language: number) => String(language))
+				? values.languages.map((languages: number) => String(languages))
 				: [String(values.languages)];
 
 			languages.forEach((languages: string) => {
@@ -122,19 +122,24 @@ export const PsychologistForm = () => {
 		}
 
 		if (values.format) {
-			const format = Array.isArray(values.format)
-				? values.format.map((language: number) => String(language))
-				: [String(values.languages)];
+			const formatArray = Array.isArray(values.format)
+				? values.format
+				: [values.format];
 
-			format.forEach((format: string) => {
+			const formatStrings = formatArray.map((format) => String(format));
+
+			formatStrings.forEach((format) => {
 				formData.append('format', format);
 			});
 		}
 
 		if (values.consultationType) {
 			const consultationType = Array.isArray(values.consultationType)
-				? values.consultationType.map((language: number) => String(language))
-				: [String(values.languages)];
+				? values.consultationType.map(
+						(consultationType: number) => String(consultationType)
+						// eslint-disable-next-line no-mixed-spaces-and-tabs
+				  )
+				: [String(values.consultationType)];
 
 			consultationType.forEach((type: string) => {
 				formData.append('consultationType', type);
