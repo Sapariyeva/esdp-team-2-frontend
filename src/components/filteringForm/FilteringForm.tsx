@@ -95,6 +95,11 @@ const PsychologistFilterForm = ({
 		}
 	}, [form]);
 
+	const handleClearFilters = () => {
+		form.resetFields();
+		localStorage.removeItem('psychologistFilterForm');
+	};
+
 	return (
 		<Form
 			form={form}
@@ -267,6 +272,9 @@ const PsychologistFilterForm = ({
 				<Button type="primary" htmlType="submit">
 					Показать психологов
 				</Button>
+			</Form.Item>
+			<Form.Item>
+				<Button onClick={handleClearFilters}>Очистить фильтры</Button>
 			</Form.Item>
 		</Form>
 	);
