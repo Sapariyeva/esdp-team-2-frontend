@@ -131,5 +131,8 @@ const userSlice = createSlice({
 export const tokenSelect = (state: RootState) => {
 	return state.users.userInfo?.accessToken;
 };
+export const userSelect = (state: RootState) => {
+	return state.users.userInfo;
+};
 
 export default userSlice;
