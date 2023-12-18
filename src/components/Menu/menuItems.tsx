@@ -120,6 +120,11 @@ const anonymousItems: MenuProps['items'] = [
 		),
 		children: [
 			getItem({ label: 'Вход', key: '/auth/login', isLink: true }),
+			getItem({
+				label: 'Подтверждение почты',
+				key: '/auth/activate',
+				isLink: true,
+			}),
 			getItem({ label: 'Регистрация', key: '/auth/register', isLink: true }),
 		],
 	}),

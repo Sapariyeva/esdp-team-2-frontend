@@ -1,62 +1,72 @@
 @import '../../assets/styles/config';
 
 .layout {
-  .title {
-    text-align: center;
-    flex: 1;
-    margin: 10px 0 15px 0;
-    color: $color-purple;
-    font-size: 24px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    transform: skew(-10deg);
-  }
-  .typography{
-    text-align: left;
-    color: $color-purple;
-    margin: 8px 0;
-    cursor: pointer;
-    &:hover {
-      color: $bgcolor-soft-purple;
-    }
-  }
-  .form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 550px;
-    margin: 40px auto;
-    border-radius: 8px;
-    padding: 45px 55px;
-    border: 1px #62579e solid;
-    box-shadow: 12px 12px 9px 1px $bgcolor-soft-purple;
-    background-color: $color-white;
+	.title {
+		text-align: center;
+		flex: 1;
+		margin: 10px 0 15px 0;
+		color: $color-purple;
+		font-size: 24px;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+		transform: skew(-10deg);
+	}
+	.typography {
+		text-align: left;
+		color: $color-purple;
+		margin: 8px 0;
+		cursor: pointer;
+		&:hover {
+			color: $bgcolor-soft-purple;
+		}
+	}
+	.form {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		max-width: 550px;
+		margin: 40px auto;
+		border-radius: 8px;
+		padding: 45px 55px;
+		border: 1px #62579e solid;
+		box-shadow: 12px 12px 9px 1px $bgcolor-soft-purple;
+		background-color: $color-white;
 
-    .button {
-      font-size: 16px;
-      height: 40px;
-      background-color: $color-purple;
-      &:hover {
-       border-color: $color-soft-purple;
-      }
-    }
-    .link{
-      text-align: center;
-      margin-top: 20px;
-      color: $color-black;
-      font-size: 12px;
-      &:hover{
-        color:$color-purple
-      }
-    }
-    .radio{
-      display: flex;
-      max-width: 100%;
-    }
-    .error{
-      margin-bottom: 10px;
-      color: red;
-      text-align: center;
-    }
-  }
+		.button {
+			font-size: 16px;
+			height: 40px;
+			background-color: $color-purple;
+			&:hover {
+				border-color: $color-soft-purple;
+			}
+		}
+		.link {
+			text-align: center;
+			margin-top: 20px;
+			color: $color-black;
+			font-size: 12px;
+			&:hover {
+				color: $color-purple;
+			}
+		}
+		.radio {
+			display: flex;
+			max-width: 100%;
+		}
+		.error {
+			margin-bottom: 10px;
+			color: red;
+			text-align: center;
+		}
+	}
+}
+
+.container_mail_confirmation {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	max-width: 550px;
+  margin: 40px auto;
+  background-color: $color-white;
 }
