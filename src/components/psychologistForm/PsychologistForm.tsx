@@ -360,12 +360,13 @@ export const PsychologistForm = () => {
 						},
 						({ getFieldValue }) => ({
 							validator() {
-								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								const selectedTechniques =
+									getFieldValue('therapyMethodIds') || [];
 								if (selectedTechniques.length >= 2) {
 									return Promise.resolve();
 								}
 								return Promise.reject(
-									new Error('Выберите не менее двух техник!')
+									new Error('Выберите не менее двух терапий!')
 								);
 							},
 						}),
@@ -393,12 +394,12 @@ export const PsychologistForm = () => {
 						{ required: true, message: 'Выберите не менее двух симптомов!' },
 						({ getFieldValue }) => ({
 							validator() {
-								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								const selectedTechniques = getFieldValue('symptomIds') || [];
 								if (selectedTechniques.length >= 2) {
 									return Promise.resolve();
 								}
 								return Promise.reject(
-									new Error('Выберите не менее двух техник!')
+									new Error('Выберите не менее двух симпотомов!')
 								);
 							},
 						}),
