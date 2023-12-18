@@ -79,12 +79,10 @@ export const PsychologistForm = () => {
 		formData.append('address', values.address);
 		formData.append('birthday', values.birthday);
 		formData.append('cityId', values.cityId);
-		formData.append('consultationType', values.consultationType);
 		formData.append('cost', values.cost);
 		formData.append('description', values.description);
 		formData.append('education', values.education);
 		formData.append('experienceYears', values.experienceYears);
-
 		formData.append('fullName', values.fullname);
 		formData.append('gender', values.gender);
 		formData.append('lgbt', values.lgbt);
@@ -139,7 +137,7 @@ export const PsychologistForm = () => {
 				: [String(values.languages)];
 
 			consultationType.forEach((type: string) => {
-				formData.append('format', type);
+				formData.append('consultationType', type);
 			});
 		}
 
