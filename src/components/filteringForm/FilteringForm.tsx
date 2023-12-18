@@ -5,6 +5,7 @@ import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
 import ClearableInputNumber from '../UI/Input/ClearableInputNumber';
+import { useEffect } from 'react';
 
 const { Option } = Select;
 
@@ -38,6 +39,7 @@ const PsychologistFilterForm = ({
 	therapyMethods,
 }: Props) => {
 	const [form] = Form.useForm();
+
 	const parseAgeRange = (value: string): number | number[] => {
 		const ageMappings: { [key: string]: number | number[] } = {
 			'18-30': [18, 30],
@@ -74,8 +76,28 @@ const PsychologistFilterForm = ({
 			filteredValues.therapyMethodIds = form.getFieldValue('therapyMethodIds');
 		if (form.getFieldValue('symptomIds'))
 			filteredValues.symptomIds = form.getFieldValue('symptomIds');
-
+		localStorage.setItem(
+			'psychologistFilterForm',
+			JSON.stringify(form.getFieldsValue())
+		);
 		onFilter(filteredValues);
+	};
+
+	useEffect(() => {
+		const savedFormValues = localStorage.getItem('psychologistFilterForm');
+		try {
+			if (savedFormValues) {
+				const parsedFormValues = JSON.parse(savedFormValues);
+				form.setFieldsValue(parsedFormValues);
+			}
+		} catch (error) {
+			localStorage.removeItem('psychologistFilterForm');
+		}
+	}, [form]);
+
+	const handleClearFilters = () => {
+		form.resetFields();
+		localStorage.removeItem('psychologistFilterForm');
 	};
 
 	return (
@@ -250,6 +272,9 @@ const PsychologistFilterForm = ({
 				<Button type="primary" htmlType="submit">
 					Показать психологов
 				</Button>
+			</Form.Item>
+			<Form.Item>
+				<Button onClick={handleClearFilters}>Очистить фильтры</Button>
 			</Form.Item>
 		</Form>
 	);
