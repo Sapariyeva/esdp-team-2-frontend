@@ -84,10 +84,9 @@ export const PsychologistForm = () => {
 		formData.append('description', values.description);
 		formData.append('education', values.education);
 		formData.append('experienceYears', values.experienceYears);
-		formData.append('format', values.format);
+
 		formData.append('fullName', values.fullname);
 		formData.append('gender', values.gender);
-		formData.append('languages', values.languages);
 		formData.append('lgbt', values.lgbt);
 		formData.append('selfTherapy', values.selfTherapy);
 		formData.append('video', values.video);
@@ -111,6 +110,36 @@ export const PsychologistForm = () => {
 
 			symptomIds.forEach((symptomId: string) => {
 				formData.append('symptomIds', symptomId);
+			});
+		}
+
+		if (values.languages) {
+			const languages = Array.isArray(values.languages)
+				? values.languages.map((language: number) => String(language))
+				: [String(values.languages)];
+
+			languages.forEach((languages: string) => {
+				formData.append('languages', languages);
+			});
+		}
+
+		if (values.format) {
+			const format = Array.isArray(values.format)
+				? values.format.map((language: number) => String(language))
+				: [String(values.languages)];
+
+			format.forEach((format: string) => {
+				formData.append('format', format);
+			});
+		}
+
+		if (values.consultationType) {
+			const consultationType = Array.isArray(values.consultationType)
+				? values.consultationType.map((language: number) => String(language))
+				: [String(values.languages)];
+
+			consultationType.forEach((type: string) => {
+				formData.append('format', type);
 			});
 		}
 
