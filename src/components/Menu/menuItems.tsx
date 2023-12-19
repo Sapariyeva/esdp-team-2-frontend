@@ -143,7 +143,6 @@ const authItems: MenuProps['items'] = [
 		),
 		children: [
 			getItem({ label: <LogoutBtn />, key: 'logout' }),
-			getItem({ label: 'Форма пациента', key: '/pacient/form', isLink: true }),
 			getItem({
 				label: 'Кабинет Психолога',
 				key: '/my-account/psychologist',

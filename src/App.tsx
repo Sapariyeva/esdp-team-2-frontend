@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
 import { HomePage } from './components/homePage/HomePage.tsx';
-import { PacienttForm } from './components/pacientForm/PacientForm.tsx';
 import { PageNotFound } from './components/pageNotFound/PageNotFound.tsx';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
@@ -52,7 +51,6 @@ const App = () => {
 							path="/auth/register/psychologist"
 							element={<PsychologistForm />}
 						/>
-						<Route path="/pacient/form" element={<PacienttForm />} />
 						<Route
 							path="/psychologists/"
 							element={<PsychologistsListContainer />}
