@@ -22,11 +22,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							algorithm: true,
 						},
 						Input: {
-							colorPrimary: '#88ff00',
+							colorPrimary: '#8031b7',
 							algorithm: true,
 						},
 						Layout: {
-							bodyBg: '#ffffff !important',
 							borderRadius: 9,
 						},
 						Table: {
@@ -34,6 +33,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							headerBg: '#a48ce7',
 							headerColor: '#f9f8f9',
 							rowHoverBg: '#f7f6f9',
+						},
+						Checkbox: {
+							colorBgContainer: 'red',
+							marginXS: 30,
 						},
 					},
 				}}

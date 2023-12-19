@@ -119,8 +119,16 @@ const anonymousItems: MenuProps['items'] = [
 			</div>
 		),
 		children: [
-			getItem({ label: 'Вход', key: '/auth/login', isLink: true }),
-			getItem({ label: 'Регистрация', key: '/auth/register', isLink: true }),
+			getItem({
+				label: 'Как психолог',
+				key: '/auth/login/psychologist',
+				isLink: true,
+			}),
+			getItem({
+				label: 'Как пациент',
+				key: 'auth/login/patient',
+				isLink: true,
+			}),
 		],
 	}),
 ];
