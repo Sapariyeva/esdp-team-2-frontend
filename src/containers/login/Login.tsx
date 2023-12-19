@@ -21,17 +21,10 @@ function Login({ role }: Props) {
 			})
 			.catch((e) => e);
 	};
-	const title =
-		role === 'psychologist' ? 'Вход для психолога' : 'Вход для пациента';
 
 	return (
 		<>
-			<LoginForm
-				errors={loginError}
-				submit={submitUser}
-				title={title}
-				role={role}
-			/>
+			<LoginForm errors={loginError} submit={submitUser} role={role} />
 		</>
 	);
 }
