@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
 import { HomePage } from './components/homePage/HomePage.tsx';
-import { PacienttForm } from './components/pacientForm/PacientForm.tsx';
 import { PageNotFound } from './components/pageNotFound/PageNotFound.tsx';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
@@ -26,7 +25,10 @@ const App = () => {
 				<Routes>
 					<Route element={<CustomLayout />}>
 						<Route path="/" element={<HomePage />} />
-						<Route path="/auth/login" element={<Login role="patient" />} />
+						<Route
+							path="/auth/login/patient"
+							element={<Login role="patient" />}
+						/>
 						<Route
 							path="auth/login/psychologist"
 							element={<Login role="psychologist" />}
@@ -40,16 +42,15 @@ const App = () => {
 							element={<PatientAccountPage />}
 						/>
 						<Route
-							path="/auth/register"
+							path="/auth/register/patient"
 							element={<Register role="patient" />}
 						/>
-						<Route
-							path="auth/register/psychologist"
-							element={<Register role="psychologist" />}
-						/>
+
 						<Route path="*" element={<PageNotFound />} />
-						<Route path="/psychologist/form" element={<PsychologistForm />} />
-						<Route path="/pacient/form" element={<PacienttForm />} />
+						<Route
+							path="/auth/register/psychologist"
+							element={<PsychologistForm />}
+						/>
 						<Route
 							path="/psychologists/"
 							element={<PsychologistsListContainer />}

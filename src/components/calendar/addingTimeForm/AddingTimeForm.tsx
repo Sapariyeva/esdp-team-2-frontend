@@ -37,7 +37,6 @@ const AddingTimeForm = ({ active, setActive, date }: Props) => {
 			return response.data;
 		},
 	});
-
 	const handleOk = () => {
 		setActive(false);
 	};

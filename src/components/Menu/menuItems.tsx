@@ -119,8 +119,16 @@ const anonymousItems: MenuProps['items'] = [
 			</div>
 		),
 		children: [
-			getItem({ label: 'Вход', key: '/auth/login', isLink: true }),
-			getItem({ label: 'Регистрация', key: '/auth/register', isLink: true }),
+			getItem({
+				label: 'Как психолог',
+				key: '/auth/login/psychologist',
+				isLink: true,
+			}),
+			getItem({
+				label: 'Как пациент',
+				key: 'auth/login/patient',
+				isLink: true,
+			}),
 		],
 	}),
 ];
@@ -135,7 +143,6 @@ const authItems: MenuProps['items'] = [
 		),
 		children: [
 			getItem({ label: <LogoutBtn />, key: 'logout' }),
-			getItem({ label: 'Форма пациента', key: '/pacient/form', isLink: true }),
 			getItem({
 				label: 'Кабинет Психолога',
 				key: '/my-account/psychologist',

@@ -1,10 +1,11 @@
-import { LoginOutlined } from '@ant-design/icons';
-import { Alert, Button, Checkbox, Form, Input, Layout, Typography } from 'antd';
+import { Alert, Button, Form, Input, Layout, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
 import styles from './AuthForm.module.scss';
+import { useAppDispatch } from '../../store/hooks.ts';
+import { resetErrors } from '../../features/user/userSlice.ts';
 
 const { Title } = Typography;
 
@@ -12,12 +13,12 @@ type Props = {
 	submit: (submitData: SubmitAuthData) => void;
 	role: 'patient' | 'psychologist';
 	errors: ServerFormValidationResponse | null;
-	title: string;
 };
 
-const LoginForm = ({ submit, title, role, errors }: Props) => {
+const LoginForm = ({ submit, role, errors }: Props) => {
 	const [form] = Form.useForm();
-	const [method, setMethod] = useState('email');
+	const dispatch = useAppDispatch();
+	const [isChecked, setChecked] = useState(false);
 	const [loginErrors, setLoginErrors] =
 		useState<ServerFormValidationResponse | null>(null);
 
@@ -25,14 +26,10 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 		setLoginErrors(errors);
 	}, [errors]);
 
-	const handleMethodButtonClick = (method: 'email' | 'phone') => {
-		setMethod(method);
+	useEffect(() => {
+		dispatch(resetErrors());
 		form.resetFields();
-	};
-	const handleNavLinkClick = () => {
-		form.resetFields();
-		setLoginErrors(null);
-	};
+	}, [form, role]);
 
 	const onFinish = (userData: SubmitAuthData) => {
 		const user = {
@@ -40,7 +37,6 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 			role: role,
 		};
 		submit(user);
-		form.resetFields();
 	};
 	const getErrorsBy = (name: string) => {
 		const error = errors?.errors?.find((error) => error.type === name);
@@ -48,16 +44,19 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 	};
 
 	return (
-		<Layout className={styles.layout}>
+		<Layout className={styles.layout} style={{ height: '50svh' }}>
 			<Form
+				key={role}
+				form={form}
+				initialValues={{ remember: true }}
+				onFinish={onFinish}
+				autoComplete="on"
 				className={styles.form}
 				name="signin"
-				form={form}
-				onFinish={onFinish}
-				autoComplete="off"
+				layout="vertical"
 			>
 				<Title level={3} className={styles.title}>
-					{title}
+					Вход
 				</Title>
 				{loginErrors && (
 					<Alert
@@ -67,61 +66,46 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 						closable
 					/>
 				)}
-				{method === 'email' ? (
-					<Form.Item
-						name="email"
-						hasFeedback
-						label="Электронная почта"
-						labelCol={{ span: 24 }}
-						wrapperCol={{ span: 24 }}
-						rules={[
-							{
-								required: true,
-								message: 'Пожалуйста, введите свой электронный адрес.',
-							},
-							{
-								type: 'email',
-								message: 'Ваш e-mail недействителен.',
-							},
-						]}
-						validateStatus={
-							errors?.errors?.find((error) => error.type === 'email')
-								? 'error'
-								: undefined
-						}
-						help={getErrorsBy('email')}
-					>
-						<Input placeholder="Email" size="large" />
-					</Form.Item>
-				) : (
-					<Form.Item
-						name="phone"
-						hasFeedback
-						label="Номер телефона"
-						labelCol={{ span: 24 }}
-						wrapperCol={{ span: 24 }}
-						rules={[
-							{
-								required: true,
-								message: 'Ваш номер телефона недействителен.',
-							},
-						]}
-						validateStatus={
-							errors?.errors?.find((error) => error.type === 'phone')
-								? 'error'
-								: undefined
-						}
-						help={getErrorsBy('phone')}
-					>
-						<Input placeholder="Phone" size="large" />
-					</Form.Item>
-				)}
+
+				<label htmlFor="name" className={styles.label}>
+					Почта
+				</label>
+				<Form.Item
+					name="email"
+					hasFeedback
+					className={styles.formItem}
+					rules={[
+						{
+							required: true,
+							message: 'Пожалуйста, введите свой электронный адрес.',
+						},
+						{
+							type: 'email',
+							message: 'Ваш e-mail недействителен.',
+						},
+					]}
+					validateStatus={
+						errors?.errors?.find((error) => error.type === 'email')
+							? 'error'
+							: undefined
+					}
+					help={getErrorsBy('email')}
+				>
+					<Input
+						className={styles.input}
+						placeholder="example@gmail.com"
+						autoComplete="on"
+						size="small"
+					/>
+				</Form.Item>
+
+				<label htmlFor="name" className={styles.label}>
+					Пароль
+				</label>
 				<Form.Item
 					name="password"
+					className={styles.formItem}
 					hasFeedback
-					label="Пароль"
-					labelCol={{ span: 24 }}
-					wrapperCol={{ span: 24 }}
 					rules={[
 						{
 							required: true,
@@ -133,60 +117,51 @@ const LoginForm = ({ submit, title, role, errors }: Props) => {
 						},
 					]}
 				>
-					<Input.Password placeholder="Password" size="large" />
+					<Input.Password
+						className={styles.input}
+						placeholder="Пароль"
+						autoComplete="on"
+						size="small"
+					/>
 				</Form.Item>
-				<Form.Item>
-					<Form.Item valuePropName="checked" noStyle>
-						{method === 'email' ? (
-							<Typography
-								onClick={() => handleMethodButtonClick('phone')}
-								className={styles.typography}
-							>
-								Войти по номеру телефона
-							</Typography>
-						) : (
-							<Typography
-								onClick={() => handleMethodButtonClick('email')}
-								className={styles.typography}
-							>
-								Войти по электронной почте
-							</Typography>
-						)}
-						<Form.Item name="remember" valuePropName="checked" noStyle>
-							<Checkbox>Запомнить меня</Checkbox>
-						</Form.Item>
-						<a className="login-form-forgot" href="#">
-							Забыли пароль?
-						</a>
-					</Form.Item>
+
+				<Form.Item
+					className={styles.formItem}
+					name="remember"
+					valuePropName="checked"
+				>
+					<div className={styles.footer}>
+						<div className={styles.formGroup}>
+							<input
+								checked={isChecked}
+								onChange={(e) => setChecked(e.target.checked)}
+								type="checkbox"
+								id="rememberCheckbox"
+							/>
+							<label htmlFor="rememberCheckbox" />
+							<div className={styles.checkbox}>Запомнить меня</div>
+						</div>
+						<div>
+							<NavLink to={'/auth/recovery'} className={styles.link}>
+								Забыл пароль?
+							</NavLink>
+						</div>
+					</div>
 				</Form.Item>
+
 				<Button
 					className={styles.button}
 					type="primary"
 					htmlType="submit"
 					shape="round"
-					icon={<LoginOutlined />}
-					size="large"
 				>
 					Войти
 				</Button>
-				{role === 'patient' ? (
-					<NavLink
-						onClick={handleNavLinkClick}
-						to={'psychologist'}
-						className={styles.link}
-					>
-						Вход для психолога
+				<Form.Item name="remember" valuePropName="checked" noStyle>
+					<NavLink to={`/auth/register/${role}`} className={styles.typography}>
+						Зарегистрироваться
 					</NavLink>
-				) : (
-					<NavLink
-						onClick={handleNavLinkClick}
-						to={'/auth/login'}
-						className={styles.link}
-					>
-						Вход для пациента
-					</NavLink>
-				)}
+				</Form.Item>
 			</Form>
 		</Layout>
 	);
