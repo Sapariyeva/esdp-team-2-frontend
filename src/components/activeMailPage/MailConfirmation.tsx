@@ -20,7 +20,7 @@ export const MailConfirmation: React.FC = () => {
 					Подтверждение почты
 				</Title>
 				<Paragraph className={styles.open_mail_confirmation} key="1">
-					Войдите по ссылке из почты
+					Перейдите по ссылке из почты
 				</Paragraph>
 				<Paragraph className={styles.text_mail_confirmation} key="2">
 					Мы отправили ссылку для входа на {email}
