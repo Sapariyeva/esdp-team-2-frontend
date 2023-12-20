@@ -1,5 +1,5 @@
 import { Layout, Menu } from 'antd';
-
+import styles from './SideBar.module.scss';
 import {
 	CalendarOutlined,
 	FileOutlined,
@@ -31,14 +31,7 @@ const SideBar = ({ activeTab, onChangeTab }: Props) => {
 	];
 	return (
 		<Sider
-			style={{
-				overflow: 'auto',
-				height: '100vh',
-				position: 'sticky',
-				left: 0,
-				top: 0,
-				bottom: 0,
-			}}
+			className={styles.side}
 			breakpoint="sm"
 			collapsedWidth="50px"
 			onCollapse={() => setCollapsed(!collapsed)}

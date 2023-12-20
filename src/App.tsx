@@ -15,7 +15,10 @@ import { PsychologistsListContainer } from './containers/psychologists/catalog/P
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
-
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+dayjs.locale('ru');
 const queryClient = new QueryClient();
 
 const App = () => {
