@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
 import { HomePage } from './components/homePage/HomePage.tsx';
@@ -15,10 +15,17 @@ import { PsychologistsListContainer } from './containers/psychologists/catalog/P
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
+import { useAppSelector } from './store/hooks.ts';
+import { RootState } from './store/index.ts';
+import { MailConfirmation } from './components/activeMailPage/MailConfirmation.tsx';
+import { ActivePage } from './components/activeMailPage/ActivePage.tsx';
 
 const queryClient = new QueryClient();
 
 const App = () => {
+	const isActivated = useAppSelector(
+		(state: RootState) => state.users.userInfo?.isActivated
+	);
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
@@ -62,6 +69,17 @@ const App = () => {
 						<Route path="/business" element={<BusinessPage />} />
 						<Route path="/articles" element={<ArticlePageContainer />} />
 						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
+						<Route path="/auth/activate" element={<ActivePage />} />
+						<Route
+							path="/auth/confirmation"
+							element={
+								isActivated ? (
+									<Navigate to="/auth/activate" />
+								) : (
+									<MailConfirmation />
+								)
+							}
+						/>
 					</Route>
 				</Routes>
 			</BrowserRouter>
