@@ -20,6 +20,10 @@ import { RootState } from './store/index.ts';
 import { MailConfirmation } from './components/activeMailPage/MailConfirmation.tsx';
 import { ActivePage } from './components/activeMailPage/ActivePage.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+dayjs.locale('ru');
 
 const queryClient = new QueryClient();
 
