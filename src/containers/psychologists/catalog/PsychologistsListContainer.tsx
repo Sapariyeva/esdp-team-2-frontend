@@ -7,50 +7,35 @@ import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../../interfaces/ISymptom';
 import { ICity } from '../../../interfaces/IPsychologistForm';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert } from 'antd';
 import { AxiosError } from 'axios';
+import { useAppSelector } from '../../../store/hooks';
 
 export const PsychologistsListContainer = () => {
-	const storedFilteredPsychologists = localStorage.getItem(
-		'filteredPsychologists'
+	const authUser = useAppSelector((state) => state.users.userInfo);
+
+	const [filterValues, setFilterValues] = useState<null | IFilteringValues>(
+		null
 	);
-	const savedFilteredPsychologists = storedFilteredPsychologists
-		? JSON.parse(storedFilteredPsychologists)
-		: undefined;
-
-	const [filteredPsychologists, setFilteredPsychologists] = useState<
-		IPsychologistWithLikes[] | undefined
-	>(savedFilteredPsychologists);
-
-	useEffect(() => {
-		if (filteredPsychologists) {
-			localStorage.setItem(
-				'filteredPsychologists',
-				JSON.stringify(filteredPsychologists)
-			);
-		}
-	}, [filteredPsychologists]);
 
 	const {
 		data: psychologists,
 		error,
 		isLoading,
 	} = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<IPsychologistWithLikes[]>(`/psychologists`);
+		queryFn: async () => {
+			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
+				`/psychologists/filter`,
+				filterValues,
+				{ headers: { Authorization: authUser?.accessToken } }
+			);
+			return data;
 		},
-		queryKey: ['GetPsychologists'],
+		queryKey: ['GetPsychologists', filterValues],
+		enabled: !!filterValues,
 	});
-
-	const { mutate: filterPsychologists, error: filteringError } = useMutation({
-		mutationFn: async (values: IFilteringValues) => {
-			return await axiosInstance.post('/psychologists/filter', values);
-		},
-		onSuccess: (data) => {
-			setFilteredPsychologists(data?.data);
-		},
-	});
+	const psychologistsList = psychologists ?? [];
 
 	const { data: techniquesData } = useQuery({
 		queryFn: () => {
@@ -84,56 +69,48 @@ export const PsychologistsListContainer = () => {
 	});
 	const cities = citiesData?.data ?? [];
 
-	const addLike = (arr: IPsychologistWithLikes[]) => {
-		return [...arr].map((el) => {
-			el['like'] = false;
-			return el;
-		});
+	const { mutate: switchFavoriteQuery } = useMutation({
+		mutationFn: async (psychologistId: number) => {
+			const data = { psychologistId };
+			return await axiosInstance.post(`patients/favorites`, data, {
+				headers: { Authorization: authUser?.accessToken },
+			});
+		},
+	});
+
+	const switchFavorite = (id: number): boolean => {
+		if (!authUser || !authUser.patient) return false;
+
+		switchFavoriteQuery(id);
+		return true;
 	};
 
 	const filterHandler = (values: IFilteringValues) => {
-		filterPsychologists(values);
+		setFilterValues(values);
 	};
 
 	if (isLoading) {
 		return <div>LOADING...</div>;
 	}
 
-	if (error || !psychologists?.data || psychologists?.data.length === 0) {
-		return (
-			<div>
-				{error ? (
-					<p>There was an error fetching data. Please try again later.</p>
-				) : (
-					<p>No psychologists available.</p>
-				)}
-			</div>
-		);
-	}
-
-	const psychologistsWithLikes = Array.isArray(filteredPsychologists)
-		? addLike(filteredPsychologists)
-		: addLike(psychologists?.data);
-
 	return (
 		<>
-			{filteringError instanceof AxiosError && (
+			{error instanceof AxiosError && (
 				<Alert
 					closable
-					description={
-						filteringError.response?.data?.message || 'An error occurred.'
-					}
+					description={error?.message || 'An error occurred.'}
 					type="error"
 					showIcon
 				/>
 			)}
 			<PsychologistsList
-				psychologists={psychologistsWithLikes}
+				psychologists={psychologistsList}
 				cities={cities}
 				filterHandler={filterHandler}
 				symptoms={symptoms}
 				techniques={techniques}
 				therapyMethod={therapyMethods}
+				switchFavorite={switchFavorite}
 			/>
 		</>
 	);
