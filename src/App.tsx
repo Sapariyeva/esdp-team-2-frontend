@@ -16,6 +16,8 @@ import { PsychologistsListContainer } from './containers/psychologists/catalog/P
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
+
+import { ActivePage } from './components/authForm/ActivePage.tsx';
 import { MailConfirmation } from './components/authForm/MailConfirmation.tsx';
 
 const queryClient = new QueryClient();
@@ -62,7 +64,8 @@ const App = () => {
 						<Route path="/business" element={<BusinessPage />} />
 						<Route path="/articles" element={<ArticlePageContainer />} />
 						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
-						<Route path="/auth/activate" element={<MailConfirmation />} />
+						<Route path="/auth/activate" element={<ActivePage />} />
+						<Route path="/auth/test" element={<MailConfirmation />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

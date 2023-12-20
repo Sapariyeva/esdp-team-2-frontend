@@ -122,7 +122,7 @@ const anonymousItems: MenuProps['items'] = [
 			getItem({ label: 'Вход', key: '/auth/login', isLink: true }),
 			getItem({
 				label: 'Подтверждение почты',
-				key: '/auth/activate',
+				key: '/auth/test',
 				isLink: true,
 			}),
 			getItem({ label: 'Регистрация', key: '/auth/register', isLink: true }),

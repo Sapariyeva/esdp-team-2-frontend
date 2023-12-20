@@ -62,11 +62,38 @@
 }
 
 .container_mail_confirmation {
-	width: 100%;
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
-	max-width: 550px;
-  margin: 40px auto;
-  background-color: $color-white;
+	align-items: center;
+	background-color: $color-white;
+
+	.block_mail_confirmation {
+		text-align: center;
+		max-width: 80%;
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		@media screen and (max-width: 768px) {
+			max-width: 90%;
+			padding: 10px;
+		}
+
+		img {
+			width: 100%;
+			max-width: 400px;
+			height: auto;
+			margin: 20px 0;
+
+			@media screen and (max-width: 768px) {
+				max-width: 200px;
+			}
+		}
+
+		a {
+			color: gray;
+			text-decoration: underline;
+		}
+	}
 }
