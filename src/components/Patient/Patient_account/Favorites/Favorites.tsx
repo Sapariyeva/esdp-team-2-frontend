@@ -9,42 +9,52 @@ import {
 	Result,
 	Button,
 } from 'antd';
-import {
-	HeartOutlined,
-	HeartFilled,
-	ArrowRightOutlined,
-} from '@ant-design/icons';
+import { HeartFilled, ArrowRightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../api/axiosInstance';
 import { IPatient } from '../../../../interfaces/IPatient';
+import { useAppSelector } from '../../../../store/hooks';
 
 const { Text } = Typography;
 
 const Favorites = () => {
+	const authUser = useAppSelector((state) => state.users.userInfo);
 	const navigate = useNavigate();
-	const client = useQueryClient();
-	const { data, isLoading } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<IPatient>(`/patients/11`);
+
+	const { data: patient, isLoading } = useQuery({
+		queryFn: async () => {
+			const { data } = await axiosInstance.get<IPatient>(
+				`/patients/${authUser?.patient?.id ?? 0}`
+			);
+			return data;
 		},
 		queryKey: ['GetFavourites'],
+		enabled: !!(authUser && authUser.patient),
 	});
-	const psychologists = data?.data.favorites;
-	const { mutate: removeFavourite } = useMutation({
-		mutationFn: async (id: number) => {
-			const data = { psychologistId: id };
-			return await axiosInstance.post('patients/11/favorites', data);
-		},
-		onSuccess: () => {
-			client.invalidateQueries({ queryKey: ['GetFavourites'] });
+	const psychologists = patient?.favorites || [];
+
+	const { mutate: switchFavoriteQuery } = useMutation({
+		mutationFn: async (psychologistId: number) => {
+			const data = { psychologistId };
+			return await axiosInstance.post(`patients/favorites`, data, {
+				headers: { Authorization: authUser?.accessToken },
+			});
 		},
 	});
 
-	const handleRemoveProfile = (id: number) => {
-		removeFavourite(id);
-		message.success('Психолог был успешно исключен из списка избранных.');
+	const removeFavoriteOneHandler = (psychologistId: number) => {
+		switchFavoriteQuery(psychologistId);
+
+		message.success('Психолог был успешно удален из списка избранных.');
+
+		const psychologistIndex: number = psychologists.findIndex(
+			(psychologist) => psychologist.id === psychologistId
+		);
+
+		psychologists.splice(psychologistIndex, 1);
 	};
+
 	if (isLoading) {
 		return <div>Loading</div>;
 	}
@@ -52,9 +62,9 @@ const Favorites = () => {
 	return (
 		<div style={{ display: 'flex', gap: '3%', flexWrap: 'wrap' }}>
 			{psychologists?.length ? (
-				psychologists.map((psychologists) => (
+				psychologists.map((psychologist) => (
 					<Card
-						key={psychologists.id}
+						key={psychologist.id}
 						style={{
 							width: '280px',
 							borderRadius: '8px',
@@ -65,10 +75,10 @@ const Favorites = () => {
 						cover={
 							<>
 								<Image
-									alt={psychologists.fullName}
+									alt={psychologist.fullName}
 									src={
-										psychologists.photos && psychologists.photos.length > 0
-											? `http://localhost:8000/uploads/${psychologists.photos[0].photo}`
+										psychologist.photos && psychologist.photos.length > 0
+											? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
 											: ''
 									}
 									preview={true}
@@ -81,23 +91,15 @@ const Favorites = () => {
 										left: '80%',
 										cursor: 'pointer',
 									}}
-									onClick={() => {
-										handleRemoveProfile(psychologists.id);
-									}}
+									onClick={() => removeFavoriteOneHandler(psychologist.id)}
 								>
-									{psychologists ? (
-										<HeartFilled
-											style={{
-												marginLeft: '20px',
-												color: 'red',
-												fontSize: '1.5rem',
-											}}
-										/>
-									) : (
-										<HeartOutlined
-											style={{ marginLeft: '20px', fontSize: '1.5rem' }}
-										/>
-									)}
+									<HeartFilled
+										style={{
+											marginLeft: '20px',
+											color: 'red',
+											fontSize: '1.5rem',
+										}}
+									/>
 								</Space>
 							</>
 						}
@@ -113,7 +115,7 @@ const Favorites = () => {
 									marginBottom: '10px',
 								}}
 							>
-								{psychologists.fullName}
+								{psychologist.fullName}
 							</Text>
 							<Text
 								style={{
@@ -123,7 +125,7 @@ const Favorites = () => {
 									fontSize: '12px',
 								}}
 							>
-								{psychologists.description}
+								{psychologist.description}
 							</Text>
 						</Space>
 						<Row
@@ -140,7 +142,7 @@ const Favorites = () => {
 									padding: '1rem',
 									cursor: 'pointer',
 								}}
-								onClick={() => navigate(`/psychologists/${psychologists.id}`)}
+								onClick={() => navigate(`/psychologists/${psychologist.id}`)}
 							>
 								<Space>
 									<Text
