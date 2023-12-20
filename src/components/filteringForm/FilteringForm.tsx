@@ -9,7 +9,11 @@ import { useEffect } from 'react';
 
 const { Option } = Select;
 
-const initialValues = {
+interface IFilteringValuesAnt extends Omit<IFilteringValues, 'age'> {
+	age?: keyof typeof ageMappings;
+}
+
+const initialValues: IFilteringValuesAnt = {
 	gender: undefined,
 	lgbt: undefined,
 	age: undefined,
@@ -21,6 +25,25 @@ const initialValues = {
 	techniqueIds: undefined,
 	therapyMethodIds: undefined,
 	symptomIds: undefined,
+};
+
+const ageMappings = {
+	'18-30': {
+		name: '18 - 30',
+		value: [18, 30],
+	},
+	'30-40': {
+		name: '30 - 40',
+		value: [30, 40],
+	},
+	'40-60': {
+		name: '40 - 60',
+		value: [40, 60],
+	},
+	'60+': {
+		name: '60+',
+		value: 60,
+	},
 };
 
 type Props = {
@@ -40,49 +63,6 @@ const PsychologistFilterForm = ({
 }: Props) => {
 	const [form] = Form.useForm();
 
-	const parseAgeRange = (value: string): number | number[] => {
-		const ageMappings: { [key: string]: number | number[] } = {
-			'18-30': [18, 30],
-			'30-40': [30, 40],
-			'40-60': [40, 60],
-			'60+': 60,
-		};
-
-		return ageMappings[value];
-	};
-
-	const onFinish = () => {
-		const filteredValues: IFilteringValues = {};
-
-		if (form.getFieldValue('gender'))
-			filteredValues.gender = form.getFieldValue('gender');
-		if (form.getFieldValue('age'))
-			filteredValues.age = parseAgeRange(form.getFieldValue('age'));
-		if (form.getFieldValue('languages'))
-			filteredValues.languages = form.getFieldValue('languages');
-		if (form.getFieldValue('format'))
-			filteredValues.format = form.getFieldValue('format');
-		if (form.getFieldValue('cost'))
-			filteredValues.cost = form.getFieldValue('cost');
-		if (form.getFieldValue('consultationType'))
-			filteredValues.consultationType = form.getFieldValue('consultationType');
-		if (form.getFieldValue('lgbt'))
-			filteredValues.lgbt = form.getFieldValue('lgbt');
-		if (form.getFieldValue('cityId'))
-			filteredValues.cityId = form.getFieldValue('cityId');
-		if (form.getFieldValue('techniqueIds'))
-			filteredValues.techniqueIds = form.getFieldValue('techniqueIds');
-		if (form.getFieldValue('therapyMethodIds'))
-			filteredValues.therapyMethodIds = form.getFieldValue('therapyMethodIds');
-		if (form.getFieldValue('symptomIds'))
-			filteredValues.symptomIds = form.getFieldValue('symptomIds');
-		localStorage.setItem(
-			'psychologistFilterForm',
-			JSON.stringify(form.getFieldsValue())
-		);
-		onFilter(filteredValues);
-	};
-
 	useEffect(() => {
 		const savedFormValues = localStorage.getItem('psychologistFilterForm');
 		try {
@@ -93,7 +73,22 @@ const PsychologistFilterForm = ({
 		} catch (error) {
 			localStorage.removeItem('psychologistFilterForm');
 		}
+
+		form.submit();
 	}, [form]);
+
+	const onValuesChange = (_: unknown, values: IFilteringValuesAnt) => {
+		localStorage.setItem('psychologistFilterForm', JSON.stringify(values));
+	};
+
+	const onFinish = ({ age, ...restValues }: IFilteringValuesAnt) => {
+		const filteredValues: IFilteringValues = {
+			...restValues,
+			age: age ? ageMappings[age].value : undefined,
+		};
+
+		onFilter(filteredValues);
+	};
 
 	const handleClearFilters = () => {
 		form.resetFields();
@@ -106,6 +101,7 @@ const PsychologistFilterForm = ({
 			name="psychologistFilter"
 			onFinish={onFinish}
 			initialValues={initialValues}
+			onValuesChange={onValuesChange}
 			style={{
 				display: 'flex',
 				flexDirection: 'row',
@@ -130,10 +126,11 @@ const PsychologistFilterForm = ({
 					placeholder={'Выбрать возраст'}
 					allowClear
 				>
-					<Option value="18-30">18 - 30</Option>
-					<Option value="30-40">30 - 40</Option>
-					<Option value="40-60">40 - 60</Option>
-					<Option value="60+">60+</Option>
+					{Object.entries(ageMappings).map(([key, { name }]) => (
+						<Option key={key} value={key}>
+							{name}
+						</Option>
+					))}
 				</Select>
 			</Form.Item>
 
