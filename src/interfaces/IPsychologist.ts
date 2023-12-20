@@ -55,7 +55,7 @@ export interface IPsychologist {
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
-	like?: boolean;
+	isFavorite: boolean;
 }
 
 export interface IPsychologistCardProps {
@@ -69,7 +69,7 @@ export interface IPsychologistCardProps {
 		description: string;
 		photos: IPhoto[];
 		id: number;
-		like: boolean;
+		isFavorite: boolean;
 	};
 }
 export interface IPsychologistWithLikes {
@@ -95,5 +95,5 @@ export interface IPsychologistWithLikes {
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
-	like: boolean;
+	isFavorite: boolean;
 }
