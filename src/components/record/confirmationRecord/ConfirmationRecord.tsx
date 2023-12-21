@@ -7,11 +7,19 @@ import { userSelect } from '../../../features/user/userSlice.ts';
 
 type Props = {
 	setActiveTab: (key: string) => void;
+	onSummit: () => void;
 	format: string;
 	recordTime: string;
+	cost: number;
 };
 
-const ConfirmationRecord = ({ setActiveTab, format, recordTime }: Props) => {
+const ConfirmationRecord = ({
+	setActiveTab,
+	onSummit,
+	format,
+	recordTime,
+	cost,
+}: Props) => {
 	const user = useAppSelector(userSelect);
 
 	return (
@@ -31,21 +39,28 @@ const ConfirmationRecord = ({ setActiveTab, format, recordTime }: Props) => {
 					<p>ФИО</p>
 					<h2>{user?.patient?.name}</h2>
 				</div>
-
-				<div className={styles.bookingFormat}>
-					<p>Формат</p>
-					<h3 className={styles.bookingSelect}>{format}</h3>
+				<div className={styles.main}>
+					<div className={styles.bookingFormat}>
+						<p>Формат</p>
+						<h3 className={styles.bookingSelect}>{format}</h3>
+					</div>
+					<div className={styles.bookingFormat}>
+						<p>Сумма</p>
+						<h3 className={styles.bookingSelect}>{cost.toLocaleString()} ₸</h3>
+					</div>
 				</div>
 
 				<div className={styles.bookingFormat}>
 					<p>Время записи</p>
 					<h4 className={styles.bookingSelect}>
-						{dayjs(recordTime).format('D MMMM, HH:mm ')}
+						{dayjs(recordTime).format('D MMMM HH:mm ')}
 					</h4>
 				</div>
 			</div>
 
-			<Button className={styles.btn}>Записаться</Button>
+			<Button className={styles.btn} onClick={onSummit}>
+				Записаться
+			</Button>
 		</>
 	);
 };

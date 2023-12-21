@@ -53,12 +53,14 @@ interface MonthObject {
 type Props = {
 	setActiveTab: (key: string) => void;
 	setRecordTime: (date: string) => void;
+	setSlotId: (date: string) => void;
 	psychologistId: number;
 };
 const SelectionBookingTime = ({
 	setActiveTab,
 	psychologistId,
 	setRecordTime,
+	setSlotId,
 }: Props) => {
 	dayjs.locale('ru');
 	const token = useAppSelector(tokenSelect);
@@ -100,6 +102,8 @@ const SelectionBookingTime = ({
 		const selectedDate = dayjs(`${date.date}T${date.time}`).format(
 			'YYYY-MM-DDTHH:mm'
 		);
+
+		setSlotId(date.id);
 		setRecordTime(selectedDate);
 		setSelectedTime(date.time);
 		setSelectedDate(date.date);

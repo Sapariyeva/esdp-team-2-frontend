@@ -11,7 +11,7 @@ type Props = {
 	setFormat: (format: string) => void;
 };
 const BookingForm = ({ setActiveTab, format, setFormat }: Props) => {
-	const [selectedFormat, setSelectedFormat] = useState('Онлаин');
+	const [selectedFormat, setSelectedFormat] = useState(format[0]);
 	const user = useAppSelector(userSelect);
 	const patient = user?.patient ? user.patient.name : null;
 

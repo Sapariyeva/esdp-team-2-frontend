@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Record from '../../../record/Record.tsx';
 import { useAppSelector } from '../../../../store/hooks.ts';
 import { userSelect } from '../../../../features/user/userSlice.ts';
+import { useNavigate } from 'react-router-dom';
 
 type PsychologistCardProps = {
 	psychologist: IPsychologist;
@@ -16,8 +17,10 @@ type PsychologistCardProps = {
 
 const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 	const [active, setActive] = useState(false);
+	const navigate = useNavigate();
 	const user = useAppSelector(userSelect);
 	const handleClick = () => {
+		if (!user || !user.patient) navigate('/auth/login/patient');
 		setActive(true);
 	};
 

@@ -47,7 +47,7 @@ const SideBar = ({ activeTab, onChangeTab }: Props) => {
 			'grp',
 			null,
 			[
-				getItem('Мои записи', 'myRecords', <CiEdit />),
+				getItem('Мои записи', 'records', <CiEdit />),
 				getItem('История посещения', 'history', <GoHistory />),
 				getItem('Избранное', 'favorites', <AiOutlineHeart />),
 				getItem(
