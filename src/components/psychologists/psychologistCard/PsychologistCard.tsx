@@ -8,17 +8,16 @@ import { axiosInstance } from '../../../api/axiosInstance';
 import { useAppSelector } from '../../../store/hooks';
 import updateStorageViewedPsychologists from '../../../helpers/updateStorageViewedPsychologists';
 
-
 const { Meta } = Card;
 
 interface Props {
 	psychologist: IPsychologistWithLikes;
-	switchFavorite: (id: number) => boolean;
+	switchFavorite?: (id: number) => boolean;
 }
 
 export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
-  const client = useQueryClient();
+	const client = useQueryClient();
 	const navigate = useNavigate();
 
 	const onClickReadMore = () => {
@@ -29,7 +28,6 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 			updateStorageViewedPsychologists(psychologist.id);
 		}
 	};
-
 
 	const { mutate: saveViewedPsychologist } = useMutation({
 		mutationFn: async (psychologistId: number) => {
@@ -51,6 +49,8 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 	});
 
 	const changeHeart = () => {
+		if (switchFavorite === undefined) return;
+
 		const isSwitched = switchFavorite(psychologist.id);
 		if (!isSwitched) return;
 
@@ -67,7 +67,7 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 			hoverable
 			cover={
 				<div className={styles.cover}>
-					{authUser?.role === 'patient' && (
+					{authUser?.role === 'patient' && switchFavorite && (
 						<div>
 							{psychologist.isFavorite ? (
 								<span className={styles.heart}>

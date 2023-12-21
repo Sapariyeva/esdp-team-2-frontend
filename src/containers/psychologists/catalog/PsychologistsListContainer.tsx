@@ -80,7 +80,6 @@ export const PsychologistsListContainer = () => {
 
 	const switchFavorite = (id: number): boolean => {
 		if (!authUser || !authUser.patient) return false;
-
 		switchFavoriteQuery(id);
 		return true;
 	};
