@@ -1,5 +1,5 @@
 import styles from './Record.module.scss';
-import { Tabs, TabsProps } from 'antd';
+import { message, Tabs, TabsProps } from 'antd';
 import 'dayjs/locale/ru';
 import { useState } from 'react';
 import SelectionBookingTime from './selectionBookingTime/SelectionBookingTime.tsx';
@@ -42,6 +42,8 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 			});
 		},
 		onSuccess: () => {
+			message.success('Вы успешно записались на прием к психологу!');
+
 			navigate('/my-account/patient/');
 		},
 	});

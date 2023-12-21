@@ -59,7 +59,7 @@ const AddingTimeForm = ({ active, setActive, date }: Props) => {
 					<Loading />
 				) : (
 					<>
-						<AddingTimeHeader handleCancel={handleCancel} date={date} />
+						<AddingTimeHeader date={date} />
 
 						<AddingTimeBlock date={date} refetch={refetch} />
 
