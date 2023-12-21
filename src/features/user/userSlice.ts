@@ -86,7 +86,12 @@ const initialState: UserState = {
 const userSlice = createSlice({
 	name: 'users',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetErrors: (state) => {
+			state.registerError = null;
+			state.loginError = null;
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(registerUser.pending, (state) => {
@@ -131,8 +136,12 @@ const userSlice = createSlice({
 export const tokenSelect = (state: RootState) => {
 	return state.users.userInfo?.accessToken;
 };
+
 export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
+
+export const { resetErrors } = userSlice.actions;
+
 
 export default userSlice;

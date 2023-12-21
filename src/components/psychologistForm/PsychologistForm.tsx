@@ -9,18 +9,16 @@ import {
 	Upload,
 	UploadFile,
 } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useEffect } from 'react';
+import { useAppSelector } from '../../store/hooks';
 import styles from './PsychologistForm.module.scss';
-import {
-	getTechniques,
-	getTherapyMethod,
-	getSymptoms,
-	getCities,
-	postPsychologistForm,
-} from '../../features/psychologistRegistration/psychologistRegistrationSlice';
 import { UploadOutlined } from '@ant-design/icons';
 import { IPsychologistForm } from '../../interfaces/IPsychologist';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { axiosInstance } from '../../api/axiosInstance';
+import { ITechnique } from '../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
+import { ISymptom } from '../../interfaces/ISymptom';
+import { ICity } from '../../interfaces/IPsychologistForm';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -30,33 +28,63 @@ const initialValues = {
 };
 
 export const PsychologistForm = () => {
-	const { techniques, therapyMethod, symptoms, cities } = useAppSelector(
-		(state) => state.psychologistRegistration
-	);
-	const dispatch = useAppDispatch();
+	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
+	const { data: techniquesData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ITechnique[]>('techniques');
+		},
+		queryKey: ['GetTechniques'],
+	});
+	const techniques = techniquesData?.data ?? [];
 
-	useEffect(() => {
-		if (techniques !== undefined) dispatch(getTechniques());
-		if (therapyMethod !== undefined) dispatch(getTherapyMethod());
-		if (symptoms !== undefined) dispatch(getSymptoms());
-		if (cities !== undefined) dispatch(getCities());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const { data: therapyMethodsData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ITherapyMethod[]>(`methods`);
+		},
+		queryKey: ['GetTherapyMethod'],
+	});
+	const therapyMethod = therapyMethodsData?.data ?? [];
+
+	const { data: symptomsData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ISymptom[]>(`symptoms`);
+		},
+		queryKey: ['GetSymptoms'],
+	});
+	const symptoms = symptomsData?.data ?? [];
+
+	const { data: citiesData } = useQuery({
+		queryFn: () => {
+			return axiosInstance.get<ICity[]>(`cities`);
+		},
+		queryKey: ['GetCities'],
+	});
+	const cities = citiesData?.data ?? [];
+	const { mutate: postPsychologist } = useMutation({
+		mutationFn: async (psychologistForm: FormData) => {
+			return await axiosInstance.post(
+				'psychologists/create',
+				psychologistForm,
+				{
+					headers: {
+						Authorization: `${token}`,
+					},
+				}
+			);
+		},
+	});
 
 	const handleUpload = async (values: IPsychologistForm) => {
 		const formData = new FormData();
 		formData.append('address', values.address);
 		formData.append('birthday', values.birthday);
 		formData.append('cityId', values.cityId);
-		formData.append('consultationType', values.consultationType);
 		formData.append('cost', values.cost);
 		formData.append('description', values.description);
 		formData.append('education', values.education);
 		formData.append('experienceYears', values.experienceYears);
-		formData.append('format', values.format);
 		formData.append('fullName', values.fullname);
 		formData.append('gender', values.gender);
-		formData.append('languages', values.languages);
 		formData.append('lgbt', values.lgbt);
 		formData.append('selfTherapy', values.selfTherapy);
 		formData.append('video', values.video);
@@ -83,6 +111,41 @@ export const PsychologistForm = () => {
 			});
 		}
 
+		if (values.languages) {
+			const languages = Array.isArray(values.languages)
+				? values.languages.map((languages: number) => String(languages))
+				: [String(values.languages)];
+
+			languages.forEach((languages: string) => {
+				formData.append('languages', languages);
+			});
+		}
+
+		if (values.format) {
+			const formatArray = Array.isArray(values.format)
+				? values.format
+				: [values.format];
+
+			const formatStrings = formatArray.map((format) => String(format));
+
+			formatStrings.forEach((format) => {
+				formData.append('format', format);
+			});
+		}
+
+		if (values.consultationType) {
+			const consultationType = Array.isArray(values.consultationType)
+				? values.consultationType.map(
+						(consultationType: number) => String(consultationType)
+						// eslint-disable-next-line no-mixed-spaces-and-tabs
+				  )
+				: [String(values.consultationType)];
+
+			consultationType.forEach((type: string) => {
+				formData.append('consultationType', type);
+			});
+		}
+
 		if (values.techniqueIds && values.techniqueIds.length > 0) {
 			values.techniqueIds.forEach((techniqueIds: number) => {
 				formData.append('techniqueIds', String(techniqueIds));
@@ -95,7 +158,7 @@ export const PsychologistForm = () => {
 			});
 		}
 
-		await dispatch(postPsychologistForm(formData));
+		postPsychologist(formData);
 	};
 
 	return (
@@ -329,12 +392,13 @@ export const PsychologistForm = () => {
 						},
 						({ getFieldValue }) => ({
 							validator() {
-								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								const selectedTechniques =
+									getFieldValue('therapyMethodIds') || [];
 								if (selectedTechniques.length >= 2) {
 									return Promise.resolve();
 								}
 								return Promise.reject(
-									new Error('Выберите не менее двух техник!')
+									new Error('Выберите не менее двух терапий!')
 								);
 							},
 						}),
@@ -362,12 +426,12 @@ export const PsychologistForm = () => {
 						{ required: true, message: 'Выберите не менее двух симптомов!' },
 						({ getFieldValue }) => ({
 							validator() {
-								const selectedTechniques = getFieldValue('techniqueIds') || [];
+								const selectedTechniques = getFieldValue('symptomIds') || [];
 								if (selectedTechniques.length >= 2) {
 									return Promise.resolve();
 								}
 								return Promise.reject(
-									new Error('Выберите не менее двух техник!')
+									new Error('Выберите не менее двух симпотомов!')
 								);
 							},
 						}),

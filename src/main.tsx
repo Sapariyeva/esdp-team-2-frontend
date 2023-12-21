@@ -4,8 +4,7 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ConfigProvider } from 'antd';
-import LocaleProvider from 'antd/es/locale';
-import ruRU from 'antd/lib/locale/ru_RU'; // Import the Russian locale for Ant Design
+import ruRU from 'antd/lib/locale/ru_RU';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<Provider store={store}>
@@ -23,11 +22,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							algorithm: true,
 						},
 						Input: {
-							colorPrimary: '#88ff00',
+							colorPrimary: '#8031b7',
 							algorithm: true,
 						},
 						Layout: {
-							bodyBg: '#ffffff !important',
 							borderRadius: 9,
 						},
 						Table: {
@@ -36,12 +34,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							headerColor: '#f9f8f9',
 							rowHoverBg: '#f7f6f9',
 						},
+						Checkbox: {
+							colorBgContainer: 'red',
+							marginXS: 30,
+						},
 					},
 				}}
+				locale={ruRU}
 			>
-				<LocaleProvider locale={ruRU}>
-					<App />
-				</LocaleProvider>
+				<App />
 			</ConfigProvider>
 		</PersistGate>
 	</Provider>

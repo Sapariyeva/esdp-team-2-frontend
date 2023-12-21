@@ -1,55 +1,54 @@
-import { useState } from 'react';
 import { Card, message } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
-import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '../../../api/axiosInstance';
+import { useAppSelector } from '../../../store/hooks';
 
 const { Meta } = Card;
 
 interface Props {
 	psychologist: IPsychologistWithLikes;
+	switchFavorite: (id: number) => boolean;
 }
 
-export const PsychologistCard = ({ psychologist }: Props) => {
+export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
+	const authUser = useAppSelector((state) => state.users.userInfo);
 	const navigate = useNavigate();
-	const [psychologistWithLike, setPsychologistWithLike] = useState(false);
+
 	const onClickReadMore = () => {
 		navigate(`/psychologists/${psychologist.id}`);
 	};
-	const { mutate: setFavourite } = useMutation({
-		mutationFn: async (id: number) => {
-			const data = { psychologistId: id };
-			return await axiosInstance.post('patients/11/favorites', data);
-		},
-	});
+
 	const changeHeart = () => {
-		if (psychologistWithLike === false) {
-			setPsychologistWithLike(true);
-			setFavourite(psychologist.id);
+		const isSwitched = switchFavorite(psychologist.id);
+		if (!isSwitched) return;
+
+		if (!psychologist.isFavorite)
 			message.success('Психолог был успешно Добавлен в список избранных.');
-		} else {
-			setPsychologistWithLike(false);
-			setFavourite(psychologist.id);
-			message.success('Психолог был успешно исключен из списка избранных.');
-		}
+		else message.success('Психолог был успешно удален из списка избранных.');
+
+		psychologist.isFavorite = !psychologist.isFavorite;
 	};
+
 	return (
 		<Card
 			className={styles.card}
 			hoverable
 			cover={
 				<div className={styles.cover}>
-					{psychologistWithLike ? (
-						<span className={styles.heart}>
-							<HeartFilled style={{ color: 'red' }} onClick={changeHeart} />
-						</span>
-					) : (
-						<span className={styles.heart}>
-							<HeartOutlined onClick={changeHeart} />
-						</span>
+					{authUser?.role === 'patient' && (
+						<div>
+							{psychologist.isFavorite ? (
+								<span className={styles.heart}>
+									<HeartFilled style={{ color: 'red' }} onClick={changeHeart} />
+								</span>
+							) : (
+								<span className={styles.heart}>
+									<HeartOutlined onClick={changeHeart} />
+								</span>
+							)}
+						</div>
 					)}
 
 					<img

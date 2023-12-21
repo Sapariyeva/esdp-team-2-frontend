@@ -1,12 +1,19 @@
-import { Form, Select, Button, InputNumber } from 'antd';
+import { Form, Select, Button } from 'antd';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
+import ClearableInputNumber from '../UI/Input/ClearableInputNumber';
+import { useEffect } from 'react';
 
 const { Option } = Select;
-const initialValues = {
+
+interface IFilteringValuesAnt extends Omit<IFilteringValues, 'age'> {
+	age?: keyof typeof ageMappings;
+}
+
+const initialValues: IFilteringValuesAnt = {
 	gender: undefined,
 	lgbt: undefined,
 	age: undefined,
@@ -20,19 +27,24 @@ const initialValues = {
 	symptomIds: undefined,
 };
 
-interface FormValues {
-	gender: 'male' | 'female' | undefined;
-	lgbt: boolean | undefined;
-	age: string | undefined;
-	languages: 'kazakh' | 'russian' | 'english' | undefined;
-	format: 'online' | 'offline' | undefined;
-	cost: number | undefined;
-	consultationType: 'solo' | 'duo' | undefined;
-	cityId: number | undefined;
-	techniqueIds: number[] | undefined;
-	therapyMethodIds: number[] | undefined;
-	symptomIds: number[] | undefined;
-}
+const ageMappings = {
+	'18-30': {
+		name: '18 - 30',
+		value: [18, 30],
+	},
+	'30-40': {
+		name: '30 - 40',
+		value: [30, 40],
+	},
+	'40-60': {
+		name: '40 - 60',
+		value: [40, 60],
+	},
+	'60+': {
+		name: '60+',
+		value: 60,
+	},
+};
 
 type Props = {
 	onFilter: (values: IFilteringValues) => void;
@@ -49,42 +61,47 @@ const PsychologistFilterForm = ({
 	techniques,
 	therapyMethods,
 }: Props) => {
-	const parseAgeRange = (value: string): number | number[] => {
-		const ageMappings: { [key: string]: number | number[] } = {
-			'18-30': [18, 30],
-			'30-40': [30, 40],
-			'40-60': [40, 60],
-			'60+': 60,
-		};
+	const [form] = Form.useForm();
 
-		return ageMappings[value];
+	useEffect(() => {
+		const savedFormValues = localStorage.getItem('psychologistFilterForm');
+		try {
+			if (savedFormValues) {
+				const parsedFormValues = JSON.parse(savedFormValues);
+				form.setFieldsValue(parsedFormValues);
+			}
+		} catch (error) {
+			localStorage.removeItem('psychologistFilterForm');
+		}
+
+		form.submit();
+	}, [form]);
+
+	const onValuesChange = (_: unknown, values: IFilteringValuesAnt) => {
+		localStorage.setItem('psychologistFilterForm', JSON.stringify(values));
 	};
 
-	const onFinish = (values: FormValues) => {
-		const filteredValues: IFilteringValues = {};
-
-		if (values.gender) filteredValues.gender = values.gender;
-		if (values.age) filteredValues.age = parseAgeRange(values.age);
-		if (values.languages) filteredValues.languages = values.languages;
-		if (values.format) filteredValues.format = values.format;
-		if (values.cost !== undefined) filteredValues.cost = values.cost;
-		if (values.consultationType)
-			filteredValues.consultationType = values.consultationType;
-		if (values.lgbt !== undefined) filteredValues.lgbt = values.lgbt;
-		if (values.cityId) filteredValues.cityId = values.cityId;
-		if (values.techniqueIds) filteredValues.techniqueIds = values.techniqueIds;
-		if (values.therapyMethodIds)
-			filteredValues.therapyMethodIds = values.therapyMethodIds;
-		if (values.symptomIds) filteredValues.symptomIds = values.symptomIds;
+	const onFinish = ({ age, ...restValues }: IFilteringValuesAnt) => {
+		const filteredValues: IFilteringValues = {
+			...restValues,
+			age: age ? ageMappings[age].value : undefined,
+		};
 
 		onFilter(filteredValues);
 	};
 
+	const handleClearFilters = () => {
+		form.resetFields();
+		localStorage.removeItem('psychologistFilterForm');
+	};
+
 	return (
 		<Form
+			form={form}
 			name="psychologistFilter"
 			onFinish={onFinish}
 			initialValues={initialValues}
+			onValuesChange={onValuesChange}
 			style={{
 				display: 'flex',
 				flexDirection: 'row',
@@ -93,23 +110,36 @@ const PsychologistFilterForm = ({
 			}}
 		>
 			<Form.Item name="gender">
-				<Select style={{ width: '130px' }} placeholder={'Выбрать пол'}>
+				<Select
+					style={{ width: '130px' }}
+					placeholder={'Выбрать пол'}
+					allowClear
+				>
 					<Option value="male">Мужской</Option>
 					<Option value="female">Женский</Option>
 				</Select>
 			</Form.Item>
 
 			<Form.Item name="age">
-				<Select style={{ width: '160px' }} placeholder={'Выбрать возраст'}>
-					<Option value="18-30">18 - 30</Option>
-					<Option value="30-40">30 - 40</Option>
-					<Option value="40-60">40 - 60</Option>
-					<Option value="60+">60+</Option>
+				<Select
+					style={{ width: '160px' }}
+					placeholder={'Выбрать возраст'}
+					allowClear
+				>
+					{Object.entries(ageMappings).map(([key, { name }]) => (
+						<Option key={key} value={key}>
+							{name}
+						</Option>
+					))}
 				</Select>
 			</Form.Item>
 
 			<Form.Item name="languages">
-				<Select style={{ width: '140px' }} placeholder={'Выбрать язык'}>
+				<Select
+					style={{ width: '140px' }}
+					placeholder={'Выбрать язык'}
+					allowClear
+				>
 					<Option value="kazakh">Казахский</Option>
 					<Option value="russian">Русский</Option>
 					<Option value="english">Английский</Option>
@@ -118,6 +148,7 @@ const PsychologistFilterForm = ({
 
 			<Form.Item name="format">
 				<Select
+					allowClear
 					style={{ width: '220px' }}
 					placeholder={'Выбрать формат приёма'}
 				>
@@ -127,15 +158,15 @@ const PsychologistFilterForm = ({
 			</Form.Item>
 
 			<Form.Item name="cost">
-				<InputNumber
-					min={0}
-					style={{ width: '270px' }}
+				<ClearableInputNumber
 					placeholder={'Ввести максимальную стоимость'}
+					onChange={(value) => form.setFieldsValue({ cost: value })}
 				/>
 			</Form.Item>
 
 			<Form.Item name="consultationType">
 				<Select
+					allowClear
 					style={{ width: '230px' }}
 					placeholder={'Выбрать вид консультации'}
 				>
@@ -145,14 +176,22 @@ const PsychologistFilterForm = ({
 			</Form.Item>
 
 			<Form.Item name="lgbt">
-				<Select style={{ width: '200px' }} placeholder={'Опыт работы с lgbt'}>
+				<Select
+					style={{ width: '200px' }}
+					placeholder={'Опыт работы с lgbt'}
+					allowClear
+				>
 					<Option value={false}>Нет</Option>
 					<Option value={true}>Да</Option>
 				</Select>
 			</Form.Item>
 
 			<Form.Item name="cityId">
-				<Select placeholder={'Выбрать город'} style={{ width: '150px' }}>
+				<Select
+					placeholder={'Выбрать город'}
+					style={{ width: '150px' }}
+					allowClear
+				>
 					{cities && cities.length !== 0 ? (
 						<>
 							{cities.map((city) => (
@@ -166,6 +205,7 @@ const PsychologistFilterForm = ({
 					)}
 				</Select>
 			</Form.Item>
+
 			<Form.Item name="techniqueIds">
 				<Select
 					mode="multiple"
@@ -229,6 +269,9 @@ const PsychologistFilterForm = ({
 				<Button type="primary" htmlType="submit">
 					Показать психологов
 				</Button>
+			</Form.Item>
+			<Form.Item>
+				<Button onClick={handleClearFilters}>Очистить фильтры</Button>
 			</Form.Item>
 		</Form>
 	);

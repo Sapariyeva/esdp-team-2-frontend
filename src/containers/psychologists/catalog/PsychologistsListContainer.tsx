@@ -6,36 +6,36 @@ import { ITechnique } from '../../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../../interfaces/ISymptom';
 import { ICity } from '../../../interfaces/IPsychologistForm';
-import {
-	IPsychologist,
-	IPsychologistWithLikes,
-} from '../../../interfaces/IPsychologist';
+import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useState } from 'react';
+import { Alert } from 'antd';
+import { AxiosError } from 'axios';
+import { useAppSelector } from '../../../store/hooks';
 
 export const PsychologistsListContainer = () => {
-	const [filteredPsychologists, setFilteredPsychologists] = useState<
-		IPsychologistWithLikes[]
-	>([]);
+	const authUser = useAppSelector((state) => state.users.userInfo);
+
+	const [filterValues, setFilterValues] = useState<null | IFilteringValues>(
+		null
+	);
 
 	const {
 		data: psychologists,
 		error,
 		isLoading,
 	} = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<IPsychologist[]>(`/psychologists`);
+		queryFn: async () => {
+			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
+				`/psychologists/filter`,
+				filterValues,
+				{ headers: { Authorization: authUser?.accessToken } }
+			);
+			return data;
 		},
-		queryKey: ['GetPsychologists'],
+		queryKey: ['GetPsychologists', filterValues],
+		enabled: !!filterValues,
 	});
-
-	const { mutate: filterPsychologists } = useMutation({
-		mutationFn: async (values: IFilteringValues) => {
-			return await axiosInstance.post('/psychologists/filter', values);
-		},
-		onSuccess: (data) => {
-			setFilteredPsychologists(data.data);
-		},
-	});
+	const psychologistsList = psychologists ?? [];
 
 	const { data: techniquesData } = useQuery({
 		queryFn: () => {
@@ -69,47 +69,48 @@ export const PsychologistsListContainer = () => {
 	});
 	const cities = citiesData?.data ?? [];
 
-	// const addLike = (arr) => {
-	// 	return [...arr].map((el) => {
-	// 		el['like'] = false;
-	// 		return el;
-	// 	});
-	// };
-	// чинить типизацию
+	const { mutate: switchFavoriteQuery } = useMutation({
+		mutationFn: async (psychologistId: number) => {
+			const data = { psychologistId };
+			return await axiosInstance.post(`patients/favorites`, data, {
+				headers: { Authorization: authUser?.accessToken },
+			});
+		},
+	});
+
+	const switchFavorite = (id: number): boolean => {
+		if (!authUser || !authUser.patient) return false;
+
+		switchFavoriteQuery(id);
+		return true;
+	};
 
 	const filterHandler = (values: IFilteringValues) => {
-		filterPsychologists(values);
+		setFilterValues(values);
 	};
 
 	if (isLoading) {
 		return <div>LOADING...</div>;
 	}
 
-	if (error || !psychologists?.data || psychologists?.data.length === 0) {
-		return (
-			<div>
-				{error ? (
-					<p>There was an error fetching data. Please try again later.</p>
-				) : (
-					<p>No psychologists available.</p>
-				)}
-			</div>
-		);
-	}
-	console.log(filteredPsychologists);
-	// const psychologistsToDisplay = filteredPsychologists.length
-	// 	? addLike(filteredPsychologists)
-	// 	: addLike(psychologists?.data);
-
 	return (
 		<>
+			{error instanceof AxiosError && (
+				<Alert
+					closable
+					description={error?.message || 'An error occurred.'}
+					type="error"
+					showIcon
+				/>
+			)}
 			<PsychologistsList
-				psychologists={psychologists.data as IPsychologistWithLikes[]}
+				psychologists={psychologistsList}
 				cities={cities}
 				filterHandler={filterHandler}
 				symptoms={symptoms}
 				techniques={techniques}
 				therapyMethod={therapyMethods}
+				switchFavorite={switchFavorite}
 			/>
 		</>
 	);

@@ -22,6 +22,9 @@
 	padding: 20px 20px;
 	z-index: 1001;
 	user-select: none;
+	@media screen and (max-width: 400px) {
+		width: 360px !important;
+	}
 }
 
 .wrapper_close {

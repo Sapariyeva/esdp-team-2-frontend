@@ -1,4 +1,4 @@
-import { Empty, Space } from 'antd';
+import { Empty, Space, Typography } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
@@ -16,6 +16,7 @@ type Props = {
 	symptoms: ISymptom[];
 	techniques: ITechnique[];
 	therapyMethod: ITherapyMethod[];
+	switchFavorite: (id: number) => boolean;
 };
 
 export const PsychologistsList = ({
@@ -25,6 +26,7 @@ export const PsychologistsList = ({
 	symptoms,
 	techniques,
 	therapyMethod,
+	switchFavorite,
 }: Props) => {
 	return (
 		<div className={styles.container}>
@@ -36,14 +38,18 @@ export const PsychologistsList = ({
 				therapyMethods={therapyMethod}
 			/>
 			{psychologists.length > 0 ? (
-				<Space className={styles.list}>
-					{psychologists.map((psychologist) => (
-						<PsychologistCard
-							psychologist={psychologist}
-							key={psychologist.id}
-						/>
-					))}
-				</Space>
+				<>
+					<Typography>Найдено {psychologists.length} психологов</Typography>
+					<Space className={styles.list}>
+						{psychologists.map((psychologist) => (
+							<PsychologistCard
+								psychologist={psychologist}
+								switchFavorite={switchFavorite}
+								key={psychologist.id}
+							/>
+						))}
+					</Space>
+				</>
 			) : (
 				<Empty description="No psychologists found" />
 			)}
