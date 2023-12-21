@@ -44,7 +44,7 @@ export interface IPsychologist {
 	experienceYears: number;
 	languages: 'kazakh' | 'russian' | 'english';
 	education: string;
-	format: 'online' | 'offline';
+	format: string[];
 	consultationType: 'solo' | 'duo';
 	selfTherapy: number;
 	lgbt: boolean;

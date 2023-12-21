@@ -14,11 +14,16 @@ import { ArticleDetailed } from './components/article/articleDetailed/ArticleDet
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/Layout/Layout.tsx';
+import Records from './components/Patient/Patient_account/Records/Records.tsx';
+import HistoryTable from './components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
+import Favorites from './components/Patient/Patient_account/Favorites/Favorites.tsx';
+import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.locale('ru');
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -36,14 +41,7 @@ const App = () => {
 							path="auth/login/psychologist"
 							element={<Login role="psychologist" />}
 						/>
-						<Route
-							path="/my-account/psychologist"
-							element={<PsychologistAccountPage />}
-						/>
-						<Route
-							path="/my-account/patient"
-							element={<PatientAccountPage />}
-						/>
+
 						<Route
 							path="/auth/register/patient"
 							element={<Register role="patient" />}
@@ -62,9 +60,21 @@ const App = () => {
 							path="/psychologists/:id"
 							element={<PsychologistDetailedProfile />}
 						/>
+
 						<Route path="/business" element={<BusinessPage />} />
 						<Route path="/articles" element={<ArticlePageContainer />} />
 						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
+
+						<Route path="/my-account/patient" element={<PatientAccountPage />}>
+							<Route path="records" element={<Records />} />
+							<Route path="history" element={<HistoryTable />} />
+							<Route path="favorites" element={<Favorites />} />
+						</Route>
+
+						<Route
+							path="/my-account/psychologist"
+							element={<PsychologistAccountPage />}
+						/>
 					</Route>
 				</Routes>
 			</BrowserRouter>

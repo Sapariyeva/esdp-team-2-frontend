@@ -1,26 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Layout, Row } from 'antd';
 import SideBar from '../../../components/Patient/Patient_account/SideBar/SideBar.tsx';
-import HistoryTable from '../../../components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
-import Favorites from '../../../components/Patient/Patient_account/Favorites/Favorites.tsx';
-import Records from '../../../components/Patient/Patient_account/Records/Records.tsx';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-export type ActiveTabPatient = 'myRecords' | 'history' | 'favorites';
+export type ActiveTabPatient = 'records' | 'history' | 'favorites';
 
 const PatientAccountPage = () => {
-	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('myRecords');
-	const renderContent = () => {
-		switch (activeTab) {
-			case 'myRecords':
-				return <Records />;
-			case 'history':
-				return <HistoryTable />;
-			case 'favorites':
-				return <Favorites />;
-			default:
-				return null;
-		}
-	};
+	const navigate = useNavigate();
+	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('records');
+	useEffect(() => {
+		navigate(`/my-account/patient/${activeTab}`);
+	}, [activeTab, navigate]);
+
 	return (
 		<Layout>
 			<Row>
@@ -36,7 +27,7 @@ const PatientAccountPage = () => {
 					xxl={18}
 					style={{ minHeight: '70vh' }}
 				>
-					{renderContent()}
+					<Outlet />
 				</Col>
 			</Row>
 		</Layout>
