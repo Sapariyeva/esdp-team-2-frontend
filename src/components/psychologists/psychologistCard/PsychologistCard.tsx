@@ -3,7 +3,11 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from '../../../api/axiosInstance';
 import { useAppSelector } from '../../../store/hooks';
+import updateStorageViewedPsychologists from '../../../helpers/updateStorageViewedPsychologists';
+
 
 const { Meta } = Card;
 
@@ -14,11 +18,37 @@ interface Props {
 
 export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
+  const client = useQueryClient();
 	const navigate = useNavigate();
 
 	const onClickReadMore = () => {
 		navigate(`/psychologists/${psychologist.id}`);
+		if (authUser?.accessToken && authUser.patient !== null) {
+			saveViewedPsychologist(psychologist.id);
+		} else {
+			updateStorageViewedPsychologists(psychologist.id);
+		}
 	};
+
+
+	const { mutate: saveViewedPsychologist } = useMutation({
+		mutationFn: async (psychologistId: number) => {
+			const response = await axiosInstance.post(
+				`patients/viewedPsychologists/${psychologistId}`,
+				psychologist,
+				{
+					headers: {
+						Authorization: `${authUser?.accessToken}`,
+					},
+				}
+			);
+
+			return response.data;
+		},
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: ['GetViewedPsychologists'] });
+		},
+	});
 
 	const changeHeart = () => {
 		const isSwitched = switchFavorite(psychologist.id);
