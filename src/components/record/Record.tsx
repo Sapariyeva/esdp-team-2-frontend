@@ -1,5 +1,5 @@
 import styles from './Record.module.scss';
-import { Tabs, TabsProps } from 'antd';
+import { message, Tabs, TabsProps } from 'antd';
 import 'dayjs/locale/ru';
 import { useState } from 'react';
 import SelectionBookingTime from './selectionBookingTime/SelectionBookingTime.tsx';
@@ -28,6 +28,7 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 	const navigate = useNavigate();
 	const token = useAppSelector(tokenSelect);
 	const { format, id, cost } = psychologist;
+	const [loading, setLoading] = useState<boolean>(false);
 	const [selectedFormat, setFormat] = useState<string>('');
 	const [recordTime, setRecordTime] = useState<string>('');
 	const [slotId, setSlotId] = useState<string>('');
@@ -42,10 +43,13 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 			});
 		},
 		onSuccess: () => {
+			message.success('Вы успешно записались на прием к психологу!');
 			navigate('/my-account/patient/');
+			setLoading(false);
 		},
 	});
 	const onSummit = () => {
+		setLoading(true);
 		goOnRecord.mutate({
 			slotId,
 			format: selectedFormat,
@@ -87,6 +91,7 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 					format={selectedFormat}
 					recordTime={recordTime}
 					onSummit={onSummit}
+					loading={loading}
 				/>
 			),
 		},

@@ -1,7 +1,7 @@
 import styles from '../Record.module.scss';
 import back from '../../../../public/arrow-left.svg';
 import * as dayjs from 'dayjs';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { useAppSelector } from '../../../store/hooks.ts';
 import { userSelect } from '../../../features/user/userSlice.ts';
 
@@ -11,6 +11,7 @@ type Props = {
 	format: string;
 	recordTime: string;
 	cost: number;
+	loading: boolean;
 };
 
 const ConfirmationRecord = ({
@@ -19,6 +20,7 @@ const ConfirmationRecord = ({
 	format,
 	recordTime,
 	cost,
+	loading,
 }: Props) => {
 	const user = useAppSelector(userSelect);
 
@@ -58,8 +60,8 @@ const ConfirmationRecord = ({
 				</div>
 			</div>
 
-			<Button className={styles.btn} onClick={onSummit}>
-				Записаться
+			<Button disabled={loading} className={styles.btn} onClick={onSummit}>
+				{loading ? <Spin /> : 'Записаться'}
 			</Button>
 		</>
 	);

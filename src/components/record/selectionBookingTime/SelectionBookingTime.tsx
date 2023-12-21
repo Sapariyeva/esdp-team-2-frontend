@@ -62,7 +62,6 @@ const SelectionBookingTime = ({
 	setRecordTime,
 	setSlotId,
 }: Props) => {
-	dayjs.locale('ru');
 	const token = useAppSelector(tokenSelect);
 	const currentDateFormatted = dayjs().format('YYYY-MM-DD');
 	const monthsAndDays: MonthObject[] = generateMonthDays();
@@ -80,7 +79,6 @@ const SelectionBookingTime = ({
 		currentDateFormatted,
 		token
 	);
-	dayjs.locale('ru');
 
 	const { data } = useQuery<ITimeSlot[]>({
 		queryKey: ['reposData', formattedDate],
@@ -102,12 +100,12 @@ const SelectionBookingTime = ({
 		const selectedDate = dayjs(`${date.date}T${date.time}`).format(
 			'YYYY-MM-DDTHH:mm'
 		);
-
 		setSlotId(date.id);
 		setRecordTime(selectedDate);
 		setSelectedTime(date.time);
 		setSelectedDate(date.date);
 	};
+
 	const handleFormatChange = (value: string) => {
 		setSelectedDay(null);
 		setSelectedDate(null);

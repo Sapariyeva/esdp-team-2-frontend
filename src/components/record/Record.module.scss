@@ -61,6 +61,10 @@
 	font-family: 'Montserrat', sans-serif !important;
 	margin-bottom: 10px;
 	text-transform: capitalize;
+	touch-action: manipulation;
+	@media screen and (max-width: 400px) {
+		width: 155px !important;
+	}
 }
 
 .btn {
