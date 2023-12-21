@@ -18,7 +18,6 @@ import Records from './components/Patient/Patient_account/Records/Records.tsx';
 import HistoryTable from './components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
 import Favorites from './components/Patient/Patient_account/Favorites/Favorites.tsx';
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
-import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
