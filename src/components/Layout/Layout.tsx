@@ -18,12 +18,17 @@ export const CustomLayout: FC = () => {
 						padding: '24px 0',
 					}}
 				>
-					<Content style={{ display: 'flex', justifyContent: 'center' }}>
+					<Content
+						style={{
+							maxWidth: '1250px',
+							margin: '0 auto',
+						}}
+					>
 						<Outlet />
 					</Content>
 				</Layout>
 			</Content>
-			<Footer style={{ textAlign: 'center' }}>
+			<Footer style={{ maxWidth: '1250px', margin: '0 auto' }}>
 				<FooterMenu />
 			</Footer>
 		</Layout>
