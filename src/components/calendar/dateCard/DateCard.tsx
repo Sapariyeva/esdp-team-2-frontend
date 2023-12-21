@@ -29,21 +29,17 @@ const DateCard = ({ date }: Props) => {
 				})}
 			>
 				<div className={styles.card_header}>
-					<div>
-						<h3>{isDate.format('dd')}</h3>
-					</div>
+					<div className={styles.card_header_day}>{isDate.format('dd')}</div>
 					<img
 						className={styles.card_svg}
 						src={isPastDate ? closeSvg : openSvg}
 						alt="close"
 					/>
 				</div>
-				<div className={styles.card_main}>
-					{dayjs(isDate).date()}
-					<p>{isDate.format('MMMM')}</p>
-				</div>
+				<div className={styles.card_main}>{dayjs(isDate).date()}</div>
+
 				<div onClick={handleClick} className={styles.card_footer}>
-					{isPastDate ? 'Прошедшая дата' : 'Выбрать время'}
+					{isPastDate ? 'Недоступно' : 'Выбрать время'}
 				</div>
 			</div>
 		</>

@@ -16,6 +16,7 @@ type Props = {
 	symptoms: ISymptom[];
 	techniques: ITechnique[];
 	therapyMethod: ITherapyMethod[];
+	switchFavorite: (id: number) => boolean;
 };
 
 export const PsychologistsList = ({
@@ -25,6 +26,7 @@ export const PsychologistsList = ({
 	symptoms,
 	techniques,
 	therapyMethod,
+	switchFavorite,
 }: Props) => {
 	return (
 		<div className={styles.container}>
@@ -42,6 +44,7 @@ export const PsychologistsList = ({
 						{psychologists.map((psychologist) => (
 							<PsychologistCard
 								psychologist={psychologist}
+								switchFavorite={switchFavorite}
 								key={psychologist.id}
 							/>
 						))}

@@ -136,6 +136,12 @@ const userSlice = createSlice({
 export const tokenSelect = (state: RootState) => {
 	return state.users.userInfo?.accessToken;
 };
+
+export const userSelect = (state: RootState) => {
+	return state.users.userInfo;
+};
+
 export const { resetErrors } = userSlice.actions;
+
 
 export default userSlice;

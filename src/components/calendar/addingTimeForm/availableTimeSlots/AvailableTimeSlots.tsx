@@ -15,7 +15,6 @@ interface AddingTimeTagContainerProps {
 }
 
 const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
-	data,
 	availableTimeSlots,
 	refetch,
 }) => {
@@ -42,7 +41,7 @@ const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
 		<>
 			<div className={styles.readme}>Выбранное вами время</div>
 			<div className={styles.tagContainer}>
-				{data.length === 0 ? (
+				{availableTimeSlots.length === 0 ? (
 					<p>Время для записи (ничего не выбрано)</p>
 				) : (
 					availableTimeSlots.map((timeSlot: ITimeSlot) => {
