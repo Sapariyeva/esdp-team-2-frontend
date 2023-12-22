@@ -16,16 +16,11 @@ export const CustomLayout: FC = () => {
 				<Layout
 					style={{
 						padding: '24px 0',
+						maxWidth: '1300px',
+						margin: '0 auto',
 					}}
 				>
-					<Content
-						style={{
-							maxWidth: '1250px',
-							margin: '0 auto',
-						}}
-					>
-						<Outlet />
-					</Content>
+					<Outlet />
 				</Layout>
 			</Content>
 			<Footer style={{ maxWidth: '1250px', margin: '0 auto' }}>
