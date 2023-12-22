@@ -3,27 +3,17 @@ import classNames from 'classnames/bind';
 import { IoMdClose } from 'react-icons/io';
 import styles from '../AddingTimeForm.module.scss';
 import { ITimeSlot } from '../../../../interfaces/ITimeSlot.ts';
-import { useMutation } from '@tanstack/react-query';
-import axiosInstance from '../../../../api/axiosInstance.ts';
+import { useDeleteTime } from '../../../../features/queryHooks/queryHooks.ts';
 
 interface AddingTimeTagContainerProps {
 	data: ITimeSlot[];
 	availableTimeSlots: ITimeSlot[];
-	refetch: () => void;
 }
 
 const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
 	availableTimeSlots,
-	refetch,
 }) => {
-	const deleteTime = useMutation({
-		mutationFn: (id: string) => {
-			return axiosInstance.delete(`/appointments/${id}`);
-		},
-		onSuccess: () => {
-			refetch();
-		},
-	});
+	const deleteTime = useDeleteTime();
 
 	const handleDeleteSaveTime = (id: string) => {
 		deleteTime.mutate(id);

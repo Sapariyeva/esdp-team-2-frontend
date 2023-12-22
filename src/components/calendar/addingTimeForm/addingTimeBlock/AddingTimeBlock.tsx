@@ -2,32 +2,16 @@ import React, { useEffect, useState } from 'react';
 import styles from '../AddingTimeForm.module.scss';
 import { Select } from 'antd';
 import dayjs from 'dayjs';
-import { useMutation } from '@tanstack/react-query';
-import { ITimeSlot, ITimeSlotDate } from '../../../../interfaces/ITimeSlot.ts';
 import Alert from '../../../UI/Alert/Alert.tsx';
-import axiosInstance from '../../../../api/axiosInstance.ts';
+import { useAddNewTimes } from '../../../../features/queryHooks/queryHooks.ts';
 
 interface AddingTimeBlockProps {
 	date: string;
-	refetch: () => void;
 }
 
-const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date, refetch }) => {
+const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date }) => {
 	const [isError, setIsError] = useState(false);
-	const addNewTimes = useMutation({
-		mutationFn: (data: ITimeSlotDate) => {
-			return axiosInstance.post<ITimeSlot>('/appointments', data);
-		},
-		onSuccess: () => {
-			refetch();
-		},
-		onError: () => {
-			setIsError(true);
-			setTimeout(() => {
-				setIsError(false);
-			}, 3000);
-		},
-	});
+	const addNewTimes = useAddNewTimes(setIsError);
 
 	const availableHours = Array.from({ length: 24 }, (_, i) => i);
 	const currentHour = new Date().getHours();

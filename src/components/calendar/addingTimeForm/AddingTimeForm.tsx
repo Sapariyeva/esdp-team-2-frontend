@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { Button } from 'antd';
 import styles from './AddingTimeForm.module.scss';
 import AddingTimeHeader from './addingTimeHeader/addingTimeHeader.tsx';
@@ -8,7 +7,7 @@ import AddingTimeBlock from './addingTimeBlock/AddingTimeBlock.tsx';
 import UnavailableTimeSlots from './unavailableTimeSlots/UnavailableTimeSlots.tsx';
 import Wrapper from '../../UI/Wrapper/Wrapper.tsx';
 import Loading from '../../UI/Loading/Loading.tsx';
-import axiosInstance from '../../../api/axiosInstance.ts';
+import { useAddingTimeForm } from '../../../features/queryHooks/queryHooks.ts';
 
 type Props = {
 	date: string;
@@ -17,19 +16,7 @@ type Props = {
 };
 
 const AddingTimeForm = ({ active, setActive, date }: Props) => {
-	const {
-		isPending,
-		data = [],
-		refetch,
-	} = useQuery<ITimeSlot[]>({
-		queryKey: ['reposData'],
-		enabled: active,
-		queryFn: async () => {
-			const response = await axiosInstance.get(`/appointments?date=${date}`);
-
-			return response.data;
-		},
-	});
+	const { isPending, data = [] } = useAddingTimeForm(active, date);
 	const handleOk = () => {
 		setActive(false);
 	};
@@ -54,12 +41,11 @@ const AddingTimeForm = ({ active, setActive, date }: Props) => {
 					<>
 						<AddingTimeHeader date={date} />
 
-						<AddingTimeBlock date={date} refetch={refetch} />
+						<AddingTimeBlock date={date} />
 
 						<AvailableTimeSlots
 							data={data}
 							availableTimeSlots={availableTimeSlots}
-							refetch={refetch}
 						/>
 						<UnavailableTimeSlots unavailableTimeSlots={unavailableTimeSlots} />
 

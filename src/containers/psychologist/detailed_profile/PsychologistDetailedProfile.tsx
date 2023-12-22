@@ -3,19 +3,12 @@ import PsychologistCard from '../../../components/psychologist/detailed_profile/
 import './PsychologistDetailedProfile.scss';
 import PsychologistProfileContent from '../../../components/psychologist/detailed_profile/PsychologistProfileContent/PsychologistProfileContent';
 import { useParams } from 'react-router-dom';
-import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '../../../api/axiosInstance';
+import { useGetPsychologist } from '../../../features/queryHooks/queryHooks';
 
 const PsychologistDetailedProfile = () => {
 	const { id } = useParams();
 
-	const { data, isLoading } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<IPsychologist>(`/psychologists/${id}`);
-		},
-		queryKey: ['GetPsychologist'],
-	});
+	const { data, isLoading } = useGetPsychologist(id!);
 
 	if (isLoading) {
 		return <div>LOADING...</div>;

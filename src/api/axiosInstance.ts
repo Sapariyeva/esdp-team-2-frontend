@@ -17,8 +17,6 @@ axiosInstance.interceptors.request.use((config) => {
 	try {
 		config.headers.Authorization =
 			appStore.getState().users.userInfo?.accessToken;
-		console.log(config.headers.Authorization);
-		console.log(appStore.getState().users.userInfo?.accessToken);
 	} catch (e) {
 		console.log(e);
 	}
