@@ -1,16 +1,17 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import IFilteringValues from '../../../interfaces/IFilteringValues';
-import { ITechnique } from '../../../interfaces/ITechnique';
-import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
-import { ISymptom } from '../../../interfaces/ISymptom';
-import { ICity } from '../../../interfaces/IPsychologistForm';
-import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useState } from 'react';
 import { Alert } from 'antd';
 import { AxiosError } from 'axios';
 import { useAppSelector } from '../../../store/hooks';
-import axiosInstance from '../../../api/axiosInstance';
+import {
+	useCityQuery,
+	useGetPsychologists,
+	useSwitchFavourite,
+	useSymptomQuery,
+	useTechniqueQuery,
+	useTherapyMethodQuery,
+} from '../../../features/queryHooks/queryHooks';
 
 export const PsychologistsListContainer = () => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
@@ -23,57 +24,22 @@ export const PsychologistsListContainer = () => {
 		data: psychologists,
 		error,
 		isLoading,
-	} = useQuery({
-		queryFn: async () => {
-			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
-				`/psychologists/filter`,
-				filterValues
-			);
-			return data;
-		},
-		queryKey: ['GetPsychologists', filterValues],
-		enabled: !!filterValues,
-	});
+	} = useGetPsychologists(filterValues);
 	const psychologistsList = psychologists ?? [];
 
-	const { data: techniquesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITechnique[]>(`/techniques`);
-		},
-		queryKey: ['GetTechniques'],
-	});
+	const { data: techniquesData } = useTechniqueQuery();
 	const techniques = techniquesData?.data ?? [];
 
-	const { data: therapyMethodsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITherapyMethod[]>(`/methods`);
-		},
-		queryKey: ['GetTherapyMethod'],
-	});
+	const { data: therapyMethodsData } = useTherapyMethodQuery();
 	const therapyMethods = therapyMethodsData?.data ?? [];
 
-	const { data: symptomsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ISymptom[]>(`/symptoms`);
-		},
-		queryKey: ['GetSymptoms'],
-	});
+	const { data: symptomsData } = useSymptomQuery();
 	const symptoms = symptomsData?.data ?? [];
 
-	const { data: citiesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ICity[]>(`/cities`);
-		},
-		queryKey: ['GetCities'],
-	});
+	const { data: citiesData } = useCityQuery();
 	const cities = citiesData?.data ?? [];
 
-	const { mutate: switchFavoriteQuery } = useMutation({
-		mutationFn: async (psychologistId: number) => {
-			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data);
-		},
-	});
+	const { mutate: switchFavoriteQuery } = useSwitchFavourite();
 
 	const switchFavorite = (id: number): boolean => {
 		if (!authUser || !authUser.patient) return false;

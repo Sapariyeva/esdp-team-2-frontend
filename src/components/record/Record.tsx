@@ -1,5 +1,5 @@
 import styles from './Record.module.scss';
-import { message, Tabs, TabsProps } from 'antd';
+import { Tabs, TabsProps } from 'antd';
 import 'dayjs/locale/ru';
 import { useState } from 'react';
 import SelectionBookingTime from './selectionBookingTime/SelectionBookingTime.tsx';
@@ -7,21 +7,15 @@ import BookingForm from './bookingForm/BookingForm.tsx';
 import { IPsychologist } from '../../interfaces/IPsychologist.ts';
 import ConfirmationRecord from './confirmationRecord/ConfirmationRecord.tsx';
 import Wrapper from '../UI/Wrapper/Wrapper.tsx';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../api/axiosInstance.ts';
+import { useGoToRecord } from '../../features/queryHooks/queryHooks.ts';
 
 type Props = {
 	active: boolean;
 	setActive: (active: boolean) => void;
 	psychologist: IPsychologist;
 };
-interface RecordPost {
-	slotId: string;
-	format: string;
-	psychologistId: number;
-	datetime: string;
-}
+
 const Record = ({ active, setActive, psychologist }: Props) => {
 	const navigate = useNavigate();
 	const { format, id, cost } = psychologist;
@@ -31,16 +25,7 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 	const [slotId, setSlotId] = useState<string>('');
 	const [activeTab, setActiveTab] = useState<string>('1');
 
-	const goOnRecord = useMutation({
-		mutationFn: (data: RecordPost) => {
-			return axiosInstance.post('/records/create', data);
-		},
-		onSuccess: () => {
-			message.success('Вы успешно записались на прием к психологу!');
-			navigate('/my-account/patient/');
-			setLoading(false);
-		},
-	});
+	const goOnRecord = useGoToRecord(navigate, setLoading);
 	const onSummit = () => {
 		setLoading(true);
 		goOnRecord.mutate({

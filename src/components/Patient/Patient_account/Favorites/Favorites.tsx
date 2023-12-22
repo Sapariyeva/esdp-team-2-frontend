@@ -11,10 +11,11 @@ import {
 } from 'antd';
 import { HeartFilled, ArrowRightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { IPatient } from '../../../../interfaces/IPatient';
 import { useAppSelector } from '../../../../store/hooks';
-import axiosInstance from '../../../../api/axiosInstance';
+import {
+	useGetFavourites,
+	useSwitchFavourite,
+} from '../../../../features/queryHooks/queryHooks';
 
 const { Text } = Typography;
 
@@ -22,24 +23,10 @@ const Favorites = () => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
 	const navigate = useNavigate();
 
-	const { data: patient, isLoading } = useQuery({
-		queryFn: async () => {
-			const { data } = await axiosInstance.get<IPatient>(
-				`/patients/${authUser?.patient?.id ?? 0}`
-			);
-			return data;
-		},
-		queryKey: ['GetFavourites'],
-		enabled: !!(authUser && authUser.patient),
-	});
+	const { data: patient, isLoading } = useGetFavourites(authUser);
 	const psychologists = patient?.favorites || [];
 
-	const { mutate: switchFavoriteQuery } = useMutation({
-		mutationFn: async (psychologistId: number) => {
-			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data);
-		},
-	});
+	const { mutate: switchFavoriteQuery } = useSwitchFavourite();
 
 	const removeFavoriteOneHandler = (psychologistId: number) => {
 		switchFavoriteQuery(psychologistId);
