@@ -4,9 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import styles from '../AddingTimeForm.module.scss';
 import { ITimeSlot } from '../../../../interfaces/ITimeSlot.ts';
 import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance.ts';
-import { useAppSelector } from '../../../../store/hooks.ts';
-import { tokenSelect } from '../../../../features/user/userSlice.ts';
+import axiosInstance from '../../../../api/axiosInstance.ts';
 
 interface AddingTimeTagContainerProps {
 	data: ITimeSlot[];
@@ -18,15 +16,9 @@ const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
 	availableTimeSlots,
 	refetch,
 }) => {
-	const token = useAppSelector(tokenSelect);
-
 	const deleteTime = useMutation({
 		mutationFn: (id: string) => {
-			return axiosInstance.delete(`/appointments/${id}`, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
+			return axiosInstance.delete(`/appointments/${id}`);
 		},
 		onSuccess: () => {
 			refetch();

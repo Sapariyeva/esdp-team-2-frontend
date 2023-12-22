@@ -1,9 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Button } from 'antd';
 import styles from './AddingTimeForm.module.scss';
-import { axiosInstance } from '../../../api/axiosInstance.ts';
-import { useAppSelector } from '../../../store/hooks.ts';
-import { tokenSelect } from '../../../features/user/userSlice.ts';
 import AddingTimeHeader from './addingTimeHeader/addingTimeHeader.tsx';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
 import AvailableTimeSlots from './availableTimeSlots/AvailableTimeSlots.tsx';
@@ -11,6 +8,7 @@ import AddingTimeBlock from './addingTimeBlock/AddingTimeBlock.tsx';
 import UnavailableTimeSlots from './unavailableTimeSlots/UnavailableTimeSlots.tsx';
 import Wrapper from '../../UI/Wrapper/Wrapper.tsx';
 import Loading from '../../UI/Loading/Loading.tsx';
+import axiosInstance from '../../../api/axiosInstance.ts';
 
 type Props = {
 	date: string;
@@ -19,7 +17,6 @@ type Props = {
 };
 
 const AddingTimeForm = ({ active, setActive, date }: Props) => {
-	const token = useAppSelector(tokenSelect);
 	const {
 		isPending,
 		data = [],
@@ -28,11 +25,7 @@ const AddingTimeForm = ({ active, setActive, date }: Props) => {
 		queryKey: ['reposData'],
 		enabled: active,
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/appointments?date=${date}`, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
+			const response = await axiosInstance.get(`/appointments?date=${date}`);
 
 			return response.data;
 		},

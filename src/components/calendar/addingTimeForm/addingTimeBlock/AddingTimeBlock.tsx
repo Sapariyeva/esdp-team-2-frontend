@@ -3,11 +3,9 @@ import styles from '../AddingTimeForm.module.scss';
 import { Select } from 'antd';
 import dayjs from 'dayjs';
 import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance.ts';
 import { ITimeSlot, ITimeSlotDate } from '../../../../interfaces/ITimeSlot.ts';
-import { useAppSelector } from '../../../../store/hooks.ts';
-import { tokenSelect } from '../../../../features/user/userSlice.ts';
 import Alert from '../../../UI/Alert/Alert.tsx';
+import axiosInstance from '../../../../api/axiosInstance.ts';
 
 interface AddingTimeBlockProps {
 	date: string;
@@ -15,15 +13,10 @@ interface AddingTimeBlockProps {
 }
 
 const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date, refetch }) => {
-	const token = useAppSelector(tokenSelect);
 	const [isError, setIsError] = useState(false);
 	const addNewTimes = useMutation({
 		mutationFn: (data: ITimeSlotDate) => {
-			return axiosInstance.post<ITimeSlot>('/appointments', data, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
+			return axiosInstance.post<ITimeSlot>('/appointments', data);
 		},
 		onSuccess: () => {
 			refetch();
@@ -37,7 +30,6 @@ const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date, refetch }) => {
 	});
 
 	const availableHours = Array.from({ length: 24 }, (_, i) => i);
-
 	const currentHour = new Date().getHours();
 	const filterHours =
 		date === dayjs().format('YYYY-MM-DD')

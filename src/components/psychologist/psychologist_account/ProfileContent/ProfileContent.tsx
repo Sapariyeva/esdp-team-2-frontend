@@ -8,7 +8,6 @@ import { ITechnique } from '../../../../interfaces/ITechnique';
 import { ISymptom } from '../../../../interfaces/ISymptom';
 import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance';
 import { Image } from 'antd';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { ICity } from '../../../../interfaces/IPsychologistForm';
@@ -16,10 +15,9 @@ import {
 	EditProfileModal,
 	ModalFormState,
 } from '../EditProfileModal/EditProfileModal';
-import { useAppSelector } from '../../../../store/hooks';
 import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
 import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
-import { tokenSelect } from '../../../../features/user/userSlice.ts';
+import axiosInstance from '../../../../api/axiosInstance.ts';
 
 export interface photoCreate {
 	photos: {
@@ -32,19 +30,10 @@ export interface certificateCreate {
 	};
 }
 const Profile = () => {
-	const token = useAppSelector(tokenSelect);
-
 	const { data: psychologist } = useQuery<IPsychologist>({
 		queryKey: ['reposData'],
 		queryFn: async () => {
-			const response = await axiosInstance.get<IPsychologist>(
-				`/psychologists`,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
-			);
+			const response = await axiosInstance.get<IPsychologist>(`/psychologists`);
 
 			return response.data;
 		},
@@ -112,12 +101,7 @@ const Profile = () => {
 		mutationFn: async (psychologist: ModalFormState) => {
 			const response = await axiosInstance.put(
 				'/psychologists/edit',
-				psychologist,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
+				psychologist
 			);
 
 			return response.data;
@@ -146,7 +130,6 @@ const Profile = () => {
 		try {
 			await axiosInstance.post('/photos/create', formData, {
 				headers: {
-					Authorization: `${token}`,
 					'Content-Type': 'multipart/form-data',
 				},
 			});
@@ -158,11 +141,7 @@ const Profile = () => {
 	};
 
 	const handleDeletePhoto = async (id: number) => {
-		await axiosInstance.delete(`/photos/${id}`, {
-			headers: {
-				Authorization: `${token}`,
-			},
-		});
+		await axiosInstance.delete(`/photos/${id}`);
 		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
 
@@ -187,7 +166,6 @@ const Profile = () => {
 		try {
 			await axiosInstance.post('/certificates/create', formData, {
 				headers: {
-					Authorization: `${token}`,
 					'Content-Type': 'multipart/form-data',
 				},
 			});
@@ -199,11 +177,7 @@ const Profile = () => {
 	};
 
 	const handleDeleteCertificate = async (id: number) => {
-		await axiosInstance.delete(`/certificates/${id}`, {
-			headers: {
-				Authorization: `${token}`,
-			},
-		});
+		await axiosInstance.delete(`/certificates/${id}`);
 		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
 	if (error || !psychologist) {

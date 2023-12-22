@@ -4,9 +4,9 @@ import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { axiosInstance } from '../../../api/axiosInstance';
 import { useAppSelector } from '../../../store/hooks';
 import updateStorageViewedPsychologists from '../../../helpers/updateStorageViewedPsychologists';
+import axiosInstance from '../../../api/axiosInstance';
 
 const { Meta } = Card;
 
@@ -33,12 +33,7 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 		mutationFn: async (psychologistId: number) => {
 			const response = await axiosInstance.post(
 				`patients/viewedPsychologists/${psychologistId}`,
-				psychologist,
-				{
-					headers: {
-						Authorization: `${authUser?.accessToken}`,
-					},
-				}
+				psychologist
 			);
 
 			return response.data;

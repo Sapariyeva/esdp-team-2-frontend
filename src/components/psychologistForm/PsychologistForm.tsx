@@ -9,16 +9,15 @@ import {
 	Upload,
 	UploadFile,
 } from 'antd';
-import { useAppSelector } from '../../store/hooks';
 import styles from './PsychologistForm.module.scss';
 import { UploadOutlined } from '@ant-design/icons';
 import { IPsychologistForm } from '../../interfaces/IPsychologist';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../api/axiosInstance';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
 import { ICity } from '../../interfaces/IPsychologistForm';
+import axiosInstance from '../../api/axiosInstance';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -28,7 +27,6 @@ const initialValues = {
 };
 
 export const PsychologistForm = () => {
-	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
 	const { data: techniquesData } = useQuery({
 		queryFn: () => {
 			return axiosInstance.get<ITechnique[]>('techniques');
@@ -62,15 +60,7 @@ export const PsychologistForm = () => {
 	const cities = citiesData?.data ?? [];
 	const { mutate: postPsychologist } = useMutation({
 		mutationFn: async (psychologistForm: FormData) => {
-			return await axiosInstance.post(
-				'psychologists/create',
-				psychologistForm,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
-			);
+			return await axiosInstance.post('psychologists/create', psychologistForm);
 		},
 	});
 

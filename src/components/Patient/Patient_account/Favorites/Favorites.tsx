@@ -12,9 +12,9 @@ import {
 import { HeartFilled, ArrowRightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance';
 import { IPatient } from '../../../../interfaces/IPatient';
 import { useAppSelector } from '../../../../store/hooks';
+import axiosInstance from '../../../../api/axiosInstance';
 
 const { Text } = Typography;
 
@@ -37,9 +37,7 @@ const Favorites = () => {
 	const { mutate: switchFavoriteQuery } = useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data, {
-				headers: { Authorization: authUser?.accessToken },
-			});
+			return await axiosInstance.post(`patients/favorites`, data);
 		},
 	});
 

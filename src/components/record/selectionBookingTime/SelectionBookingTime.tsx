@@ -9,12 +9,12 @@ import { useAppSelector } from '../../../store/hooks.ts';
 import { tokenSelect } from '../../../features/user/userSlice.ts';
 import { useQuery } from '@tanstack/react-query';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
-import { axiosInstance } from '../../../api/axiosInstance.ts';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
 import 'dayjs/locale/ru';
 import { useAppointmentsQuery } from '../../../service/useAppointmentsQuery.ts';
+import axiosInstance from '../../../api/axiosInstance.ts';
 
 const generateMonthDays = (): MonthObject[] => {
 	const currentDate = dayjs();

@@ -12,6 +12,7 @@ import {
 	persistStore,
 } from 'redux-persist';
 import userSlice from '../features/user/userSlice';
+import { appStoreInject } from '../api/axiosInstance';
 
 const persistConfig = {
 	key: 'root',
@@ -30,7 +31,7 @@ export const store = configureStore({
 			},
 		}),
 });
-
+appStoreInject(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const persistor = persistStore(store);

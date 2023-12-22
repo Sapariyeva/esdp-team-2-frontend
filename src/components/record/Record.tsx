@@ -9,9 +9,7 @@ import ConfirmationRecord from './confirmationRecord/ConfirmationRecord.tsx';
 import Wrapper from '../UI/Wrapper/Wrapper.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks.ts';
-import { tokenSelect } from '../../features/user/userSlice.ts';
-import { axiosInstance } from '../../api/axiosInstance.ts';
+import axiosInstance from '../../api/axiosInstance.ts';
 
 type Props = {
 	active: boolean;
@@ -26,7 +24,6 @@ interface RecordPost {
 }
 const Record = ({ active, setActive, psychologist }: Props) => {
 	const navigate = useNavigate();
-	const token = useAppSelector(tokenSelect);
 	const { format, id, cost } = psychologist;
 	const [loading, setLoading] = useState<boolean>(false);
 	const [selectedFormat, setFormat] = useState<string>('');
@@ -36,11 +33,7 @@ const Record = ({ active, setActive, psychologist }: Props) => {
 
 	const goOnRecord = useMutation({
 		mutationFn: (data: RecordPost) => {
-			return axiosInstance.post('/records/create', data, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
+			return axiosInstance.post('/records/create', data);
 		},
 		onSuccess: () => {
 			message.success('Вы успешно записались на прием к психологу!');

@@ -1,5 +1,4 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
-import { axiosInstance } from '../../../api/axiosInstance';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import IFilteringValues from '../../../interfaces/IFilteringValues';
 import { ITechnique } from '../../../interfaces/ITechnique';
@@ -11,6 +10,7 @@ import { useState } from 'react';
 import { Alert } from 'antd';
 import { AxiosError } from 'axios';
 import { useAppSelector } from '../../../store/hooks';
+import axiosInstance from '../../../api/axiosInstance';
 
 export const PsychologistsListContainer = () => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
@@ -27,8 +27,7 @@ export const PsychologistsListContainer = () => {
 		queryFn: async () => {
 			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
 				`/psychologists/filter`,
-				filterValues,
-				{ headers: { Authorization: authUser?.accessToken } }
+				filterValues
 			);
 			return data;
 		},
@@ -72,9 +71,7 @@ export const PsychologistsListContainer = () => {
 	const { mutate: switchFavoriteQuery } = useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data, {
-				headers: { Authorization: authUser?.accessToken },
-			});
+			return await axiosInstance.post(`patients/favorites`, data);
 		},
 	});
 
