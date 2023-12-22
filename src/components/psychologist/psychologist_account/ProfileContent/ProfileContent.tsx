@@ -19,10 +19,7 @@ import {
 import { useAppSelector } from '../../../../store/hooks';
 import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
 import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
-
-type PsychologistProfile = {
-	psychologist: IPsychologist;
-};
+import { tokenSelect } from '../../../../features/user/userSlice.ts';
 
 export interface photoCreate {
 	photos: {
@@ -34,13 +31,31 @@ export interface certificateCreate {
 		fileList: UploadFile[];
 	};
 }
-const Profile = ({ psychologist }: PsychologistProfile) => {
+const Profile = () => {
+	const token = useAppSelector(tokenSelect);
+
+	const { data: psychologist } = useQuery<IPsychologist>({
+		queryKey: ['reposData'],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPsychologist>(
+				`/psychologists`,
+				{
+					headers: {
+						Authorization: `${token}`,
+					},
+				}
+			);
+
+			return response.data;
+		},
+	});
+
 	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 	const [isCertificateModalVisible, setIsCertificateModalVisible] =
 		useState(false);
 	const [error] = useState<string | null>(null);
-	const videoId = psychologist.video ? youtubeVideoId(psychologist.video) : '';
+	const videoId = psychologist?.video ? youtubeVideoId(psychologist.video) : '';
 	const opts: YouTubeProps['opts'] = {
 		height: '100%',
 		width: '100%',
@@ -79,8 +94,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		queryKey: ['GetCities'],
 	});
 	const cities = citiesData?.data ?? [];
-
-	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
 
 	const handleEdit = () => {
 		setEditModalVisible(true);
@@ -193,6 +206,9 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		});
 		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
+	if (error || !psychologist) {
+		return <div>Error loading psychologist data</div>;
+	}
 
 	return (
 		<div className="profile_container">
@@ -255,9 +271,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 					</Typography.Paragraph>
 					<Typography.Paragraph className="paragraph">
 						<strong>Пол:</strong> {psychologist.gender}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Город:</strong> {psychologist.city.name}
 					</Typography.Paragraph>
 					<Typography.Paragraph className="paragraph">
 						<strong>Тип консультации:</strong> {psychologist.consultationType}
@@ -401,6 +414,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 				symptoms={symptoms}
 				cities={cities}
 			/>
+
 			{error && (
 				<div className="error-message">
 					<Typography.Text type="danger">{error}</Typography.Text>

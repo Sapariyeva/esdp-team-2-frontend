@@ -1,68 +1,77 @@
-import { Layout } from 'antd';
-import SideBar, {
-	ActiveTab,
-} from '../../../components/psychologist/psychologist_account/SideBar/SideBar';
-import { useState } from 'react';
-import ProfileContent from '../../../components/psychologist/psychologist_account/ProfileContent/ProfileContent';
-import ClientsTable from '../../../components/psychologist/psychologist_account/ClientsTable/ClientsTable';
-import Calendars from '../../../components/psychologist/psychologist_account/calendar/Calendar.tsx';
-import { useQuery } from '@tanstack/react-query';
-import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { axiosInstance } from '../../../api/axiosInstance';
-import { useAppSelector } from '../../../store/hooks';
-import { RootState } from '../../../store';
+import { MenuProps, message } from 'antd';
+import { Key, ReactNode, useEffect, useState } from 'react';
+import { useAppDispatch } from '../../../store/hooks';
+import styles from '../../patient/personal_account/PatientAccountPage.module.scss';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../../features/user/userSlice.ts';
+import { CiEdit } from 'react-icons/ci';
+import { GoHistory } from 'react-icons/go';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { IoIosLogOut } from 'react-icons/io';
+import { ActiveTabPatient } from '../../patient/personal_account/PatientAccountPage.tsx';
+import SideBar from '../../../components/SideBar/SideBar.tsx';
 
-const { Content } = Layout;
+type MenuItem = Required<MenuProps>['items'][number];
+
+function getItem(
+	label: ReactNode,
+	key: Key,
+	icon?: ReactNode,
+	children?: MenuItem[],
+	type?: 'group',
+	onClick?: () => void
+): MenuItem {
+	return {
+		key,
+		icon,
+		children,
+		label,
+		type,
+		onClick,
+	};
+}
 
 const PsychologistAccountPage = () => {
-	const [activeTab, setActiveTab] = useState<ActiveTab>('profile');
-	const psychologistId = useAppSelector(
-		(state: RootState) => state.users.userInfo?.psychologist?.id
-	);
+	const dispatch = useAppDispatch();
 
-	const {
-		data: psychologist,
-		error,
-		isLoading,
-	} = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<IPsychologist>(
-				`/psychologists/${psychologistId}`
-			);
-		},
-		queryKey: ['GetPsychologistId'],
-	});
+	const navigate = useNavigate();
+	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('records');
+	useEffect(() => {
+		navigate(`/psychologist/${activeTab}`);
+	}, [activeTab, navigate]);
 
-	if (isLoading) {
-		return <div>LOADING...</div>;
-	}
-
-	if (error || !psychologist) {
-		return <div>Error loading psychologist data</div>;
-	}
-
-	const renderContent = () => {
-		switch (activeTab) {
-			case 'profile':
-				return psychologist ? (
-					<ProfileContent psychologist={psychologist.data} />
-				) : null;
-			case 'clients':
-				return <ClientsTable />;
-			case 'calendar':
-				return <Calendars />;
-			default:
-				return null;
-		}
+	const handleLogout = () => {
+		dispatch(logoutUser());
+		navigate('/');
+		message.success('Вы успешно вышли с учетной записи!');
 	};
 
+	const items: MenuProps['items'] = [
+		getItem('Профиль', 'profile', <CiEdit />),
+		getItem('Календарь', 'calendar', <CiEdit />),
+		getItem('Мои клиенты', 'records', <GoHistory />),
+		getItem('Курсы', 'course', <AiOutlineHeart />),
+		getItem(
+			'Выход',
+			'exit',
+			<IoIosLogOut />,
+			undefined,
+			undefined,
+			handleLogout
+		),
+	];
+
 	return (
-		<Layout style={{ minHeight: '100vh' }}>
-			<SideBar activeTab={[activeTab]} onChangeTab={setActiveTab} />
-			<Layout>
-				<Content style={{ margin: '0 16px' }}> {renderContent()}</Content>
-			</Layout>
-		</Layout>
+		<div className={styles.container}>
+			<SideBar
+				items={items}
+				activeTab={[activeTab]}
+				onChangeTab={setActiveTab}
+			/>
+			<div className={styles.content}>
+				<Outlet />
+			</div>
+		</div>
 	);
 };
 

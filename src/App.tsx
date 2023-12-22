@@ -20,6 +20,9 @@ import Favorites from './components/Patient/Patient_account/Favorites/Favorites.
 import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
+import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
+import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -64,16 +67,17 @@ const App = () => {
 						<Route path="/articles" element={<ArticlePageContainer />} />
 						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
 
-						<Route path="/my-account/patient" element={<PatientAccountPage />}>
+						<Route path="/patient" element={<PatientAccountPage />}>
 							<Route path="records" element={<Records />} />
 							<Route path="history" element={<HistoryTable />} />
 							<Route path="favorites" element={<Favorites />} />
 						</Route>
 
-						<Route
-							path="/my-account/psychologist"
-							element={<PsychologistAccountPage />}
-						/>
+						<Route path="/psychologist" element={<PsychologistAccountPage />}>
+							<Route path="profile" element={<Profile />} />
+							<Route path="records" element={<ClientsTable />} />
+							<Route path="calendar" element={<Calendars />} />
+						</Route>
 					</Route>
 				</Routes>
 			</BrowserRouter>

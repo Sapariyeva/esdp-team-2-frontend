@@ -3,7 +3,9 @@ body {
 	position: relative;
 	font-family: 'Montserrat' !important;
 }
-
+.main {
+	padding: 10px;
+}
 $color-white: #f5f5f5;
 $color-black: #000000;
 $color-purple: #864ce9;
@@ -72,4 +74,33 @@ $hover-color: black;
 %hover {
 	background: $hover-bgcolor;
 	color: $hover-color;
+}
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline > .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical
+	> .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline
+	> .ant-menu-submenu
+	> .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical
+	> .ant-menu-submenu
+	> .ant-menu-submenu-title {
+	height: 45px;
+	line-height: 45px;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-layout
+	.ant-layout-sider-children {
+	@media screen and (max-width: 830px) {
+		overflow: scroll;
+	}
+}
+
+.ant-layout-sider {
+	width: 300px;
+	background-color: transparent !important;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-layout
+	.ant-layout-sider-children {
+	width: 300px !important;
 }
