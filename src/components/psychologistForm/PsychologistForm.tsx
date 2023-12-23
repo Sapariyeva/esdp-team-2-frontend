@@ -9,16 +9,16 @@ import {
 	Upload,
 	UploadFile,
 } from 'antd';
-import { useAppSelector } from '../../store/hooks';
 import styles from './PsychologistForm.module.scss';
 import { UploadOutlined } from '@ant-design/icons';
 import { IPsychologistForm } from '../../interfaces/IPsychologist';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../api/axiosInstance';
-import { ITechnique } from '../../interfaces/ITechnique';
-import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
-import { ISymptom } from '../../interfaces/ISymptom';
-import { ICity } from '../../interfaces/IPsychologistForm';
+import {
+	useCityQuery,
+	usePostPsychologist,
+	useSymptomQuery,
+	useTechniqueQuery,
+	useTherapyMethodQuery,
+} from '../../features/queryHooks/queryHooks';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -28,51 +28,18 @@ const initialValues = {
 };
 
 export const PsychologistForm = () => {
-	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
-	const { data: techniquesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITechnique[]>('techniques');
-		},
-		queryKey: ['GetTechniques'],
-	});
+	const { data: techniquesData } = useTechniqueQuery();
 	const techniques = techniquesData?.data ?? [];
 
-	const { data: therapyMethodsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITherapyMethod[]>(`methods`);
-		},
-		queryKey: ['GetTherapyMethod'],
-	});
+	const { data: therapyMethodsData } = useTherapyMethodQuery();
 	const therapyMethod = therapyMethodsData?.data ?? [];
 
-	const { data: symptomsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ISymptom[]>(`symptoms`);
-		},
-		queryKey: ['GetSymptoms'],
-	});
+	const { data: symptomsData } = useSymptomQuery();
 	const symptoms = symptomsData?.data ?? [];
 
-	const { data: citiesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ICity[]>(`cities`);
-		},
-		queryKey: ['GetCities'],
-	});
+	const { data: citiesData } = useCityQuery();
 	const cities = citiesData?.data ?? [];
-	const { mutate: postPsychologist } = useMutation({
-		mutationFn: async (psychologistForm: FormData) => {
-			return await axiosInstance.post(
-				'psychologists/create',
-				psychologistForm,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
-			);
-		},
-	});
+	const { mutate: postPsychologist } = usePostPsychologist();
 
 	const handleUpload = async (values: IPsychologistForm) => {
 		const formData = new FormData();

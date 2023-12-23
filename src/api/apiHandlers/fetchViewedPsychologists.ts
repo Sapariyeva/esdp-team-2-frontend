@@ -1,12 +1,11 @@
 import { IPsychologistWithLikes } from '../../interfaces/IPsychologist';
 import { IUser } from '../../interfaces/IUser';
-import { axiosInstance } from '../axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 const fetchViewedPsychologists = async ({ user }: { user: IUser | null }) => {
 	if (user?.accessToken && user.patient !== null) {
 		const response = await axiosInstance.get<IPsychologistWithLikes[]>(
-			`/patients/viewedPsychologists`,
-			{ headers: { Authorization: `${user?.accessToken}` } }
+			`/patients/viewedPsychologists`
 		);
 		return response.data;
 	} else {

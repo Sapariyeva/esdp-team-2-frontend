@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ITimeSlot } from '../interfaces/ITimeSlot.ts';
-import { axiosInstance } from '../api/axiosInstance.ts';
+import axiosInstance from '../api/axiosInstance.ts';
 
 export const useAppointmentsQuery = (
 	psychologistId: number,
