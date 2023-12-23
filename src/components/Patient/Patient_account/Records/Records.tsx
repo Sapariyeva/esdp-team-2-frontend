@@ -4,26 +4,11 @@ import styles from '../../../../containers/patient/personal_account/PatientAccou
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { IRecord } from '../../../../interfaces/IRecord.ts';
-import { useAppSelector } from '../../../../store/hooks.ts';
-import { tokenSelect } from '../../../../features/user/userSlice.ts';
-import { useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance.ts';
 import dayjs from 'dayjs';
+import { useGetActualRecordsPatient } from '../../../../features/queryHooks/queryHooks.ts';
 
 const Records = () => {
-	const token = useAppSelector(tokenSelect);
-	const { data = [] } = useQuery<IRecord[]>({
-		queryKey: ['reposData'],
-		queryFn: async () => {
-			const response = await axiosInstance.get(`records/actual`, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
-
-			return response.data;
-		},
-	});
+	const { data } = useGetActualRecordsPatient();
 
 	const columns: ColumnsType<IRecord> = [
 		{

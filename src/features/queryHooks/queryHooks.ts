@@ -16,6 +16,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { IRecordPost } from '../../interfaces/IRecordpost';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
+import { IRecord } from '../../interfaces/IRecord.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -184,6 +185,16 @@ export const useSaveVievedPsychologist = (
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['GetViewedPsychologists'] });
+		},
+	});
+};
+
+export const useGetActualRecordsPatient = () => {
+	return useQuery<IRecord[]>({
+		queryKey: ['GetActualRecordPatient'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/records/actual`);
+			return response.data;
 		},
 	});
 };
