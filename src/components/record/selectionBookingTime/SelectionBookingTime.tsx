@@ -98,7 +98,7 @@ const SelectionBookingTime = ({
 
 	const handleTimeClick = (date: ITimeSlot) => {
 		const selectedDate = dayjs(`${date.date}T${date.time}`).format(
-			'YYYY-MM-DDTHH:mm'
+			'YYYY-MM-DDTHH:mm:ss'
 		);
 		setSlotId(date.id);
 		setRecordTime(selectedDate);
