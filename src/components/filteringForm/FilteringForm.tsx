@@ -1,10 +1,9 @@
-import { Form, Select, Button } from 'antd';
+import { Form, Select, Button, Slider } from 'antd';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
-import ClearableInputNumber from '../UI/Input/ClearableInputNumber';
 import { useEffect } from 'react';
 
 const { Option } = Select;
@@ -86,13 +85,13 @@ const PsychologistFilterForm = ({
 			...restValues,
 			age: age ? ageMappings[age].value : undefined,
 		};
-
 		onFilter(filteredValues);
 	};
 
 	const handleClearFilters = () => {
 		form.resetFields();
 		localStorage.removeItem('psychologistFilterForm');
+		onFilter({});
 	};
 
 	return (
@@ -157,9 +156,11 @@ const PsychologistFilterForm = ({
 				</Select>
 			</Form.Item>
 
-			<Form.Item name="cost">
-				<ClearableInputNumber
-					placeholder={'Ввести максимальную стоимость'}
+			<Form.Item name="cost" label="Ценовой диапазон">
+				<Slider
+					style={{ width: '200px' }}
+					range
+					max={50000}
 					onChange={(value) => form.setFieldsValue({ cost: value })}
 				/>
 			</Form.Item>
