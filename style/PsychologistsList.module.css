@@ -1,0 +1,12 @@
+.container {
+  margin: 0 50px;
+}
+.container .form {
+  width: 600px;
+  display: flex;
+}
+.container .list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}/*# sourceMappingURL=PsychologistsList.module.css.map */

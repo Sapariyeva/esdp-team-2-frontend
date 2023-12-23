@@ -89,7 +89,7 @@ const App = () => {
 								element={<ArticleDetailed id={1} />}
 							/>
 						</Route>
-						<Route path="/auth/activate" element={<ActivePage />} />
+						<Route path="/auth/activate/:id" element={<ActivePage />} />
 						<Route path="/auth/confirmation" element={<MailConfirmation />} />
 					</Route>
 				</Routes>

@@ -1,0 +1,8 @@
+.article_container {
+  margin: 0 50px;
+}
+.article_container .article_list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}/*# sourceMappingURL=ArticlePage.module.css.map */

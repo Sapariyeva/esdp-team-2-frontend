@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Result, Typography } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './ActiveMailPage.module.scss';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { activateEmail } from '../../features/user/userSlice';
+import { RootState } from '../../store';
 
 const { Title, Paragraph } = Typography;
 
 export const ActivePage: React.FC = () => {
-	// const navigate = useNavigate();
-	// useEffect(() => {
-	// 	const confirmationTimeout = setTimeout(() => {
-	// 		redirectToHome();
-	// 	}, 10000);
+	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const id = useAppSelector((state: RootState) => state.users.userInfo?.id);
 
-	// 	return () => clearTimeout(confirmationTimeout);
-	// }, []);
+	useEffect(() => {
+		dispatch(activateEmail(id!));
 
-	// const redirectToHome = () => {
-	// 	navigate('/');
-	// };
+		const confirmationTimeout = setTimeout(() => {
+			redirectToHome();
+		}, 10000);
+
+		return () => clearTimeout(confirmationTimeout);
+	}, [id]);
+
+	const redirectToHome = () => {
+		navigate('/');
+	};
 
 	return (
 		<div className={styles.container_active_page}>
