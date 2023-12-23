@@ -1,95 +1,85 @@
-import { message, Popconfirm, Table } from 'antd';
+import { Table } from 'antd';
 
 import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.scss';
-import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { IRecord } from '../../../../interfaces/IRecord.ts';
+import { useAppSelector } from '../../../../store/hooks.ts';
+import { tokenSelect } from '../../../../features/user/userSlice.ts';
+import { useQuery } from '@tanstack/react-query';
+import { axiosInstance } from '../../../../api/axiosInstance.ts';
+import dayjs from 'dayjs';
 
-interface DataType {
-	key: number;
-	date: string;
-	psychologist: string;
-	amount: string;
-	link: string;
-	time: string;
-}
 const Records = () => {
-	const [data, setData] = useState<DataType[]>([
-		{
-			key: 1,
-			date: '06.12.2023',
-			psychologist: 'Алимберли Дильназ',
-			link: 'Ссылка',
-			amount: '10 000 ₸',
-			time: '19:00',
-		},
-		{
-			key: 2,
-			date: '31.12.2023',
-			psychologist: 'Норо Митчхел',
-			link: 'Алматы, Макатаева 198',
-			amount: '15 000 ₸',
-			time: '12:00',
-		},
-	]);
-	const confirm = (key: number) => {
-		const updatedData = data.filter((item) => item.key !== key);
-		setData(updatedData);
-		message.success('Ваша запись успешно отменена.');
-	};
+	const token = useAppSelector(tokenSelect);
+	const { data = [] } = useQuery<IRecord[]>({
+		queryKey: ['reposData'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`records/actual`, {
+				headers: {
+					Authorization: `${token}`,
+				},
+			});
 
-	const columns: ColumnsType<DataType> = [
+			return response.data;
+		},
+	});
+
+	const columns: ColumnsType<IRecord> = [
 		{
 			title: 'ФИО',
-			dataIndex: 'psychologist',
-			key: 'psychologist',
+			dataIndex: 'psychologistName',
+			key: 'psychologistName',
 			className: `${styles.colum}`,
-			render: (text) => (
-				<Link className={styles.colum} to={'/psychologist/1'}>
+			render: (text, record) => (
+				<Link
+					className={styles.colum}
+					to={`/psychologists/${record.psychologistId}`}
+				>
 					{text}
 				</Link>
 			),
 		},
 		{
 			title: 'Цена',
-			dataIndex: 'amount',
-			key: 'type',
+			dataIndex: 'cost',
+			key: 'cost',
 			className: `${styles.colum}`,
+			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
 			title: 'Встреча',
-			dataIndex: 'link',
+			dataIndex: 'address',
 			key: 'link',
 			className: `${styles.colum}`,
+			render: (text, record) => (
+				<>
+					{text ? (
+						<span>{text}</span>
+					) : (
+						<Link
+							className={styles.colum}
+							to={`/some-link/${record.broadcast}`}
+						>
+							Ссылка
+						</Link>
+					)}
+				</>
+			),
 		},
 		{
 			title: 'Дата',
-			key: 'date',
-			dataIndex: 'date',
+			key: 'datetime',
+			dataIndex: 'datetime',
 			className: `${styles.colum}`,
+			render: (text) => <>{dayjs(text).format('YYYY-MM-DD')}</>,
 		},
 		{
 			title: 'Время',
 			key: 'time',
-			dataIndex: 'time',
+			dataIndex: 'datetime',
 			className: `${styles.colum}`,
-		},
-		{
-			render: (_, record) => {
-				return (
-					<Popconfirm
-						title="Отмена записи"
-						description="Действительно ли хотите отменить запись?"
-						onConfirm={() => confirm(record.key)}
-						onCancel={() => message.warning('Психолог ожидает встречи с вами.')}
-						okText="Да"
-						cancelText="Нет"
-					>
-						<IoSettingsOutline className={styles.svg} />
-					</Popconfirm>
-				);
-			},
+			render: (text) => <>{dayjs(text).format('HH:MM')}</>,
 		},
 	];
 
