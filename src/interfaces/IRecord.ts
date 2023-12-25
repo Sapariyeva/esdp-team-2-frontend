@@ -1,5 +1,5 @@
 export interface IRecord {
-	id?: number;
+	id: number;
 	address: string | null;
 	patientId: number;
 	psychologistId: number;

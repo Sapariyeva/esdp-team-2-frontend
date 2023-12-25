@@ -15,8 +15,9 @@ export const CustomLayout: FC = () => {
 			<Content>
 				<Layout
 					style={{
-						padding: '24px 0',
-						maxWidth: '1300px',
+						minHeight: '90svh',
+						padding: '24px 20px',
+						maxWidth: '1920px',
 						margin: '0 auto',
 					}}
 				>
