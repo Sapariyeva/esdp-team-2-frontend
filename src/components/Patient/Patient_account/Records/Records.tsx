@@ -53,17 +53,14 @@ const Records = () => {
 			title: 'Встреча',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
-			render: (text, record) => (
+			render: (text: string | null | undefined, record) => (
 				<>
-					{text ? (
+					{text !== null && text !== undefined ? (
 						<span>{text}</span>
 					) : (
-						<Link
-							className={styles.colum}
-							to={`/some-link/${record.broadcast}`}
-						>
+						<a href={record.broadcast} className={styles.colum}>
 							Ссылка
-						</Link>
+						</a>
 					)}
 				</>
 			),

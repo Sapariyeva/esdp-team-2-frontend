@@ -119,7 +119,7 @@ export const useGoToRecord = (
 		},
 		onSuccess: () => {
 			message.success('Вы успешно записались на прием к психологу!');
-			navigate('/my-account/patient/');
+			navigate('/patient/records');
 			setLoading(false);
 		},
 	});
@@ -194,7 +194,7 @@ export const useGetActualRecordsPatient = () => {
 	return useQuery<IRecord[]>({
 		queryKey: ['GetActualRecordPatient'],
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/records/actual`);
+			const response = await axiosInstance.get(`/patients/actual`);
 			return response.data;
 		},
 	});
