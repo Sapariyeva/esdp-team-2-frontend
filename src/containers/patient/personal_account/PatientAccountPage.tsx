@@ -13,13 +13,11 @@ import heart from '../../../assets/icon/heart.svg';
 import book from '../../../assets/icon/book-saved.svg';
 import logout from '../../../assets/icon/logout.svg';
 
-export type ActiveTabPatient = 'records' | 'history' | 'favorites';
-
 const PatientAccountPage = () => {
 	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('records');
+	const [activeTab, setActiveTab] = useState<string>('profile');
 
 	useEffect(() => {
 		navigate(`/patient/${activeTab}`);
@@ -73,6 +71,7 @@ const PatientAccountPage = () => {
 				items={items}
 				activeTab={[activeTab]}
 				onChangeTab={setActiveTab}
+				title={'Личный кабинет'}
 			/>
 			<div className={styles.content}>
 				<Outlet />

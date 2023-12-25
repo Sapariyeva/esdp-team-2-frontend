@@ -4,7 +4,6 @@ import { useAppDispatch } from '../../../store/hooks';
 import styles from '../../patient/personal_account/PatientAccountPage.module.scss';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../../features/user/userSlice.ts';
-import { ActiveTabPatient } from '../../patient/personal_account/PatientAccountPage.tsx';
 import SideBar from '../../../components/SideBar/SideBar.tsx';
 import getItem from '../../../helpers/getItem.ts';
 import logout from '../../../assets/icon/logout.svg';
@@ -16,7 +15,7 @@ const PsychologistAccountPage = () => {
 	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('records');
+	const [activeTab, setActiveTab] = useState<string>('profile');
 	useEffect(() => {
 		navigate(`/psychologist/${activeTab}`);
 	}, [activeTab, navigate]);
@@ -64,6 +63,7 @@ const PsychologistAccountPage = () => {
 				items={items}
 				activeTab={[activeTab]}
 				onChangeTab={setActiveTab}
+				title={'Личный кабинет'}
 			/>
 			<div className={styles.content}>
 				<Outlet />

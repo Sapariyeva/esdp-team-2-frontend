@@ -1,24 +1,24 @@
 import { Menu, MenuProps } from 'antd';
-import { ActiveTabPatient } from '../../containers/patient/personal_account/PatientAccountPage.tsx';
 import styles from './SideBar.module.scss';
 
 interface Props {
-	activeTab: ActiveTabPatient[];
-	onChangeTab: (key: ActiveTabPatient) => void;
+	activeTab: string[];
+	onChangeTab: (key: string) => void;
 	items: MenuProps['items'];
+	title: string;
 }
 
-const SideBar = ({ activeTab, onChangeTab, items }: Props) => {
+const SideBar = ({ activeTab, onChangeTab, items, title }: Props) => {
 	return (
 		<>
 			<div style={{ height: '100%' }}>
-				<h1 className={styles.title}>Личный кабинет</h1>
+				<h1 className={styles.title}>{title}</h1>
 				<div className="menu-container">
 					<Menu
 						mode={'vertical'}
 						className={styles.menu}
 						defaultSelectedKeys={activeTab}
-						onClick={({ key }) => onChangeTab(key as ActiveTabPatient)}
+						onClick={({ key }) => onChangeTab(key)}
 						items={items}
 					/>
 				</div>

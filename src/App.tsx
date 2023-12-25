@@ -28,6 +28,8 @@ import Calendars from './components/psychologist/psychologist_account/calendar/C
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 import PatientProfile from './components/Patient/Patient_account/Profile/PatientProfile.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+import AdminPage from './containers/adminPage/AdminPage.tsx';
+import Psychologists from './components/admin/psychologists/Psychologists.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -83,13 +85,12 @@ const App = () => {
 								element={<ArticleDetailed id={1} />}
 							/>
 
-
-						<Route path="/patient" element={<PatientAccountPage />}>
-							<Route path="profile" element={<PatientProfile />} />
-							<Route path="records" element={<Records />} />
-							<Route path="history" element={<HistoryTable />} />
-							<Route path="favorites" element={<Favorites />} />
-						</Route>
+							<Route path="/patient" element={<PatientAccountPage />}>
+								<Route path="profile" element={<PatientProfile />} />
+								<Route path="records" element={<Records />} />
+								<Route path="history" element={<HistoryTable />} />
+								<Route path="favorites" element={<Favorites />} />
+							</Route>
 
 							<Route path="/patient" element={<PatientAccountPage />}>
 								<Route path="records" element={<Records />} />
@@ -97,14 +98,30 @@ const App = () => {
 								<Route path="favorites" element={<Favorites />} />
 							</Route>
 
-
 							<Route path="/psychologist" element={<PsychologistAccountPage />}>
 								<Route path="profile" element={<Profile />} />
 								<Route path="records" element={<ClientsTable />} />
 								<Route path="calendar" element={<Calendars />} />
 							</Route>
-              
+
+							{/*<Route*/}
+							{/*	element={*/}
+							{/*		<ProtectedRoute*/}
+							{/*			isAllowed={user?.role === 'admin'}*/}
+							{/*			redirectPath={'*'}*/}
+							{/*		/>*/}
+							{/*	}*/}
+							{/*>*/}
+							{/*</Route>*/}
+							{/*как будет вход по админу включим этот протектед роут*/}
+
+							<Route path="/admin/" element={<AdminPage />}>
+								<Route path="psychologists" element={<Psychologists />} />
+								{/*<Route path="posts" element={<ClientsTable />} />*/}
+								{/*<Route path="courses" element={<Calendars />} />*/}
+							</Route>
 						</Route>
+
 						<Route path="/auth/activate/:id" element={<ActivePage />} />
 						<Route path="/auth/confirmation" element={<MailConfirmation />} />
 					</Route>
