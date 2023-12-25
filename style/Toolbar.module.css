@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap");
+body {
+  position: relative;
+  font-family: "Montserrat" !important;
+}
+
+.header .logo {
+  color: #864ce9;
+}
+
+.header {
+  background: #f5f5f5;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .logo {
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 23px;
+  transition: transform 0.3s;
+}
+.header .logo:hover {
+  transform: scale(1.1);
+}
+.header .menu {
+  display: flex;
+  align-items: center;
+}/*# sourceMappingURL=Toolbar.module.css.map */

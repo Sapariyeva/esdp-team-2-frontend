@@ -17,23 +17,14 @@ function Register({ role }: Props) {
 		await dispatch(registerUser(userData))
 			.unwrap()
 			.then(() => {
-				navigate('/');
+				navigate('/auth/confirmation');
 			})
 			.catch((e) => e);
 	};
-	const title =
-		role === 'psychologist'
-			? 'Зарегистрироваться как психолог'
-			: 'Зарегистрироваться как пациент';
 
 	return (
 		<>
-			<RegisterForm
-				errors={registerError}
-				submit={submitUser}
-				title={title}
-				role={role}
-			/>
+			<RegisterForm errors={registerError} submit={submitUser} role={role} />
 		</>
 	);
 }

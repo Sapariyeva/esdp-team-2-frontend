@@ -67,6 +67,25 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	return response.data;
 });
 
+export const activateEmail = createAsyncThunk<
+	IUser,
+	number,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/activate', async (id: number, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.get<IUser>(`/auth/activate/${id}`);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+		}
+		throw err;
+	}
+});
+
 interface UserState {
 	userInfo: IUser | null;
 	loading: boolean;
@@ -130,6 +149,18 @@ const userSlice = createSlice({
 			})
 			.addCase(logoutUser.fulfilled, () => {
 				return initialState;
+			})
+
+			.addCase(activateEmail.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(activateEmail.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.logged = true;
+				state.userInfo = payload;
+			})
+			.addCase(activateEmail.rejected, (state) => {
+				state.loading = false;
 			});
 	},
 });
