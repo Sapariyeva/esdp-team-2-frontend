@@ -4,15 +4,22 @@
 	padding: 40px;
 	background-color: white;
 	width: 100%;
+
+	border-radius: 10px;
+
+	@media only screen and (max-width: 768px) {
+	padding: 20px;
+	}
+
 }
 
 .btn_edit {
 	background: #864ce9;
 	@extend %color-white;
 	width: 200px;
-	height: 54px;
+	height: 40px;
 	border-radius: 10px;
-	font-size: 20px;
+	font-size: 13px;
 	border: 0px;
 	cursor: pointer;
 }
@@ -28,9 +35,9 @@
 	background: #864ce9;
 	@extend %color-white;
 	width: 150px;
-	height: 54px;
+	height: 40px;
 	border-radius: 10px;
-	font-size: 20px;
+	font-size: 13px;
 	border: 0px;
 	cursor: pointer;
 }
@@ -43,15 +50,16 @@
 .btn_cancel {
 	background: #F5F5F5;
 	color: #3C3C3C;
-	width: 250px;
-	height: 54px;
+	width: 200px;
+	height: 40px;
 	border-radius: 10px;
-	font-size: 20px;
+	font-size: 13px;
 	border: 0px;
 	cursor: pointer;
 }
 
 .btn_cancel:hover {
+	color: #FFFFFF;
 	background-color: #DC2626;
 	transition-duration: 1s;
 }
@@ -60,6 +68,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 15px;
+
 }
 
 .input_container {
@@ -72,12 +81,19 @@
 		-webkit-appearance: none;
 		margin: 0;
 	}
+
+	@media only screen and (max-width: 768px) {
+		gap: 5px;
+	}
 }
 
 .flex_input {
 	display: flex;
 	gap: 20px;
 	width: 100%;
+	@media only screen and (max-width: 768px) {
+		gap: 5px;
+	}
 }
 
 .input_block_top {
@@ -90,8 +106,8 @@
 	input {
 		color: #3c3c3c;
 		width: 100%;
-		padding: 20px 10px;
-		font-size: 18px;
+		padding: 15px 10px;
+		font-size: 14px;
 		margin-top: 5px;
 		margin-bottom: 5px;
 		margin-left: 3px;
@@ -106,7 +122,7 @@
 		gap: 10px;
 		border-radius: 10px;
 		color: #9f9f9f;
-		font-size: 14px;
+		font-size: 13px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: 140%;
@@ -122,8 +138,8 @@
 	input {
 		color: #3c3c3c;
 		width: 100%;
-		padding: 20px 10px;
-		font-size: 18px;
+		padding: 15px 10px;
+		font-size: 14px;
 		margin-top: 5px;
 		margin-bottom: 5px;
 		margin-left: 3px;
@@ -138,7 +154,7 @@
 		gap: 10px;
 		border-radius: 10px;
 		color: #9f9f9f;
-		font-size: 14px;
+		font-size: 13px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: 140%;

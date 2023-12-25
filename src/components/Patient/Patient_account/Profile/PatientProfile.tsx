@@ -9,7 +9,7 @@ import { updateUser } from '../../../../features/user/userSlice';
 function PatientProfile() {
 	const [active, setActive] = useState(false);
 	const goToEdit = () => {
-		if (active === false) {
+		if (!active) {
 			setActive(true);
 		} else {
 			setActive(false);
@@ -17,11 +17,11 @@ function PatientProfile() {
 	};
 
 	const userInfo = useAppSelector((state) => state.users.userInfo);
-	const [email, setEmail] = useState(userInfo?.email);
 	const [password, setPassword] = useState('');
 	const [currentPassword, setCurrentPassword] = useState('');
-	const [phone, setPhone] = useState(userInfo?.phone);
-	const [name, setName] = useState(userInfo?.patient?.name);
+	const [email, setEmail] = useState(userInfo?.email || '');
+	const [phone, setPhone] = useState(userInfo?.phone || '');
+	const [name, setName] = useState(userInfo?.patient?.name || '');
 	const [user, setUser] = useState<IUserEdit>({
 		email: '',
 		password: '',
