@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
-import { HomePage } from './components/homePage/HomePage.tsx';
 import { PageNotFound } from './components/pageNotFound/PageNotFound.tsx';
 import Login from './containers/login/Login.tsx';
 import Register from './containers/register/Register.tsx';
@@ -22,12 +21,12 @@ import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
 import { MailConfirmation } from './components/activeMailPage/MailConfirmation.tsx';
 import { ActivePage } from './components/activeMailPage/ActivePage.tsx';
-import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -45,7 +44,6 @@ const App = () => {
 							element={<Login role="patient" />}
 						/>
 						<Route
-
 							element={
 								<ProtectedRoute
 									isAllowed={user ? user.isActivated : true}
@@ -58,40 +56,43 @@ const App = () => {
 								element={<Login role="psychologist" />}
 							/>
 
-									<Route
-							path="/auth/register/patient"
-							element={<Register role="patient" />}
-						/>
+							<Route
+								path="/auth/register/patient"
+								element={<Register role="patient" />}
+							/>
 
-						<Route path="*" element={<PageNotFound />} />
-						<Route
-							path="/auth/register/psychologist"
-							element={<PsychologistForm />}
-						/>
-						<Route
-							path="/psychologists/"
-							element={<PsychologistsListContainer />}
-						/>
-						<Route
-							path="/psychologists/:id"
-							element={<PsychologistDetailedProfile />}
-						/>
+							<Route path="*" element={<PageNotFound />} />
+							<Route
+								path="/auth/register/psychologist"
+								element={<PsychologistForm />}
+							/>
+							<Route
+								path="/psychologists/"
+								element={<PsychologistsListContainer />}
+							/>
+							<Route
+								path="/psychologists/:id"
+								element={<PsychologistDetailedProfile />}
+							/>
 
-						<Route path="/business" element={<BusinessPage />} />
-						<Route path="/articles" element={<ArticlePageContainer />} />
-						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
+							<Route path="/business" element={<BusinessPage />} />
+							<Route path="/articles" element={<ArticlePageContainer />} />
+							<Route
+								path="/articles/:id"
+								element={<ArticleDetailed id={1} />}
+							/>
 
-						<Route path="/patient" element={<PatientAccountPage />}>
-							<Route path="records" element={<Records />} />
-							<Route path="history" element={<HistoryTable />} />
-							<Route path="favorites" element={<Favorites />} />
-						</Route>
+							<Route path="/patient" element={<PatientAccountPage />}>
+								<Route path="records" element={<Records />} />
+								<Route path="history" element={<HistoryTable />} />
+								<Route path="favorites" element={<Favorites />} />
+							</Route>
 
-						<Route path="/psychologist" element={<PsychologistAccountPage />}>
-							<Route path="profile" element={<Profile />} />
-							<Route path="records" element={<ClientsTable />} />
-							<Route path="calendar" element={<Calendars />} />
-						</Route>
+							<Route path="/psychologist" element={<PsychologistAccountPage />}>
+								<Route path="profile" element={<Profile />} />
+								<Route path="records" element={<ClientsTable />} />
+								<Route path="calendar" element={<Calendars />} />
+							</Route>
 						</Route>
 						<Route path="/auth/activate/:id" element={<ActivePage />} />
 						<Route path="/auth/confirmation" element={<MailConfirmation />} />
