@@ -13,14 +13,15 @@ const SideBar = ({ activeTab, onChangeTab, items }: Props) => {
 		<>
 			<div style={{ height: '100%' }}>
 				<h1 className={styles.title}>Личный кабинет</h1>
-				<Menu
-					mode={'vertical'}
-					inlineCollapsed={false}
-					className={styles.menu}
-					defaultSelectedKeys={activeTab}
-					onClick={({ key }) => onChangeTab(key as ActiveTabPatient)}
-					items={items}
-				/>
+				<div className="menu-container">
+					<Menu
+						mode={'vertical'}
+						className={styles.menu}
+						defaultSelectedKeys={activeTab}
+						onClick={({ key }) => onChangeTab(key as ActiveTabPatient)}
+						items={items}
+					/>
+				</div>
 			</div>
 		</>
 	);

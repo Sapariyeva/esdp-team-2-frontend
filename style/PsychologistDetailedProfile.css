@@ -1,0 +1,10 @@
+.detailed-profile_content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+@media screen and (max-width: 680px) {
+  .detailed-profile_content {
+    flex-direction: column;
+  }
+}/*# sourceMappingURL=PsychologistDetailedProfile.css.map */

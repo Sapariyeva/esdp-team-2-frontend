@@ -1,5 +1,5 @@
 export interface IRecord {
-	id?: number;
+	id: number;
 	address: string | null;
 	patientId: number;
 	psychologistId: number;
@@ -8,7 +8,7 @@ export interface IRecord {
 	format: 'online' | 'offline';
 	cost: number;
 	duration?: number;
-	broadcast: string | null;
+	broadcast: string;
 	isCanceled: boolean;
 	datetime: string;
 	patientName: string;

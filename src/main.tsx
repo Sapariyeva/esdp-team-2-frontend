@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ConfigProvider } from 'antd';
-import ruRU from 'antd/lib/locale/ru_RU';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<Provider store={store}>
@@ -35,16 +34,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							fontWeightStrong: 400,
 							borderRadius: 10,
 						},
-						Checkbox: {
-							colorBgContainer: 'red',
-							marginXS: 30,
-						},
 						Slider: {
 							colorBgBase: 'transparent',
 						},
+						Tooltip: {
+							colorBgBase: '#9F9F9F !important',
+						},
 					},
 				}}
-				locale={ruRU}
 			>
 				<App />
 			</ConfigProvider>

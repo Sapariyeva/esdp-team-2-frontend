@@ -1,0 +1,176 @@
+.main {
+	margin-top: 20px;
+}
+
+.main {
+	display: flex;
+	justify-content: space-between;
+}
+
+.bookingSelect {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	width: 180px !important;
+	height: 50px;
+	border-radius: 10px;
+	background: #f5f5f5;
+	color: #2e2e2e;
+	font-family: 'Montserrat', sans-serif !important;
+	margin-bottom: 10px;
+	text-transform: capitalize;
+	touch-action: manipulation;
+	@media screen and (max-width: 400px) {
+		width: 155px !important;
+	}
+}
+
+.btn {
+	display: flex;
+	width: 100%;
+	padding: 20px 10px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	font-style: normal;
+	font-size: 15px;
+	text-align: center;
+	border-radius: 10px;
+	background: #864ce9;
+	color: #ffffff;
+}
+
+.btn:disabled {
+	cursor: not-allowed;
+	background: #9f9f9f;
+	color: #fff;
+}
+
+.activeBtn {
+	background: rgba(134, 76, 233, 0.1);
+}
+
+.bookingTimeSlot {
+	span {
+		font-size: 13px;
+
+		color: #9f9f9f;
+		margin-left: 4px;
+	}
+	.timeSlotContainer {
+		display: flex;
+		align-items: flex-start;
+		align-content: flex-start;
+		gap: 5px;
+		flex-wrap: wrap;
+		margin-bottom: 6px;
+		margin-top: 5px;
+	}
+	.time {
+		color: #2e2e2e;
+		text-align: center;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 140%;
+		background: #f5f5f5;
+		border-radius: 10px;
+		padding: 9px 15px;
+		cursor: pointer;
+	}
+}
+
+.line {
+	height: 2px;
+	stroke-width: 2px;
+	background-color: #f5f5f5;
+}
+
+.selectDay {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 10px;
+	margin-bottom: 5px;
+
+	p {
+		color: #9f9f9f;
+		font-size: 13px;
+		margin-left: 4px;
+		margin-bottom: 3px;
+	}
+}
+
+.selectedTime {
+	background: rgba(134, 76, 233, 0.1) !important;
+}
+
+.tab {
+	font-family: 'Montserrat', sans-serif !important;
+	margin: 0 !important;
+}
+
+.bookingHeader {
+	color: #2e2e2e;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+}
+
+.cardHeader {
+	display: flex;
+	margin-left: 4px;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	margin-bottom: 10px;
+	color: #2e2e2e;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+
+	h1 {
+		color: #3c3c3c;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+		margin-bottom: 10px;
+	}
+	p {
+		color: #9f9f9f;
+		font-family: Montserrat;
+		font-size: 13px;
+		font-weight: 400;
+	}
+	h3 {
+		font-size: 15px;
+	}
+}
+
+.backButton {
+	border-radius: 10px;
+	background: #f5f5f5;
+	padding: 9px;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+}
+
+.absent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f5f5f5;
+	padding: 10px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	margin-top: 5px;
+	color: #9f9f9f;
+	font-size: 13px;
+	text-align: center;
+	height: 45px;
+}

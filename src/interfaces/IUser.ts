@@ -10,4 +10,5 @@ export interface IUser {
 	psychologist?: IPsychologist;
 	accessToken: string;
 	role: string;
+	isActivated: boolean;
 }

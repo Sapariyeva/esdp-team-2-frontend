@@ -11,44 +11,11 @@ import { useQuery } from '@tanstack/react-query';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
-
 import 'dayjs/locale/ru';
-import { useAppointmentsQuery } from '../../../service/useAppointmentsQuery.ts';
 import axiosInstance from '../../../api/axiosInstance.ts';
-
-const generateMonthDays = (): MonthObject[] => {
-	const currentDate = dayjs();
-	const monthsAndDays: MonthObject[] = [];
-
-	for (let i = 0; i < 30; i++) {
-		const currentDay = currentDate.add(i, 'day');
-		const monthName: string = currentDay.format('MMMM');
-		const dayOfMonth: string = currentDay.format('D');
-		const yearMonth: string = currentDay.format('YYYY-MM');
-
-		const monthObject: MonthObject | undefined = monthsAndDays.find(
-			(obj) => obj.month === monthName
-		);
-
-		if (monthObject) {
-			monthObject.days.push(dayOfMonth);
-		} else {
-			monthsAndDays.push({
-				month: monthName,
-				days: [dayOfMonth],
-				yearMonth: yearMonth,
-			});
-		}
-	}
-
-	return monthsAndDays;
-};
-
-interface MonthObject {
-	month: string;
-	days: string[];
-	yearMonth: string;
-}
+import { generateMonthDays } from '../../../helpers/generateMonthDays.ts';
+import { MonthObject } from '../../../interfaces/IMonthObject.ts';
+import { useAppointmentsСurrentDayQuery } from '../../../features/queryHooks/queryHooks.ts';
 
 type Props = {
 	setActiveTab: (key: string) => void;
@@ -74,10 +41,9 @@ const SelectionBookingTime = ({
 	const selectedDat = dayjs(`${selectedMonth}-${selectedDay}`);
 	const formattedDate = selectedDat.format('YYYY-MM-DD');
 
-	const { data: currentDay = [] } = useAppointmentsQuery(
+	const { data: currentDay = [] } = useAppointmentsСurrentDayQuery(
 		psychologistId,
-		currentDateFormatted,
-		token
+		currentDateFormatted
 	);
 
 	const { data } = useQuery<ITimeSlot[]>({

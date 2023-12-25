@@ -17,6 +17,9 @@ import { IRecordPost } from '../../interfaces/IRecordpost';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
+import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
+
+
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
@@ -117,7 +120,7 @@ export const useGoToRecord = (
 		},
 		onSuccess: () => {
 			message.success('Вы успешно записались на прием к психологу!');
-			navigate('/my-account/patient/');
+			navigate('/patient/records');
 			setLoading(false);
 		},
 	});
@@ -164,7 +167,7 @@ export const useSwitchFavourite = () => {
 	return useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data);
+			return await axiosInstance.post(`/patients/favorites`, data);
 		},
 	});
 };
@@ -192,7 +195,78 @@ export const useGetActualRecordsPatient = () => {
 	return useQuery<IRecord[]>({
 		queryKey: ['GetActualRecordPatient'],
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/records/actual`);
+			const response = await axiosInstance.get(`/patients/actual`);
+			return response.data;
+		},
+	});
+};
+
+export const useDeleteRecord = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/records/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetActualRecordPatient'],
+			});
+		},
+	});
+};
+
+export const useAppointmentsСurrentDayQuery = (
+	psychologistId: number,
+	date: string
+) => {
+	return useQuery<ITimeSlot[]>({
+		queryKey: ['getAppointmentsDay', date],
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/appointments/${psychologistId}?date=${date}`
+			);
+			return response.data;
+		},
+	});
+};
+
+export const useAppointmentsSelectDayQuery = (
+	psychologistId: number,
+	date: string,
+	enabled: boolean
+) => {
+	return useQuery<ITimeSlot[]>({
+		queryKey: ['getAppointmentsDay', date],
+		enabled: enabled,
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/appointments/${psychologistId}?date=${date}`
+			);
+			return response.data;
+		},
+	});
+};
+
+export const useRecordTransferQuery = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (data: ITransferRecord) => {
+			return await axiosInstance.put(`/records`, data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetActualRecordPatient'],
+			});
+		},
+	});
+};
+
+export const useGetRecordsHistoryPatient = () => {
+	return useQuery<IRecord[]>({
+		queryKey: ['GetRecordsHistoryPatient'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/patients/history`);
 			return response.data;
 		},
 	});

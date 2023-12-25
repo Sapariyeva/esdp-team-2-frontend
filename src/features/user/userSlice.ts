@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk<
 >('auth/Register', async (userData, { rejectWithValue }) => {
 	try {
 		const response = await axiosInstance.post<IUser>(
-			'/auth/register',
+			'/auth/register/patient',
 			userData
 		);
 		return response.data;
@@ -68,6 +68,7 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	return response.data;
 });
 
+
 export const updateUser = createAsyncThunk(
 	'auth/edit',
 	async (data: IUserEdit) => {
@@ -76,6 +77,25 @@ export const updateUser = createAsyncThunk(
 		return response.data;
 	}
 );
+
+export const activateEmail = createAsyncThunk<
+	IUser,
+	number,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/activate', async (id: number, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.get<IUser>(`/auth/activate/${id}`);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+		}
+		throw err;
+	}
+});
 
 interface UserState {
 	userInfo: IUser | null;
@@ -146,6 +166,17 @@ const userSlice = createSlice({
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
 				state.userInfo = payload;
+      })
+			.addCase(activateEmail.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(activateEmail.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.logged = true;
+				state.userInfo = payload;
+			})
+			.addCase(activateEmail.rejected, (state) => {
+				state.loading = false;
 			});
 	},
 });
