@@ -260,3 +260,13 @@ export const useRecordTransferQuery = () => {
 		},
 	});
 };
+
+export const useGetRecordsHistoryPatient = () => {
+	return useQuery<IRecord[]>({
+		queryKey: ['GetRecordsHistoryPatient'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/patients/history`);
+			return response.data;
+		},
+	});
+};
