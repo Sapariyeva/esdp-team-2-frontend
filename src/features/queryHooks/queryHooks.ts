@@ -17,7 +17,6 @@ import { IRecordPost } from '../../interfaces/IRecordpost';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
-
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
@@ -194,6 +193,19 @@ export const useGetActualRecordsPatient = () => {
 		queryKey: ['GetActualRecordPatient'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(`/records/actual`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostEditUserName = () => {
+	return useMutation({
+		mutationFn: async (data: { name: string; userId: number | undefined }) => {
+			const response = await axiosInstance.put(
+				`patients/edit/${data.userId}`,
+				data
+			);
+
 			return response.data;
 		},
 	});

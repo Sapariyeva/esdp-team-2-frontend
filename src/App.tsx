@@ -23,6 +23,7 @@ import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
+import PatientProfile from './components/Patient/Patient_account/Profile/PatientProfile.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -68,6 +69,7 @@ const App = () => {
 						<Route path="/articles/:id" element={<ArticleDetailed id={1} />} />
 
 						<Route path="/patient" element={<PatientAccountPage />}>
+							<Route path="profile" element={<PatientProfile />} />
 							<Route path="records" element={<Records />} />
 							<Route path="history" element={<HistoryTable />} />
 							<Route path="favorites" element={<Favorites />} />
