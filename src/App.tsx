@@ -26,7 +26,8 @@ import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.tsx';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+
 dayjs.extend(utc);
 dayjs.locale('ru');
 

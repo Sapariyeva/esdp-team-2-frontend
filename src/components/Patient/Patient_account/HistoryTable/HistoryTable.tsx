@@ -1,86 +1,101 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.scss';
-import { Table } from 'antd';
+import { Space, Spin, Table } from 'antd';
+import styles from '../Records/Record.module.scss';
+import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
+import { IRecord } from '../../../../interfaces/IRecord';
+import dayjs from 'dayjs';
+import Alert from '../../../UI/Alert/Alert.tsx';
 
-interface DataType {
-	key: number;
-	date: string;
-	psychologist: string;
-	amount: string;
-	link: string;
-	time: string;
-}
+import { CiCircleInfo } from 'react-icons/ci';
+
 const HistoryTable = () => {
-	const data = [
-		{
-			key: 1,
-			date: '06.12.2023',
-			psychologist: 'Алимберли Дильназ',
-			link: 'Ссылка',
-			amount: '10 000 ₸',
-			time: '19:00',
-		},
-		{
-			key: 2,
-			date: '31.12.2023',
-			psychologist: 'Норо Митчхел',
-			link: 'Алматы, Макатаева 198',
-			amount: '15 000 ₸',
-			time: '12:00',
-		},
-	];
+	const { data: history = [], isPending = [] } = useGetRecordsHistoryPatient();
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<IRecord> = [
 		{
 			title: 'ФИО',
-			dataIndex: 'psychologist',
-			key: 'psychologist',
+			dataIndex: 'psychologistName',
 			width: 90,
 			className: `${styles.colum}`,
-			render: (text) => (
-				<Link className={styles.colum} to={'/psychologist/1'}>
+			render: (text, history) => (
+				<Link
+					className={styles.colum}
+					to={`/some-link/${history.psychologistName}`}
+				>
 					{text}
 				</Link>
 			),
 		},
 		{
 			title: 'Цена',
-			dataIndex: 'amount',
-			key: 'type',
+			dataIndex: 'cost',
 			className: `${styles.colum}`,
+			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
 			title: 'Встреча',
-			dataIndex: 'link',
-			key: 'link',
+			dataIndex: 'address',
 			className: `${styles.colum}`,
+			render: (text, history) => (
+				<>
+					{text ? (
+						<span>{text}</span>
+					) : (
+						<Link className={styles.colum} to={`/some-link/${history.address}`}>
+							Ссылка
+						</Link>
+					)}
+				</>
+			),
 		},
 		{
 			title: 'Дата',
-			key: 'date',
-			dataIndex: 'date',
+			dataIndex: 'datetime',
 			className: `${styles.colum}`,
+			render: (text) => <>{dayjs(text).format('YYYY-MM-DD')}</>,
 		},
 		{
 			title: 'Время',
-			key: 'time',
-			dataIndex: 'time',
+			dataIndex: 'datetime',
 			className: `${styles.colum}`,
+			render: (text) => (
+				<>
+					<Space className={styles.info_container}>
+						<Alert
+							title={'Запись на консультацию'}
+							message="Редактировать время записи можно за 2 часа до встречи, в ином случае запись можно только отменить."
+						>
+							<CiCircleInfo className={styles.info} />
+
+							<span>{dayjs(text).format('HH:mm')}</span>
+						</Alert>
+					</Space>
+				</>
+			),
 		},
 	];
 
 	const emptyText =
-		'В настоящее время у вас нет записей о предыдущих консультациях с нашими специалистами. ';
+		'В настоящее время у вас нет истории записей о предыдущих консультациях с нашими специалистами. ';
 
 	return (
-		<Table
-			columns={columns}
-			dataSource={data}
-			locale={{ emptyText }}
-			virtual={false}
-			pagination={{ position: ['none'] }}
-		/>
+		<>
+			{isPending ? (
+				<Spin />
+			) : (
+				<>
+					<Table
+						rowClassName={styles.row}
+						columns={columns}
+						dataSource={history}
+						locale={{ emptyText }}
+						virtual={false}
+						pagination={{ position: ['none'] }}
+					/>
+				</>
+			)}
+		</>
 	);
 };
 export default HistoryTable;
