@@ -1,81 +1,115 @@
-import styles from '../Record.module.scss';
+import styles from './RecordTransfer.module.scss';
 import classNames from 'classnames/bind';
-import { Button, Select } from 'antd';
+import { Button, message, Select } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import { ITimeSlot } from '../../../../../interfaces/ITimeSlot.ts';
+import { generateMonthDays } from '../../../../../helpers/generateMonthDays.ts';
+import { MonthObject } from '../../../../../interfaces/IMonthObject.ts';
 import * as dayjs from 'dayjs';
-import back from '../../../../public/arrow-left.svg';
-import { useAppSelector } from '../../../store/hooks.ts';
-import { tokenSelect } from '../../../features/user/userSlice.ts';
-import { useQuery } from '@tanstack/react-query';
-import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import {
+	useAppointmentsSelectDayQuery,
+	useAppointmentsСurrentDayQuery,
+	useRecordTransferQuery,
+} from '../../../../../features/queryHooks/queryHooks.ts';
 dayjs.extend(customParseFormat);
 import 'dayjs/locale/ru';
-import axiosInstance from '../../../api/axiosInstance.ts';
-import { generateMonthDays } from '../../../helpers/generateMonthDays.ts';
-import { MonthObject } from '../../../interfaces/IMonthObject.ts';
-import { useAppointmentsСurrentDayQuery } from '../../../features/queryHooks/queryHooks.ts';
 
 type Props = {
-	setActiveTab: (key: string) => void;
-	setRecordTime: (date: string) => void;
-	setSlotId: (date: string) => void;
 	psychologistId: number;
+	recordTime: string;
+	recordId: number;
 };
-const SelectionBookingTime = ({
-	setActiveTab,
-	psychologistId,
-	setRecordTime,
-	setSlotId,
-}: Props) => {
-	const token = useAppSelector(tokenSelect);
+
+interface RecordState {
+	selectedDay: null | string;
+	selectedTime: null | string;
+	selectedDate: null | string;
+	selectedMonth: string | null;
+	newRecordTime: string;
+	slotId: string;
+}
+const RecordTransfer = ({ psychologistId, recordTime, recordId }: Props) => {
 	const currentDateFormatted = dayjs().format('YYYY-MM-DD');
 	const monthsAndDays: MonthObject[] = generateMonthDays();
 
-	const [selectedDay, setSelectedDay] = useState<null | string>();
-	const [selectedTime, setSelectedTime] = useState<null | string>();
-	const [selectedDate, setSelectedDate] = useState<null | string>(null);
-	const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+	const [recordState, setRecordState] = useState<RecordState>({
+		selectedDay: null,
+		selectedTime: null,
+		selectedDate: null,
+		selectedMonth: null,
+		newRecordTime: '',
+		slotId: '',
+	});
+	const {
+		selectedDay,
+		selectedTime,
+		selectedDate,
+		selectedMonth,
+		slotId,
+		newRecordTime,
+	} = recordState;
 
-	const selectedDat = dayjs(`${selectedMonth}-${selectedDay}`);
-	const formattedDate = selectedDat.format('YYYY-MM-DD');
+	const date = dayjs(`${selectedMonth}-${selectedDay}`);
+	const formattedDate = date.format('YYYY-MM-DD');
+	const shouldFetchAppointments = !!selectedMonth && !!selectedDay;
 
 	const { data: currentDay = [] } = useAppointmentsСurrentDayQuery(
 		psychologistId,
 		currentDateFormatted
 	);
 
-	const { data } = useQuery<ITimeSlot[]>({
-		queryKey: ['reposData', formattedDate],
-		enabled: !!selectedMonth && !!selectedDay,
-		queryFn: async () => {
-			const response = await axiosInstance.get(
-				`/appointments/${psychologistId}?date=${formattedDate}`,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
-			);
-			return response.data;
-		},
-	});
+	const { data: selectedDays = [] } = useAppointmentsSelectDayQuery(
+		psychologistId,
+		formattedDate,
+		shouldFetchAppointments
+	);
+
+	const transferRecord = useRecordTransferQuery();
 
 	const handleTimeClick = (date: ITimeSlot) => {
 		const selectedDate = dayjs(`${date.date}T${date.time}`).format(
 			'YYYY-MM-DDTHH:mm:ss'
 		);
-		setSlotId(date.id);
-		setRecordTime(selectedDate);
-		setSelectedTime(date.time);
-		setSelectedDate(date.date);
+		setRecordState((prevState) => ({
+			...prevState,
+			slotId: date.id,
+			newRecordTime: selectedDate,
+			selectedTime: date.time,
+			selectedDate: date.date,
+		}));
 	};
 
-	const handleFormatChange = (value: string) => {
-		setSelectedDay(null);
-		setSelectedDate(null);
-		setSelectedDay(value);
+	const handleMouthChange = (value: string) => {
+		setRecordState((prevState) => ({
+			...prevState,
+			selectedMonth: value,
+			selectedDate: null,
+		}));
+	};
+
+	const handleDayChange = (value: string) => {
+		setRecordState((prevState) => ({
+			...prevState,
+			selectedDay: value,
+			selectedDate: null,
+		}));
+	};
+
+	const confirm = () => {
+		transferRecord.mutate(
+			{
+				id: recordId,
+				newDateTime: newRecordTime,
+				newSlotId: slotId,
+			},
+			{
+				onSuccess: () => {
+					message.success('Вы успешно пенесли запись на другую дату!');
+				},
+			}
+		);
 	};
 
 	const selectedMonthObject = monthsAndDays.find(
@@ -90,17 +124,12 @@ const SelectionBookingTime = ({
 	const dayOptions = selectedMonthObject
 		? selectedMonthObject.days.map((day) => ({ value: day, label: day }))
 		: [];
-
 	return (
 		<>
 			<div className={styles.cardHeader}>
-				<img
-					className={styles.backButton}
-					onClick={() => setActiveTab('1')}
-					src={back}
-					alt="back"
-				/>
-				<h1 className={styles.header}>Время записи</h1>
+				<h1 className={styles.header}>Перенос времени встречи</h1>
+				<p>Назначено на </p>
+				<h3>{dayjs(recordTime).format('DD MMMM в HH:MM')}</h3>
 			</div>
 			<div className={styles.bookingTimeSlot}>
 				<span>Доступно сегодня</span>
@@ -140,11 +169,7 @@ const SelectionBookingTime = ({
 						}}
 						bordered={false}
 						options={selectOptions}
-						onChange={(value: string) => {
-							setSelectedDay(null);
-							setSelectedDate(null);
-							setSelectedMonth(value);
-						}}
+						onChange={(value: string) => handleMouthChange(value)}
 					/>
 				</div>
 				<div>
@@ -159,15 +184,15 @@ const SelectionBookingTime = ({
 						}}
 						bordered={false}
 						options={dayOptions}
-						onChange={(e) => handleFormatChange(e)}
+						onChange={(value) => handleDayChange(value)}
 					/>
 				</div>
 			</div>
-			{data && data.length > 0 ? (
+			{selectedDays && selectedDays.length > 0 ? (
 				<div className={styles.bookingTimeSlot}>
 					<span style={{ color: '#9F9F9F' }}>Доступное время</span>
 					<div className={styles.timeSlotContainer}>
-						{data.map((time, index) => (
+						{selectedDays.map((time, index) => (
 							<div
 								key={index}
 								className={classNames.call(styles, styles.time, {
@@ -182,20 +207,20 @@ const SelectionBookingTime = ({
 					</div>
 				</div>
 			) : (
-				data &&
-				data.length === 0 && (
+				selectedDays &&
+				selectedDays.length === 0 && (
 					<div className={styles.absent}>Нет доступных сеансов.</div>
 				)
 			)}
 			<Button
-				onClick={() => setActiveTab('3')}
+				onClick={confirm}
 				disabled={!selectedDate || !selectedTime}
 				className={styles.btn}
 			>
-				Далее
+				Подтвердить
 			</Button>
 		</>
 	);
 };
 
-export default SelectionBookingTime;
+export default RecordTransfer;

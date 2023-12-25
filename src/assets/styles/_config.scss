@@ -104,3 +104,51 @@ $hover-color: black;
 	.ant-layout-sider-children {
 	width: 300px !important;
 }
+
+.ant-tooltip-inner {
+	display: flex;
+	width: 280px !important;
+	height: 100px !important;
+	color: #3c3c3c !important;
+	text-align: left;
+	text-decoration: none;
+	word-wrap: break-word;
+	background-color: #f5f5f5 !important;
+}
+
+//.ant-table-cell {
+//	display: flex;
+//}
+//
+//.ant-table-thead {
+//	display: none; /* Скрыть заголовок на узких экранах */
+//}
+//
+//.ant-table-tbody {
+//	width: 100%;
+//}
+//
+//.ant-table-row {
+//	margin-bottom: 16px; /* Разделение между записями */
+//}
+//.menu-container {
+//	overflow: hidden;
+//}
+
+/* Use a media query to change the menu layout to horizontal at 500px or less */
+@media screen and (max-width: 500px) {
+	.menu-container {
+		overflow-x: auto; /* Allow horizontal scrolling on small screens */
+	}
+
+	.ant-menu {
+		display: flex;
+		flex-direction: row; /* Change the direction to horizontal */
+	}
+}
+
+.ant-menu-item {
+	display: flex;
+	align-items: center;
+	padding: 0;
+}

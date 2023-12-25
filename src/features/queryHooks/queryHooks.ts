@@ -17,6 +17,7 @@ import { IRecordPost } from '../../interfaces/IRecordpost';
 import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
+import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -165,7 +166,7 @@ export const useSwitchFavourite = () => {
 	return useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
-			return await axiosInstance.post(`patients/favorites`, data);
+			return await axiosInstance.post(`/patients/favorites`, data);
 		},
 	});
 };
@@ -195,6 +196,67 @@ export const useGetActualRecordsPatient = () => {
 		queryFn: async () => {
 			const response = await axiosInstance.get(`/records/actual`);
 			return response.data;
+		},
+	});
+};
+
+export const useDeleteRecord = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/records/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetActualRecordPatient'],
+			});
+		},
+	});
+};
+
+export const useAppointmentsСurrentDayQuery = (
+	psychologistId: number,
+	date: string
+) => {
+	return useQuery<ITimeSlot[]>({
+		queryKey: ['getAppointmentsDay', date],
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/appointments/${psychologistId}?date=${date}`
+			);
+			return response.data;
+		},
+	});
+};
+
+export const useAppointmentsSelectDayQuery = (
+	psychologistId: number,
+	date: string,
+	enabled: boolean
+) => {
+	return useQuery<ITimeSlot[]>({
+		queryKey: ['getAppointmentsDay', date],
+		enabled: enabled,
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/appointments/${psychologistId}?date=${date}`
+			);
+			return response.data;
+		},
+	});
+};
+
+export const useRecordTransferQuery = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (data: ITransferRecord) => {
+			return await axiosInstance.put(`/records`, data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetActualRecordPatient'],
+			});
 		},
 	});
 };
