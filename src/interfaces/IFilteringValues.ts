@@ -3,7 +3,7 @@ interface IFilteringValues {
 	age?: number | number[];
 	languages?: 'kazakh' | 'russian' | 'english';
 	format?: 'online' | 'offline';
-	cost?: number;
+	cost?: number[];
 	consultationType?: 'solo' | 'duo';
 	lgbt?: boolean;
 	cityId?: number;
