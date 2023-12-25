@@ -4,12 +4,14 @@ import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
 import { useAppSelector } from '../../../store/hooks';
+import updateStorageViewedPsychologists from '../../../helpers/updateStorageViewedPsychologists';
+import { useSaveVievedPsychologist } from '../../../features/queryHooks/queryHooks';
 
 const { Meta } = Card;
 
 interface Props {
 	psychologist: IPsychologistWithLikes;
-	switchFavorite: (id: number) => boolean;
+	switchFavorite?: (id: number) => boolean;
 }
 
 export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
@@ -18,9 +20,19 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 
 	const onClickReadMore = () => {
 		navigate(`/psychologists/${psychologist.id}`);
+		if (authUser?.accessToken && authUser.patient !== null) {
+			saveViewedPsychologist(psychologist.id);
+		} else {
+			updateStorageViewedPsychologists(psychologist.id);
+		}
 	};
 
+	const { mutate: saveViewedPsychologist } =
+		useSaveVievedPsychologist(psychologist);
+
 	const changeHeart = () => {
+		if (switchFavorite === undefined) return;
+
 		const isSwitched = switchFavorite(psychologist.id);
 		if (!isSwitched) return;
 
@@ -37,7 +49,7 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 			hoverable
 			cover={
 				<div className={styles.cover}>
-					{authUser?.role === 'patient' && (
+					{authUser?.role === 'patient' && switchFavorite && (
 						<div>
 							{psychologist.isFavorite ? (
 								<span className={styles.heart}>

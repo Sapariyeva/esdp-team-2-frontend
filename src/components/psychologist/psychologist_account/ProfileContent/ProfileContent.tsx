@@ -8,7 +8,6 @@ import { ITechnique } from '../../../../interfaces/ITechnique';
 import { ISymptom } from '../../../../interfaces/ISymptom';
 import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance';
 import { Image } from 'antd';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { ICity } from '../../../../interfaces/IPsychologistForm';
@@ -16,13 +15,9 @@ import {
 	EditProfileModal,
 	ModalFormState,
 } from '../EditProfileModal/EditProfileModal';
-import { useAppSelector } from '../../../../store/hooks';
 import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
 import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
-
-type PsychologistProfile = {
-	psychologist: IPsychologist;
-};
+import axiosInstance from '../../../../api/axiosInstance.ts';
 
 export interface photoCreate {
 	photos: {
@@ -34,13 +29,22 @@ export interface certificateCreate {
 		fileList: UploadFile[];
 	};
 }
-const Profile = ({ psychologist }: PsychologistProfile) => {
+const Profile = () => {
+	const { data: psychologist } = useQuery<IPsychologist>({
+		queryKey: ['reposData'],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPsychologist>(`/psychologists`);
+
+			return response.data;
+		},
+	});
+
 	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 	const [isCertificateModalVisible, setIsCertificateModalVisible] =
 		useState(false);
 	const [error] = useState<string | null>(null);
-	const videoId = psychologist.video ? youtubeVideoId(psychologist.video) : '';
+	const videoId = psychologist?.video ? youtubeVideoId(psychologist.video) : '';
 	const opts: YouTubeProps['opts'] = {
 		height: '100%',
 		width: '100%',
@@ -80,8 +84,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 	});
 	const cities = citiesData?.data ?? [];
 
-	const token = useAppSelector((state) => state.users.userInfo?.accessToken);
-
 	const handleEdit = () => {
 		setEditModalVisible(true);
 	};
@@ -99,12 +101,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		mutationFn: async (psychologist: ModalFormState) => {
 			const response = await axiosInstance.put(
 				'/psychologists/edit',
-				psychologist,
-				{
-					headers: {
-						Authorization: `${token}`,
-					},
-				}
+				psychologist
 			);
 
 			return response.data;
@@ -133,7 +130,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		try {
 			await axiosInstance.post('/photos/create', formData, {
 				headers: {
-					Authorization: `${token}`,
 					'Content-Type': 'multipart/form-data',
 				},
 			});
@@ -145,11 +141,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 	};
 
 	const handleDeletePhoto = async (id: number) => {
-		await axiosInstance.delete(`/photos/${id}`, {
-			headers: {
-				Authorization: `${token}`,
-			},
-		});
+		await axiosInstance.delete(`/photos/${id}`);
 		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
 
@@ -174,7 +166,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 		try {
 			await axiosInstance.post('/certificates/create', formData, {
 				headers: {
-					Authorization: `${token}`,
 					'Content-Type': 'multipart/form-data',
 				},
 			});
@@ -186,13 +177,12 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 	};
 
 	const handleDeleteCertificate = async (id: number) => {
-		await axiosInstance.delete(`/certificates/${id}`, {
-			headers: {
-				Authorization: `${token}`,
-			},
-		});
+		await axiosInstance.delete(`/certificates/${id}`);
 		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
 	};
+	if (error || !psychologist) {
+		return <div>Error loading psychologist data</div>;
+	}
 
 	return (
 		<div className="profile_container">
@@ -255,9 +245,6 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 					</Typography.Paragraph>
 					<Typography.Paragraph className="paragraph">
 						<strong>Пол:</strong> {psychologist.gender}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Город:</strong> {psychologist.city.name}
 					</Typography.Paragraph>
 					<Typography.Paragraph className="paragraph">
 						<strong>Тип консультации:</strong> {psychologist.consultationType}
@@ -401,6 +388,7 @@ const Profile = ({ psychologist }: PsychologistProfile) => {
 				symptoms={symptoms}
 				cities={cities}
 			/>
+
 			{error && (
 				<div className="error-message">
 					<Typography.Text type="danger">{error}</Typography.Text>

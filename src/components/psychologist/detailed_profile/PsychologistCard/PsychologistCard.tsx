@@ -5,12 +5,25 @@ import './PsychologistCard.scss';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
+import { useState } from 'react';
+import Record from '../../../record/Record.tsx';
+import { useAppSelector } from '../../../../store/hooks.ts';
+import { userSelect } from '../../../../features/user/userSlice.ts';
+import { useNavigate } from 'react-router-dom';
 
 type PsychologistCardProps = {
 	psychologist: IPsychologist;
 };
 
 const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
+	const [active, setActive] = useState(false);
+	const navigate = useNavigate();
+	const user = useAppSelector(userSelect);
+	const handleClick = () => {
+		if (!user || !user.patient) navigate('/auth/login/patient');
+		setActive(true);
+	};
+
 	if (!psychologist || Object.keys(psychologist).length === 0) {
 		return <Empty description="No psychologist details found" />;
 	}
@@ -68,7 +81,18 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 										{psychologist.format}
 									</Typography.Text>
 								)}
-								<Button className="card_button">Записаться на приём</Button>
+								<Button
+									onClick={handleClick}
+									disabled={user?.role === 'psychologist'}
+									className="card_button"
+								>
+									Записаться на приём
+								</Button>
+								<Record
+									psychologist={psychologist}
+									active={active}
+									setActive={setActive}
+								/>
 							</div>
 						}
 					/>

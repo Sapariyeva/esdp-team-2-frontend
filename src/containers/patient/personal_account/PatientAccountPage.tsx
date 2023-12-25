@@ -1,45 +1,83 @@
-import { useState } from 'react';
-import { Col, Layout, Row } from 'antd';
-import SideBar from '../../../components/Patient/Patient_account/SideBar/SideBar.tsx';
-import HistoryTable from '../../../components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
-import Favorites from '../../../components/Patient/Patient_account/Favorites/Favorites.tsx';
-import Records from '../../../components/Patient/Patient_account/Records/Records.tsx';
+import { useEffect, useState } from 'react';
+import SideBar from '../../../components/SideBar/SideBar.tsx';
+import { Outlet, useNavigate } from 'react-router-dom';
+import styles from './PatientAccountPage.module.scss';
+import { useAppDispatch } from '../../../store/hooks.ts';
+import { logoutUser } from '../../../features/user/userSlice.ts';
+import { MenuProps, message } from 'antd';
+import getItem from '../../../helpers/getItem.ts';
+import profile from '../../../assets/icon/profile.svg';
+import record from '../../../assets/icon/record.svg';
+import history from '../../../assets/icon/history.svg';
+import heart from '../../../assets/icon/heart.svg';
+import book from '../../../assets/icon/book-saved.svg';
+import logout from '../../../assets/icon/logout.svg';
 
-export type ActiveTabPatient = 'myRecords' | 'history' | 'favorites';
+export type ActiveTabPatient = 'records' | 'history' | 'favorites';
 
 const PatientAccountPage = () => {
-	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('myRecords');
-	const renderContent = () => {
-		switch (activeTab) {
-			case 'myRecords':
-				return <Records />;
-			case 'history':
-				return <HistoryTable />;
-			case 'favorites':
-				return <Favorites />;
-			default:
-				return null;
-		}
+	const dispatch = useAppDispatch();
+
+	const navigate = useNavigate();
+	const [activeTab, setActiveTab] = useState<ActiveTabPatient>('records');
+
+	useEffect(() => {
+		navigate(`/patient/${activeTab}`);
+	}, [activeTab, navigate]);
+
+	const handleLogout = () => {
+		dispatch(logoutUser());
+		navigate('/');
+		message.success('Вы успешно вышли с учетной записи!');
 	};
+
+	const items: MenuProps['items'] = [
+		getItem(
+			'Профиль',
+			'profile',
+			<img className={styles.img} src={profile} alt="profile" />
+		),
+		getItem(
+			'Мои записи',
+			'records',
+			<img className={styles.img} src={record} alt="record" />
+		),
+		getItem(
+			'История посещений',
+			'history',
+			<img className={styles.img} src={history} alt="history" />
+		),
+		getItem(
+			'Избранное',
+			'favorites',
+			<img className={styles.img} src={heart} alt="heart" />
+		),
+		getItem(
+			'Курсы',
+			'course',
+			<img className={styles.img} src={book} alt="book" />
+		),
+		getItem(
+			'Выход',
+			'exit',
+			<img className={styles.img} src={logout} alt="profile" />,
+			undefined,
+			undefined,
+			handleLogout
+		),
+	];
+
 	return (
-		<Layout>
-			<Row>
-				<Col xs={24} sm={24} md={6} lg={6} xl={6} xxl={6}>
-					<SideBar activeTab={[activeTab]} onChangeTab={setActiveTab} />
-				</Col>
-				<Col
-					xs={24}
-					sm={24}
-					md={18}
-					lg={18}
-					xl={18}
-					xxl={18}
-					style={{ minHeight: '70vh' }}
-				>
-					{renderContent()}
-				</Col>
-			</Row>
-		</Layout>
+		<div className={styles.container}>
+			<SideBar
+				items={items}
+				activeTab={[activeTab]}
+				onChangeTab={setActiveTab}
+			/>
+			<div className={styles.content}>
+				<Outlet />
+			</div>
+		</div>
 	);
 };
 

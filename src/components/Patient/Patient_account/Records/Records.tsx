@@ -1,83 +1,134 @@
-import { Layout, message, Popconfirm, Popover, Table, Typography } from 'antd';
-const { Title } = Typography;
-
-import styles from '../../../../containers/patient/personal_account/PatientAccountPage.module.scss';
-import { useState } from 'react';
+import { message, Popconfirm, Space, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { FcDeleteDatabase } from 'react-icons/fc';
+import { IRecord } from '../../../../interfaces/IRecord.ts';
+import dayjs from 'dayjs';
+import {
+	useDeleteRecord,
+	useGetActualRecordsPatient,
+} from '../../../../features/queryHooks/queryHooks.ts';
+import styles from './Record.module.scss';
+import info_error from '../../../../assets/icon/info-error.svg';
+import Alert from '../../../UI/Alert/Alert.tsx';
+import { CiCircleInfo } from 'react-icons/ci';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { useState } from 'react';
+import Wrapper from '../../../UI/Wrapper/Wrapper.tsx';
+import RecordTransfer from './recordTransfer/RecordTransfer.tsx';
+import utc from 'dayjs/plugin/utc';
 
-interface DataType {
-	key: number;
-	date: string;
-	type: string;
-	psychologist: string;
-	amount: string;
-}
+dayjs.extend(utc);
+
 const Records = () => {
-	const [data, setData] = useState<DataType[]>([
-		{
-			key: 1,
-			date: '22 ноября 10:00',
-			type: 'Эмоциональное выгорание',
-			psychologist: 'Алимберли Дильназ Сериковна',
-			amount: '10 000 ₸',
-		},
-	]);
-	const confirm = (key: number) => {
-		const updatedData = data.filter((item) => item.key !== key);
-		setData(updatedData);
-		message.success('Ваша запись успешно отменена.');
+	const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
+
+	const { data: records = [], isPending = [] } = useGetActualRecordsPatient();
+	const deleteRecord = useDeleteRecord();
+
+	const confirm = (id: number) => {
+		deleteRecord.mutate(id);
 	};
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<IRecord> = [
 		{
-			title: 'Дата',
-			dataIndex: 'date',
-			key: 'date',
-			width: 155,
+			title: 'ФИО',
+			dataIndex: 'psychologistName',
 			className: `${styles.colum}`,
-		},
-		{
-			title: 'Тип приёма',
-			dataIndex: 'type',
-			key: 'type',
-			width: 200,
-			className: `${styles.colum}`,
-		},
-		{
-			title: 'Специалист',
-			dataIndex: 'psychologist',
-			key: 'psychologist',
-			width: 240,
-			className: `${styles.colum}`,
-			render: (text) => (
-				<Link className={styles.colum} to={'/psychologist/1'}>
+			render: (text, record) => (
+				<Link
+					className={styles.colum}
+					to={`/psychologists/${record.psychologistId}`}
+				>
 					{text}
 				</Link>
 			),
 		},
 		{
-			title: 'Стоимость',
-			key: 'amount',
-			dataIndex: 'amount',
-			width: 110,
+			title: 'Цена',
+			dataIndex: 'cost',
 			className: `${styles.colum}`,
+			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
-			width: 50,
+			title: 'Встреча',
+			dataIndex: 'address',
+			className: `${styles.colum}`,
+			render: (text, record) => (
+				<>
+					{text ? (
+						<span>{text}</span>
+					) : (
+						<Link
+							className={styles.colum}
+							to={`/some-link/${record.broadcast}`}
+						>
+							Ссылка
+						</Link>
+					)}
+				</>
+			),
+		},
+		{
+			title: 'Дата',
+			dataIndex: 'datetime',
+			className: `${styles.colum}`,
+			render: (text) => <>{dayjs(text).format('YYYY-MM-DD')}</>,
+		},
+		{
+			title: 'Время',
+			dataIndex: 'datetime',
+			className: `${styles.colum}`,
+			render: (text) => (
+				<>
+					<Space className={styles.info_container}>
+						<Alert
+							title={'Запись на консультацию'}
+							message="Редактировать время записи можно за 2 часа до встречи, в ином случае запись можно только отменить."
+						>
+							<CiCircleInfo className={styles.info} />
+
+							<span>{dayjs(text).format('HH:mm')}</span>
+						</Alert>
+					</Space>
+				</>
+			),
+		},
+		{
+			width: 10,
 			render: (_, record) => {
 				return (
-					<Popconfirm
-						title="Отмена записи"
-						description="Действительно ли хотите отменить запись?"
-						onConfirm={() => confirm(record.key)}
-						onCancel={() => message.warning('Психолог ожидает встречи с вами.')}
-						okText="Да"
-						cancelText="Нет"
-					>
-						<FcDeleteDatabase className={styles.svg} />
-					</Popconfirm>
+					<div className={styles.editor}>
+						<IoSettingsOutline
+							onClick={() => {
+								setActiveStates((prev) => ({ ...prev, [record.id]: true }));
+							}}
+							className={styles.setting}
+						/>
+						<Popconfirm
+							rootClassName={styles.popconfirm}
+							icon={
+								<img
+									className={styles.error}
+									src={info_error}
+									style={{ color: 'red' }}
+									alt={'info'}
+								/>
+							}
+							title={false}
+							className={styles.wrapper}
+							description="Вы уверены, что хотите отменить консультацию?"
+							onConfirm={() => confirm(record.id)}
+							onCancel={() =>
+								message.warning('Психолог ожидает встречи с вами.')
+							}
+							okButtonProps={{ className: styles.okText }}
+							cancelButtonProps={{ className: styles.CancelText }}
+							okText="Отменить"
+							cancelText="Вернуться"
+						>
+							<p>Отменить</p>
+						</Popconfirm>
+					</div>
 				);
 			},
 		},
@@ -87,24 +138,37 @@ const Records = () => {
 		'Пока что у вас нет активных записей на сеансы. Вы можете записаться на приём, чтобы начать свой путь к психологическому благополучию.';
 
 	return (
-		<Layout>
-			<Popover
-				placement={'right'}
-				content={'Здесь вы можете управлять своими записями на сеансы.'}
-			>
-				<Title level={3} className={styles.title}>
-					Активные записи
-				</Title>
-			</Popover>
-			<Typography className={styles.description}></Typography>
-			<Table
-				columns={columns}
-				dataSource={data}
-				locale={{ emptyText }}
-				virtual={false}
-				pagination={{ position: ['none'] }}
-			/>
-		</Layout>
+		<>
+			{isPending ? (
+				<Spin />
+			) : (
+				<>
+					{records.map((record) => (
+						<Wrapper
+							key={record.id}
+							active={activeStates[record.id] || false}
+							onClick={() =>
+								setActiveStates((prev) => ({ ...prev, [record.id]: false }))
+							}
+						>
+							<RecordTransfer
+								recordId={record.id}
+								psychologistId={record.psychologistId}
+								recordTime={record.datetime}
+							/>
+						</Wrapper>
+					))}
+					<Table
+						rowClassName={styles.row}
+						columns={columns}
+						dataSource={records}
+						locale={{ emptyText }}
+						virtual={false}
+						pagination={{ position: ['none'] }}
+					/>
+				</>
+			)}
+		</>
 	);
 };
 

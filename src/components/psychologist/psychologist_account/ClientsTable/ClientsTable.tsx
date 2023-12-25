@@ -34,7 +34,6 @@ const ClientsTable = () => {
 
 	return (
 		<Table
-			style={{ margin: 20 }}
 			scroll={{ x: true }}
 			dataSource={dataSource}
 			columns={columns}

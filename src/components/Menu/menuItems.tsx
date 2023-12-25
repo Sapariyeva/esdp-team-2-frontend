@@ -145,12 +145,12 @@ const authItems: MenuProps['items'] = [
 			getItem({ label: <LogoutBtn />, key: 'logout' }),
 			getItem({
 				label: 'Кабинет Психолога',
-				key: '/my-account/psychologist',
+				key: '/psychologist',
 				isLink: true,
 			}),
 			getItem({
 				label: 'Личный кабинет',
-				key: '/my-account/patient',
+				key: '/patient',
 				isLink: true,
 			}),
 		],

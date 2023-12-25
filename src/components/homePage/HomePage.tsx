@@ -1,3 +1,4 @@
+import ViewedPsychologists from '../../containers/psychologists/viewed_psychologists/ViewedPsychologists';
 import { articles } from '../../mocks/articles';
 import { ArticleCard } from '../article/articleCard/ArticleCard';
 import styles from './HomePage.module.scss';
@@ -50,6 +51,7 @@ export const HomePage = () => {
 					Спросить
 				</Button>
 			</div>
+			<ViewedPsychologists />
 		</div>
 	);
 };

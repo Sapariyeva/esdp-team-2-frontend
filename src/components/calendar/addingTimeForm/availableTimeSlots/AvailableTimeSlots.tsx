@@ -3,36 +3,17 @@ import classNames from 'classnames/bind';
 import { IoMdClose } from 'react-icons/io';
 import styles from '../AddingTimeForm.module.scss';
 import { ITimeSlot } from '../../../../interfaces/ITimeSlot.ts';
-import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '../../../../api/axiosInstance.ts';
-import { useAppSelector } from '../../../../store/hooks.ts';
-import { tokenSelect } from '../../../../features/user/userSlice.ts';
+import { useDeleteTime } from '../../../../features/queryHooks/queryHooks.ts';
 
 interface AddingTimeTagContainerProps {
 	data: ITimeSlot[];
 	availableTimeSlots: ITimeSlot[];
-	refetch: () => void;
 }
 
 const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
-	data,
 	availableTimeSlots,
-	refetch,
 }) => {
-	const token = useAppSelector(tokenSelect);
-
-	const deleteTime = useMutation({
-		mutationFn: (id: string) => {
-			return axiosInstance.delete(`/appointments/${id}`, {
-				headers: {
-					Authorization: `${token}`,
-				},
-			});
-		},
-		onSuccess: () => {
-			refetch();
-		},
-	});
+	const deleteTime = useDeleteTime();
 
 	const handleDeleteSaveTime = (id: string) => {
 		deleteTime.mutate(id);
@@ -42,7 +23,7 @@ const AvailableTimeSlots: React.FC<AddingTimeTagContainerProps> = ({
 		<>
 			<div className={styles.readme}>Выбранное вами время</div>
 			<div className={styles.tagContainer}>
-				{data.length === 0 ? (
+				{availableTimeSlots.length === 0 ? (
 					<p>Время для записи (ничего не выбрано)</p>
 				) : (
 					availableTimeSlots.map((timeSlot: ITimeSlot) => {
