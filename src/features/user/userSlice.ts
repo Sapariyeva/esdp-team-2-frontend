@@ -5,6 +5,7 @@ import { AxiosError, isAxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
+import { IUserEdit } from '../../interfaces/IUserEdit.ts';
 
 interface AuthUserData {
 	email: string;
@@ -67,6 +68,16 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	return response.data;
 });
 
+
+export const updateUser = createAsyncThunk(
+	'auth/edit',
+	async (data: IUserEdit) => {
+		const response = await axiosInstance.put(`auth/edit`, data);
+
+		return response.data;
+	}
+);
+
 export const activateEmail = createAsyncThunk<
 	IUser,
 	number,
@@ -110,6 +121,9 @@ const userSlice = createSlice({
 			state.registerError = null;
 			state.loginError = null;
 		},
+		resetUser: (state, { payload }) => {
+			state.userInfo = payload;
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -150,7 +164,9 @@ const userSlice = createSlice({
 			.addCase(logoutUser.fulfilled, () => {
 				return initialState;
 			})
-
+			.addCase(updateUser.fulfilled, (state, { payload }) => {
+				state.userInfo = payload;
+      })
 			.addCase(activateEmail.pending, (state) => {
 				state.loading = true;
 			})
@@ -172,6 +188,6 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const { resetErrors } = userSlice.actions;
+export const { resetErrors, resetUser } = userSlice.actions;
 
 export default userSlice;

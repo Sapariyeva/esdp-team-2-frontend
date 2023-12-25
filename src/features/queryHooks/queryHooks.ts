@@ -19,6 +19,7 @@ import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsycholog
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 
+
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
@@ -266,6 +267,19 @@ export const useGetRecordsHistoryPatient = () => {
 		queryKey: ['GetRecordsHistoryPatient'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(`/patients/history`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostEditUserName = () => {
+	return useMutation({
+		mutationFn: async (data: { name: string; userId: number | undefined }) => {
+			const response = await axiosInstance.put(
+				`patients/edit/${data.userId}`,
+				data
+			);
+
 			return response.data;
 		},
 	});
