@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 type Props = {
 	message: string;
 	title: string;
-	children: ReactNode;
+	children?: ReactNode;
 };
 
 const Alert = ({ title, message, children }: Props) => {
