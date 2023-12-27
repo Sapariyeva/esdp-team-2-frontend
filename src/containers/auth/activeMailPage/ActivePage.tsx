@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Result, Typography } from 'antd';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './ActiveMailPage.module.scss';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { activateEmail } from '../../features/user/userSlice';
-import { RootState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
+import { activateEmail } from '../../../features/user/userSlice.ts';
+import { RootState } from '../../../store';
 
 const { Title, Paragraph } = Typography;
 

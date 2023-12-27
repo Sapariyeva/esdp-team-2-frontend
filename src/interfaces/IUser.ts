@@ -12,3 +12,16 @@ export interface IUser {
 	role: string;
 	isActivated: boolean;
 }
+
+export interface IUserAdminLogin extends Pick<IUser, 'username'> {
+	password: string;
+}
+
+export interface IPasswordForgot {
+	email: string;
+}
+
+export interface IPasswordReset {
+	password: string;
+	confirm: string;
+}

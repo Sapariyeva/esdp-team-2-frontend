@@ -1,6 +1,6 @@
-import ViewedPsychologists from '../../containers/psychologists/viewed_psychologists/ViewedPsychologists';
-import { articles } from '../../mocks/articles';
-import { ArticleCard } from '../article/articleCard/ArticleCard';
+import ViewedPsychologists from '../psychologists/viewed_psychologists/ViewedPsychologists.tsx';
+import { articles } from '../../mocks/articles.ts';
+import { ArticleCard } from '../../components/article/articleCard/ArticleCard.tsx';
 import styles from './HomePage.module.scss';
 import { Typography, Button } from 'antd';
 

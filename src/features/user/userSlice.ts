@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IUser } from '../../interfaces/IUser.ts';
+import { IUser, IUserAdminLogin } from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { AxiosError, isAxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
+import { IUserEdit } from '../../interfaces/IUserEdit.ts';
 
 interface AuthUserData {
 	email: string;
@@ -53,6 +54,25 @@ export const loginUser = createAsyncThunk<
 	}
 });
 
+export const loginAdmin = createAsyncThunk<
+	IUser,
+	IUserAdminLogin,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/adminLogin', async (userData, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.post<IUser>('auth/admin', userData);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+		}
+		throw err;
+	}
+});
+
 export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	const refreshToken = Cookies.get('refreshToken');
 	const response = await axiosInstance.post(
@@ -66,6 +86,15 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	);
 	return response.data;
 });
+
+export const updateUser = createAsyncThunk(
+	'auth/edit',
+	async (data: IUserEdit) => {
+		const response = await axiosInstance.put(`auth/edit`, data);
+
+		return response.data;
+	}
+);
 
 export const activateEmail = createAsyncThunk<
 	IUser,
@@ -110,6 +139,9 @@ const userSlice = createSlice({
 			state.registerError = null;
 			state.loginError = null;
 		},
+		resetUser: (state, { payload }) => {
+			state.userInfo = payload;
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -147,10 +179,29 @@ const userSlice = createSlice({
 					errors: payload?.errors ?? [],
 				};
 			})
+			.addCase(loginAdmin.pending, (state) => {
+				state.loading = true;
+				state.loginError = null;
+			})
+			.addCase(loginAdmin.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.loginError = null;
+				state.logged = true;
+				state.userInfo = payload;
+			})
+			.addCase(loginAdmin.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.loginError = {
+					message: payload?.message ?? 'Error occurred',
+					errors: payload?.errors ?? [],
+				};
+			})
 			.addCase(logoutUser.fulfilled, () => {
 				return initialState;
 			})
-
+			.addCase(updateUser.fulfilled, (state, { payload }) => {
+				state.userInfo = payload;
+			})
 			.addCase(activateEmail.pending, (state) => {
 				state.loading = true;
 			})
@@ -172,6 +223,6 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const { resetErrors } = userSlice.actions;
+export const { resetErrors, resetUser } = userSlice.actions;
 
 export default userSlice;
