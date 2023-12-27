@@ -14,11 +14,16 @@ export const appendDateToFormData = (
 ) => {
 	formData.append(key, date.toISOString());
 };
+
 export const appendValuesToFormData = (
 	formData: FormData,
 	values: IPsychologistRegisterData
 ) => {
 	Object.entries(values).forEach(([key, value]) => {
-		formData.append(key, value);
+		if (Array.isArray(value)) {
+			formData.append(key, value[0]);
+		} else {
+			formData.append(key, value);
+		}
 	});
 };

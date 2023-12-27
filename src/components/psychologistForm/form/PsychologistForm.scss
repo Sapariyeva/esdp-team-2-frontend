@@ -1,4 +1,4 @@
-@import "../../assets/styles/config.scss";
+@import "../../../assets/styles/config";
 
 .layout {
 	font-family: Montserrat !important;
@@ -12,10 +12,32 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: 800px;
+		max-width: 800px;
 		padding: 20px 30px;
 		border-radius: 20px;
 		background: #fff;
+
+		.label_info{
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.option {
+			white-space: wrap;
+		}
+		.ant-select-selection-item {
+			@media (max-width: 400px) {
+				overflow: hidden;
+				white-space: pre;
+				text-overflow: ellipsis;
+				max-width: 200px;
+				font-size: 10px;
+			}
+			@media (max-width: 600px) {
+				font-size: 10px !important;
+				max-width: 200px;
+			}
+		}
 
 		.button {
 			font-size: 16px;
@@ -37,11 +59,17 @@
 		.text {
 			font-family: Montserrat !important;
 			margin-bottom: 10px;
+			@media (max-width: 400px) {
+				font-size: 13px !important;
+			}
 		}
 
 		.form_title {
 			font-weight: 500;
 			margin: 0;
+			@media (max-width: 400px) {
+				font-size: 15px;
+			}
 		}
 
 		.input {
@@ -67,6 +95,9 @@
 			display: block;
 			color: rgba(0, 0, 0, 0.314);
 			margin-bottom: 5px;
+			@media (max-width: 400px) {
+				font-size: 10px !important;
+			}
 		}
 		.ant-celect {
 			display: flex;

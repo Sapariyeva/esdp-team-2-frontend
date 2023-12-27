@@ -19,6 +19,7 @@ import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
+import axios from 'axios';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -63,6 +64,14 @@ export const usePostPsychologist = (navigate: NavigateFunction) => {
 		onSuccess: async () => {
 			message.success('Вы успешно отправили анкету!');
 			navigate('/auth/confirmation');
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				const serverMessage = error.response.data.message;
+				message.error(serverMessage || 'Произошла ошибка при отправке анкеты.');
+			} else {
+				message.error('Произошла неизвестная ошибка.');
+			}
 		},
 	});
 };

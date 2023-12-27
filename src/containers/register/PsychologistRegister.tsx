@@ -1,4 +1,4 @@
-import { PsychologistForm } from '../../components/psychologistForm/PsychologistForm.tsx';
+import { PsychologistForm } from '../../components/psychologistForm/form/PsychologistForm.tsx';
 import {
 	useCityQuery,
 	usePostPsychologist,

@@ -11,22 +11,25 @@ import {
 	Col,
 	InputNumber,
 } from 'antd';
-import { IPsychologistRegisterData } from '../../interfaces/IPsychologist';
-import InformationText from '../UI/Text/InformationText';
-import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse';
-import { ITechnique } from '../../interfaces/ITechnique';
-import { ISymptom } from '../../interfaces/ISymptom';
-import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
-import { ICity } from '../../interfaces/IPsychologistForm';
+import { IPsychologistRegisterData } from '../../../interfaces/IPsychologist.ts';
+import InformationText from '../../UI/Text/InformationText.tsx';
+import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse.ts';
+import { ITechnique } from '../../../interfaces/ITechnique.ts';
+import { ISymptom } from '../../../interfaces/ISymptom.ts';
+import { ITherapyMethod } from '../../../interfaces/ITherapyMethod.ts';
+import { ICity } from '../../../interfaces/IPsychologistForm.ts';
 import { useState } from 'react';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
-import { UploadButton } from '../UI/Button/UploadButton';
+import { UploadButton } from '../../UI/Button/UploadButton.tsx';
 import './PsychologistForm.scss';
-import UploadInput from '../UI/Upload/UploadInput';
+import UploadInput from '../../UI/Upload/UploadInput.tsx';
 import {
 	appendArrayToFormData,
 	appendValuesToFormData,
-} from '../../helpers/appendValuesToFormData.ts';
+} from '../../../helpers/appendValuesToFormData.ts';
+import AboutModerationModal from '../aboutModerationModal/AboutModerationModal.tsx';
+import infoIcon from '../../../assets/icon/info-circle.svg';
+import Alert from '../../UI/Alert/Alert.tsx';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -116,7 +119,7 @@ export const PsychologistForm = ({
 					/>
 
 					<Row gutter={16}>
-						<Col span={12}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
 							<label className="label">Почта</label>
 							<Form.Item
 								className="form-item"
@@ -146,7 +149,7 @@ export const PsychologistForm = ({
 								/>
 							</Form.Item>
 						</Col>
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Пароль</label>
 							<Form.Item
 								name="password"
@@ -171,7 +174,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Повторите пароль</label>
 							<Form.Item
 								name="confirm"
@@ -210,7 +213,7 @@ export const PsychologistForm = ({
 						Личная информация
 					</Typography>
 					<Row gutter={16} style={{ display: 'flex', alignItems: 'center' }}>
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">ФИО</label>
 							<Form.Item
 								name="fullName"
@@ -225,7 +228,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Город</label>
 							<Form.Item
 								name="cityId"
@@ -240,7 +243,7 @@ export const PsychologistForm = ({
 									{cities && cities.length !== 0 ? (
 										<>
 											{cities.map((city, index) => (
-												<Option key={index} value={city.id}>
+												<Option key={index} value={city.id} className="option">
 													{city.name}
 												</Option>
 											))}
@@ -251,7 +254,7 @@ export const PsychologistForm = ({
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Пол</label>
 							<Form.Item
 								name="gender"
@@ -261,12 +264,16 @@ export const PsychologistForm = ({
 									placeholder="Выберите пол"
 									style={{ display: 'flex', alignItems: 'center' }}
 								>
-									<Option value="male">Мужской</Option>
-									<Option value="female">Женский</Option>
+									<Option className="option" value="male">
+										Мужской
+									</Option>
+									<Option className="option" value="female">
+										Женский
+									</Option>
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">Дата рождения</label>
 							<Form.Item
 								name="birthday"
@@ -281,7 +288,7 @@ export const PsychologistForm = ({
 						Профессиональная информация
 					</Typography>
 					<Row gutter={16} style={{ display: 'flex', alignItems: 'center' }}>
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Языки</label>
 							<Form.Item
 								name="languages"
@@ -292,14 +299,20 @@ export const PsychologistForm = ({
 									mode="multiple"
 									showSearch={false}
 								>
-									<Option value="kazakh">Казахский</Option>
-									<Option value="russian">Русский</Option>
-									<Option value="english">Английский</Option>
+									<Option className="option" value="kazakh">
+										Казахский
+									</Option>
+									<Option className="option" value="russian">
+										Русский
+									</Option>
+									<Option className="option" value="english">
+										Английский
+									</Option>
 								</Select>
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
 							<label className="label">Личная терапия (в годах)</label>
 							<Form.Item
 								name="selfTherapy"
@@ -312,7 +325,7 @@ export const PsychologistForm = ({
 								/>
 							</Form.Item>
 						</Col>
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">Психологические техники</label>
 							<Form.Item
 								name="techniqueIds"
@@ -326,7 +339,11 @@ export const PsychologistForm = ({
 									{techniques && techniques.length !== 0 ? (
 										<>
 											{techniques.map((technique, index) => (
-												<Option key={index} value={technique.id}>
+												<Option
+													key={index}
+													value={technique.id}
+													className="option"
+												>
 													{technique.name}
 												</Option>
 											))}
@@ -338,7 +355,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<label className="label">Стаж (в годах)</label>
 							<Form.Item
 								name="experienceYears"
@@ -354,7 +371,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<label className="label">Оплата за консультацию</label>
 							<Form.Item
 								name="cost"
@@ -369,7 +386,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">Методы терапии</label>
 							<Form.Item
 								name="therapyMethodIds"
@@ -383,7 +400,11 @@ export const PsychologistForm = ({
 									{therapyMethods && therapyMethods.length !== 0 ? (
 										<>
 											{therapyMethods.map((method) => (
-												<Option key={method.id} value={method.id}>
+												<Option
+													key={method.id}
+													value={method.id}
+													className="option"
+												>
 													{method.name}
 												</Option>
 											))}
@@ -395,20 +416,32 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
-							<label className="label">Работа с LGBT</label>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+							<label className="label label_info">
+								<p>Работа с LGBT</p>
+								<Alert
+									title="Работа с LGBT"
+									message="Выбирая в фильтр (Да), вы даете согласие на то, что люди из сообщества ЛГБТ могут обращаться к вам за помощью."
+								>
+									<img src={infoIcon} width={15} alt="Информация" />
+								</Alert>
+							</label>
 							<Form.Item name="lgbt">
 								<Select
 									showSearch={false}
 									style={{ display: 'flex', alignItems: 'center' }}
 								>
-									<Option value={false}>Нет</Option>
-									<Option value={true}>Да</Option>
+									<Option value={false} className="option">
+										Нет
+									</Option>
+									<Option value={true} className="option">
+										Да
+									</Option>
 								</Select>
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<label className="label">Формат работы</label>
 							<Form.Item
 								name="format"
@@ -419,13 +452,17 @@ export const PsychologistForm = ({
 									mode="multiple"
 									placeholder={'Выберите формат'}
 								>
-									<Option value="online">Онлайн</Option>
-									<Option value="offline">Оффлайн</Option>
+									<Option value="online" className="option">
+										Онлайн
+									</Option>
+									<Option value="offline" className="option">
+										Оффлайн
+									</Option>
 								</Select>
 							</Form.Item>
 						</Col>
 
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">Симптомы</label>
 							<Form.Item
 								name="symptomIds"
@@ -439,7 +476,11 @@ export const PsychologistForm = ({
 									{symptoms && symptoms.length !== 0 ? (
 										<>
 											{symptoms.map((symptom) => (
-												<Option key={symptom.id} value={symptom.id}>
+												<Option
+													key={symptom.id}
+													value={symptom.id}
+													className="option"
+												>
 													{symptom.name}
 												</Option>
 											))}
@@ -450,8 +491,16 @@ export const PsychologistForm = ({
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col span={6}>
-							<label className="label">Адрес</label>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+							<label className="label label_info">
+								<p>Адрес</p>
+								<Alert
+									title="Запись на консультацию"
+									message="Адрес вы указываете только при выборе консультации в формате офлайн (указывайте адрес, где будете проводить встречи с пациентом)."
+								>
+									<img src={infoIcon} width={15} alt="Информация" />
+								</Alert>
+							</label>
 							<Form.Item name="address">
 								<Input
 									className="input--grey input"
@@ -460,7 +509,7 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col span={6}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<label className="label">Вид консультации</label>
 							<Form.Item
 								name="consultationType"
@@ -469,13 +518,17 @@ export const PsychologistForm = ({
 								]}
 							>
 								<Select mode="multiple" placeholder="Вид консультации">
-									<Option value="solo">Один человек</Option>
-									<Option value="duo">Вдвоем</Option>
+									<Option value="solo" className="option">
+										Один человек
+									</Option>
+									<Option value="duo" className="option">
+										Вдвоем
+									</Option>
 								</Select>
 							</Form.Item>
 						</Col>
 
-						<Col span={12}>
+						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 							<label className="label">Специализация</label>
 							<Form.Item
 								name="education"
@@ -576,6 +629,7 @@ export const PsychologistForm = ({
 						<Button className="button" htmlType="submit">
 							Отправить на модерацию
 						</Button>
+						<AboutModerationModal />
 					</Form.Item>
 				</Form>
 			</Layout>
