@@ -97,3 +97,32 @@ export interface IPsychologistWithLikes {
 	certificates: ICertificate[];
 	isFavorite: boolean;
 }
+
+export interface IPsychologistRegisterData {
+	email: string;
+	password: string;
+	fullName: string;
+	gender: 'male' | 'female';
+	birthday: Date;
+	address?: string;
+	description: string;
+	video?: string | null;
+	experienceYears: number;
+	languages: Array<'kazakh' | 'russian' | 'english'>;
+	education: string;
+	format: Array<'online' | 'offline'>;
+	cost: number;
+	consultationType: Array<'solo' | 'duo'>;
+	selfTherapy: number;
+	lgbt: boolean;
+	cityId: number;
+	techniqueIds: number[];
+	therapyMethodIds: number[];
+	symptomIds: number[];
+	certificates: {
+		fileList: UploadFile[];
+	};
+	photos: {
+		fileList: UploadFile[];
+	};
+}

@@ -54,7 +54,15 @@ export const useCityQuery = () => {
 export const usePostPsychologist = () => {
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			return await axiosInstance.post('psychologists/create', data);
+			for (const [key, value] of data.entries()) {
+				if (value instanceof File) {
+					console.log(key, value.name);
+				} else {
+					console.log(key, value);
+				}
+			}
+
+			return await axiosInstance.post('auth/register/psychologist', data);
 		},
 	});
 };

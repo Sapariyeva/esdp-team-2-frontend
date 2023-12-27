@@ -16,7 +16,6 @@ import { CustomLayout } from './components/Layout/Layout.tsx';
 import Records from './components/Patient/Patient_account/Records/Records.tsx';
 import HistoryTable from './components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
 import Favorites from './components/Patient/Patient_account/Favorites/Favorites.tsx';
-import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
 import { MailConfirmation } from './components/activeMailPage/MailConfirmation.tsx';
@@ -27,6 +26,7 @@ import ClientsTable from './components/psychologist/psychologist_account/Clients
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -65,7 +65,7 @@ const App = () => {
 							<Route path="*" element={<PageNotFound />} />
 							<Route
 								path="/auth/register/psychologist"
-								element={<PsychologistForm />}
+								element={<PsychologistRegister />}
 							/>
 							<Route
 								path="/psychologists/"
