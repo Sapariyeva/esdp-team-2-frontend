@@ -1,8 +1,8 @@
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { loginUser } from '../../features/user/userSlice';
-import { RootState } from '../../store';
-import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
-import LoginForm from '../../components/authForm/LoginForm.tsx';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
+import { loginUser } from '../../../features/user/userSlice.ts';
+import { RootState } from '../../../store';
+import { SubmitAuthData } from '../../../interfaces/SubmitAuthData.ts';
+import LoginForm from '../../../components/authForm/LoginForm.tsx';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {

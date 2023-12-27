@@ -16,3 +16,12 @@ export interface IUser {
 export interface IUserAdminLogin extends Pick<IUser, 'username'> {
 	password: string;
 }
+
+export interface IPasswordForgot {
+	email: string;
+}
+
+export interface IPasswordReset {
+	password: string;
+	confirm: string;
+}

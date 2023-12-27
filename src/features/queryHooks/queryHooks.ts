@@ -10,7 +10,7 @@ import {
 } from '../../interfaces/IPsychologist';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { IPatient } from '../../interfaces/IPatient';
-import { IUser } from '../../interfaces/IUser';
+import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
 import { message } from 'antd';
 import { NavigateFunction } from 'react-router-dom';
 import { IRecordPost } from '../../interfaces/IRecordpost';
@@ -18,7 +18,6 @@ import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
-
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -281,6 +280,38 @@ export const usePostEditUserName = () => {
 			);
 
 			return response.data;
+		},
+	});
+};
+
+export const useForgotPassword = () => {
+	return useMutation({
+		mutationFn: async (data: IPasswordForgot) => {
+			const response = await axiosInstance.post(`auth/reset-forgot`, data);
+			return response.data;
+		},
+		onSuccess: () => {
+			message.success(
+				'Вам отправлена ссылка на почту для восстановления пароля!'
+			);
+		},
+	});
+};
+
+export const useResetPassword = (
+	token: string | null,
+	navigate: NavigateFunction
+) => {
+	return useMutation({
+		mutationFn: async (data: IPasswordReset) => {
+			const response = await axiosInstance.post(`auth/reset-password`, data, {
+				params: { token },
+			});
+			return response.data;
+		},
+		onSuccess: () => {
+			navigate('/');
+			message.success('Восстановление пароля завершено!\n');
 		},
 	});
 };
