@@ -1,20 +1,17 @@
 import { Button, Form, Input, Layout, Typography } from 'antd';
 import styles from './AuthForm.module.scss';
-import { useResetPassword } from '../../features/user/userSlice';
 import { IPasswordReset } from '../../interfaces/IUser';
-import { useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
-export const ResetPassword = () => {
+type Props = {
+	resetPasswordMutation: (value: IPasswordReset) => void;
+};
+export const ResetPasswordForm = ({ resetPasswordMutation }: Props) => {
 	const [form] = Form.useForm();
-	const location = useLocation();
-	const searchParams = new URLSearchParams(location.search);
-	const token = searchParams.get('token');
-	const resetPasswordMutation = useResetPassword(token);
 
 	const onFinish = (values: IPasswordReset) => {
-		resetPasswordMutation.mutate(values);
+		resetPasswordMutation(values);
 		form.resetFields();
 	};
 

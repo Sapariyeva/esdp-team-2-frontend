@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import LoginAdminForm from '../../components/authForm/LoginAdminForm';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { RootState } from '../../store';
-import { IUserAdminLogin } from '../../interfaces/IUser';
-import { loginAdmin, resetErrors } from '../../features/user/userSlice';
+import LoginAdminForm from '../../../components/authForm/LoginAdminForm.tsx';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
+import { RootState } from '../../../store';
+import { IUserAdminLogin } from '../../../interfaces/IUser.ts';
+import { loginAdmin, resetErrors } from '../../../features/user/userSlice.ts';
 import { useEffect } from 'react';
 
 const LoginAdminBuilder = () => {

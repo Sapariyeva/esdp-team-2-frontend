@@ -40,6 +40,7 @@ const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date }) => {
 		<div className={styles.time_block}>
 			{isError && (
 				<Alert
+					title={''}
 					message={
 						'Вы не можете повторно выбрать данное время, так как у вас уже оно указано.'
 					}

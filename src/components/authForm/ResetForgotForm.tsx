@@ -1,19 +1,19 @@
-import { Button, Form, Input, Layout, Typography } from 'antd';
+import { Alert, Button, Form, Input, Layout, Typography } from 'antd';
 import styles from './AuthForm.module.scss';
-import { IPasswordForgot } from '../../interfaces/IUser';
-import { useForgotPassword } from '../../features/user/userSlice';
+import { IPasswordForgot } from '../../interfaces/IUser.ts';
 
 const { Title } = Typography;
 
-export const ResetForgot = () => {
+type Props = {
+	postForgotPassword: (values: IPasswordForgot) => void;
+	error: Error | null;
+};
+const ResetForgotForm = ({ postForgotPassword, error }: Props) => {
 	const [form] = Form.useForm();
-	const { mutate: postForgotPassword } = useForgotPassword();
-
 	const onFinish = (values: IPasswordForgot) => {
 		postForgotPassword(values);
 		form.resetFields();
 	};
-
 	return (
 		<Layout className={styles.layout} style={{ height: '50svh' }}>
 			<Form
@@ -28,7 +28,14 @@ export const ResetForgot = () => {
 				<Title level={3} className={styles.title_reset_password}>
 					Восстановление пароля
 				</Title>
-
+				{error && (
+					<Alert
+						className={styles.error}
+						message={'Введеный вами email не найден'}
+						type="error"
+						closable
+					/>
+				)}
 				<label htmlFor="name" className={styles.label}>
 					Почта
 				</label>
@@ -67,3 +74,5 @@ export const ResetForgot = () => {
 		</Layout>
 	);
 };
+
+export default ResetForgotForm;
