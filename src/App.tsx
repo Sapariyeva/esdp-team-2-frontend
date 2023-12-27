@@ -30,6 +30,7 @@ import PatientProfile from './components/Patient/Patient_account/Profile/Patient
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
+import LoginAdminBuilder from './containers/admin/LoginAdminBuilder.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -114,11 +115,13 @@ const App = () => {
 							{/*>*/}
 							{/*</Route>*/}
 							{/*как будет вход по админу включим этот протектед роут*/}
-
-							<Route path="/admin/" element={<AdminPage />}>
-								<Route path="psychologists" element={<Psychologists />} />
-								{/*<Route path="posts" element={<ClientsTable />} />*/}
-								{/*<Route path="courses" element={<Calendars />} />*/}
+							<Route path="/admin">
+								<Route index element={<LoginAdminBuilder />} />
+								<Route element={<AdminPage />}>
+									<Route path="psychologists" element={<Psychologists />} />
+									{/*<Route path="posts" element={<ClientsTable />} />*/}
+									{/*<Route path="courses" element={<Calendars />} />*/}
+								</Route>
 							</Route>
 						</Route>
 

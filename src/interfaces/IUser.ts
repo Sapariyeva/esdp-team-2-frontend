@@ -12,3 +12,7 @@ export interface IUser {
 	role: string;
 	isActivated: boolean;
 }
+
+export interface IUserAdminLogin extends Pick<IUser, 'username'> {
+	password: string;
+}

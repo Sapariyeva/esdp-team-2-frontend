@@ -1,52 +1,31 @@
 import { Alert, Button, Form, Input, Layout, Typography } from 'antd';
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
-import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
 import styles from './AuthForm.module.scss';
-import { useAppDispatch } from '../../store/hooks.ts';
-import { resetErrors } from '../../features/user/userSlice.ts';
+import { IUserAdminLogin } from '../../interfaces/IUser.ts';
 import formServerErrorHandler from '../../helpers/formServerErrorHandler.ts';
 
 const { Title } = Typography;
 
 type Props = {
-	submit: (submitData: SubmitAuthData) => void;
-	role: 'patient' | 'psychologist';
-	errors: ServerFormValidationResponse | null;
+	submit: (submitData: IUserAdminLogin) => void;
+	serverFormErrors: ServerFormValidationResponse | null;
 };
 
-const LoginForm = ({ submit, role, errors }: Props) => {
-	const [form] = Form.useForm();
-	const dispatch = useAppDispatch();
+const LoginAdminForm = ({ submit, serverFormErrors }: Props) => {
 	const [isChecked, setChecked] = useState(false);
-	const [loginErrors, setLoginErrors] =
-		useState<ServerFormValidationResponse | null>(null);
+	const [form] = Form.useForm();
 
-	useEffect(() => {
-		setLoginErrors(errors);
-	}, [errors]);
-
-	useEffect(() => {
-		dispatch(resetErrors());
-		form.resetFields();
-	}, [form, role]);
-
-	const onFinish = (userData: SubmitAuthData) => {
-		const user = {
-			...userData,
-			role: role,
-		};
-		submit(user);
+	const formSubmitHandler = (userInputs: IUserAdminLogin) => {
+		submit(userInputs);
 	};
 
 	return (
 		<Layout className={styles.layout} style={{ height: '50svh' }}>
 			<Form
-				key={role}
 				form={form}
 				initialValues={{ remember: true }}
-				onFinish={onFinish}
+				onFinish={formSubmitHandler}
 				autoComplete="on"
 				className={styles.form}
 				name="signin"
@@ -55,42 +34,42 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 				<Title level={3} className={styles.title}>
 					Вход
 				</Title>
-				{loginErrors && (
+				{serverFormErrors && (
 					<Alert
 						className={styles.error}
-						message={loginErrors?.message}
+						message={serverFormErrors?.message}
 						type="error"
 						closable
 					/>
 				)}
 
 				<label htmlFor="name" className={styles.label}>
-					Почта
+					Имя пользователя
 				</label>
 				<Form.Item
-					name="email"
+					name="username"
 					hasFeedback
 					className={styles.formItem}
 					rules={[
 						{
 							required: true,
-							message: 'Пожалуйста, введите свой электронный адрес.',
+							message: 'Пожалуйста, введите имя пользователя.',
 						},
 						{
-							type: 'email',
-							message: 'Ваш e-mail недействителен.',
+							type: 'string',
+							message: 'Имя пользователя должно быть текстовым',
 						},
 					]}
 					validateStatus={
-						errors?.errors?.find((error) => error.type === 'email')
+						serverFormErrors?.errors?.find((error) => error.type === 'username')
 							? 'error'
 							: undefined
 					}
-					help={formServerErrorHandler(errors, 'email')}
+					help={formServerErrorHandler(serverFormErrors, 'username')}
 				>
 					<Input
 						className={styles.input}
-						placeholder="example@gmail.com"
+						placeholder="Имя пользователя"
 						autoComplete="on"
 						size="small"
 					/>
@@ -113,6 +92,12 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 							message: 'Пароль должен состоять минимум из 6 символов.',
 						},
 					]}
+					validateStatus={
+						serverFormErrors?.errors?.find((error) => error.type === 'username')
+							? 'error'
+							: undefined
+					}
+					help={formServerErrorHandler(serverFormErrors, 'password')}
 				>
 					<Input.Password
 						className={styles.input}
@@ -138,11 +123,6 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 							<label htmlFor="rememberCheckbox" />
 							<div className={styles.checkbox}>Запомнить меня</div>
 						</div>
-						<div>
-							<NavLink to={'/auth/recovery'} className={styles.link}>
-								Забыл пароль?
-							</NavLink>
-						</div>
 					</div>
 				</Form.Item>
 
@@ -154,14 +134,9 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 				>
 					Войти
 				</Button>
-				<Form.Item name="remember" valuePropName="checked" noStyle>
-					<NavLink to={`/auth/register/${role}`} className={styles.typography}>
-						Зарегистрироваться
-					</NavLink>
-				</Form.Item>
 			</Form>
 		</Layout>
 	);
 };
 
-export default LoginForm;
+export default LoginAdminForm;
