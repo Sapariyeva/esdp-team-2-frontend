@@ -4,6 +4,7 @@ import styles from './AuthForm.module.scss';
 import { NavLink } from 'react-router-dom';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
+import formServerErrorHandler from '../../helpers/formServerErrorHandler.ts';
 
 const { Title } = Typography;
 
@@ -34,10 +35,6 @@ const RegisterForm = ({ submit, role, errors }: Props) => {
 		};
 
 		submit(user);
-	};
-	const getErrorsBy = (name: string) => {
-		const error = errors?.errors?.find((error) => error.type === name);
-		return error?.messages.join(',');
 	};
 
 	return (
@@ -100,7 +97,7 @@ const RegisterForm = ({ submit, role, errors }: Props) => {
 							? 'error'
 							: undefined
 					}
-					help={getErrorsBy('email')}
+					help={formServerErrorHandler(errors, 'email')}
 				>
 					<Input
 						className={styles.input}

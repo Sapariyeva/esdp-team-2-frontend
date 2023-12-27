@@ -6,6 +6,7 @@ import { SubmitAuthData } from '../../interfaces/SubmitAuthData.ts';
 import styles from './AuthForm.module.scss';
 import { useAppDispatch } from '../../store/hooks.ts';
 import { resetErrors } from '../../features/user/userSlice.ts';
+import formServerErrorHandler from '../../helpers/formServerErrorHandler.ts';
 
 const { Title } = Typography;
 
@@ -37,10 +38,6 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 			role: role,
 		};
 		submit(user);
-	};
-	const getErrorsBy = (name: string) => {
-		const error = errors?.errors?.find((error) => error.type === name);
-		return error?.messages.join(',');
 	};
 
 	return (
@@ -89,7 +86,7 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 							? 'error'
 							: undefined
 					}
-					help={getErrorsBy('email')}
+					help={formServerErrorHandler(errors, 'email')}
 				>
 					<Input
 						className={styles.input}
