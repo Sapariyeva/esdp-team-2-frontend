@@ -36,7 +36,7 @@ export interface IPsychologist {
 	id: number;
 	fullName: string;
 	gender: 'male' | 'female';
-	birthday: Date;
+	birthday: Date | string;
 	address: string;
 	cost: number;
 	description: string;
