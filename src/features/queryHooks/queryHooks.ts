@@ -6,6 +6,7 @@ import { ISymptom } from '../../interfaces/ISymptom';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import {
 	IPsychologist,
+	IPsychologistRegisterData,
 	IPsychologistWithLikes,
 } from '../../interfaces/IPsychologist';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
@@ -18,6 +19,7 @@ import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
+import axios from 'axios';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -51,10 +53,25 @@ export const useCityQuery = () => {
 		queryKey: ['GetCities'],
 	});
 };
-export const usePostPsychologist = () => {
+export const usePostPsychologist = (navigate: NavigateFunction) => {
 	return useMutation({
-		mutationFn: async (data: FormData) => {
-			return await axiosInstance.post('psychologists/create', data);
+		mutationFn: (data: FormData) => {
+			return axiosInstance.post<IPsychologistRegisterData>(
+				'/auth/register/psychologist',
+				data
+			);
+		},
+		onSuccess: async () => {
+			message.success('Вы успешно отправили анкету!');
+			navigate('/auth/confirmation');
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				const serverMessage = error.response.data.message;
+				message.error(serverMessage || 'Произошла ошибка при отправке анкеты.');
+			} else {
+				message.error('Произошла неизвестная ошибка.');
+			}
 		},
 	});
 };

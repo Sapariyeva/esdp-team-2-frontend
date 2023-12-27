@@ -15,7 +15,6 @@ import { CustomLayout } from './components/Layout/Layout.tsx';
 import Records from './components/Patient/Patient_account/Records/Records.tsx';
 import HistoryTable from './components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
 import Favorites from './components/Patient/Patient_account/Favorites/Favorites.tsx';
-import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
 import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
 import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation.tsx';
@@ -27,6 +26,7 @@ import Calendars from './components/psychologist/psychologist_account/calendar/C
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 import PatientProfile from './components/Patient/Patient_account/Profile/PatientProfile.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
 import LoginAdminBuilder from './containers/auth/admin/LoginAdminBuilder.tsx';
@@ -74,7 +74,7 @@ const App = () => {
 							<Route path="*" element={<PageNotFound />} />
 							<Route
 								path="/auth/register/psychologist"
-								element={<PsychologistForm />}
+								element={<PsychologistRegister />}
 							/>
 							<Route
 								path="/psychologists/"

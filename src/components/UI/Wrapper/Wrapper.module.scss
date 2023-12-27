@@ -17,8 +17,8 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	flex-direction: column;
-	width: 405px;
-	font-family: 'Montserrat', sans-serif !important;
+	width: max-content;
+	font-family: "Montserrat", sans-serif !important;
 	padding: 20px 20px;
 	z-index: 1001;
 	user-select: none;
