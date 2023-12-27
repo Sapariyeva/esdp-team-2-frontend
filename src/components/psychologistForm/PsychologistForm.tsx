@@ -23,6 +23,10 @@ import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { UploadButton } from '../UI/Button/UploadButton';
 import './PsychologistForm.scss';
 import UploadInput from '../UI/Upload/UploadInput';
+import {
+	appendArrayToFormData,
+	appendValuesToFormData,
+} from '../../helpers/appendValuesToFormData.ts';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -64,29 +68,25 @@ export const PsychologistForm = ({
 	const handleSubmit = async (values: IPsychologistRegisterData) => {
 		const formData = new FormData();
 
-		if (values.photos && values.photos.fileList) {
-			values.photos.fileList.forEach((file: UploadFile) => {
-				formData.append('photos', file.originFileObj as Blob);
-			});
-		}
-
-		if (values.certificates && values.certificates.fileList) {
-			values.certificates.fileList.forEach((file: UploadFile) => {
-				formData.append('certificates', file.originFileObj as Blob);
-			});
-		}
-
-		Object.keys(values).forEach((key) => {
-			const value = values[key as keyof IPsychologistRegisterData];
-
-			if (value instanceof Date) {
-				formData.append(key, value.toISOString());
-			} else if (Array.isArray(value)) {
-				formData.append(key, value.join(','));
-			} else if (value !== undefined && value !== null) {
-				formData.append(key, value.toString());
-			}
+		values.photos.fileList.forEach((file: UploadFile) => {
+			formData.append('photos', file.originFileObj as Blob);
 		});
+
+		values.certificates.forEach((certificate) => {
+			formData.append(`certificates`, certificate.originFileObj);
+		});
+
+		appendArrayToFormData(formData, 'symptomIds', values.symptomIds);
+		appendArrayToFormData(formData, 'languages', values.languages);
+		appendArrayToFormData(formData, 'format', values.format);
+		appendArrayToFormData(formData, 'techniqueIds', values.techniqueIds);
+		appendArrayToFormData(
+			formData,
+			'therapyMethodIds',
+			values.therapyMethodIds
+		);
+
+		appendValuesToFormData(formData, values);
 
 		submit(formData);
 	};
@@ -213,7 +213,7 @@ export const PsychologistForm = ({
 						<Col span={12}>
 							<label className="label">ФИО</label>
 							<Form.Item
-								name="fullname"
+								name="fullName"
 								rules={[
 									{ required: true, message: 'Введите имя пользователя' },
 								]}

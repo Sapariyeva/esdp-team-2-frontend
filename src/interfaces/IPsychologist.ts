@@ -120,8 +120,9 @@ export interface IPsychologistRegisterData {
 	therapyMethodIds: number[];
 	symptomIds: number[];
 	certificates: {
+		originFileObj: Blob;
 		fileList: UploadFile[];
-	};
+	}[];
 	photos: {
 		fileList: UploadFile[];
 	};
