@@ -6,6 +6,7 @@ import { ISymptom } from '../../interfaces/ISymptom';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import {
 	IPsychologist,
+	IPsychologistRegisterData,
 	IPsychologistWithLikes,
 } from '../../interfaces/IPsychologist';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
@@ -51,18 +52,17 @@ export const useCityQuery = () => {
 		queryKey: ['GetCities'],
 	});
 };
-export const usePostPsychologist = () => {
+export const usePostPsychologist = (navigate: NavigateFunction) => {
 	return useMutation({
-		mutationFn: async (data: FormData) => {
-			for (const [key, value] of data.entries()) {
-				if (value instanceof File) {
-					console.log(key, value.name);
-				} else {
-					console.log(key, value);
-				}
-			}
-
-			return await axiosInstance.post('auth/register/psychologist', data);
+		mutationFn: (data: FormData) => {
+			return axiosInstance.post<IPsychologistRegisterData>(
+				'/auth/register/psychologist',
+				data
+			);
+		},
+		onSuccess: async () => {
+			message.success('Вы успешно отправили анкету!');
+			navigate('/auth/confirmation');
 		},
 	});
 };

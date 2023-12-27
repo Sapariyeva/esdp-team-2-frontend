@@ -6,8 +6,10 @@ import {
 	useTechniqueQuery,
 	useTherapyMethodQuery,
 } from '../../features/queryHooks/queryHooks.ts';
+import { useNavigate } from 'react-router-dom';
 
 function PsychologistRegister() {
+	const navigate = useNavigate();
 	const { data: techniquesData } = useTechniqueQuery();
 	const techniques = techniquesData?.data ?? [];
 
@@ -20,7 +22,7 @@ function PsychologistRegister() {
 	const { data: citiesData } = useCityQuery();
 	const cities = citiesData?.data ?? [];
 
-	const { mutate: postPsychologist } = usePostPsychologist();
+	const { mutate: postPsychologist } = usePostPsychologist(navigate);
 
 	const handleRegister = async (data: FormData) => {
 		postPsychologist(data);
