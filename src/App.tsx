@@ -31,6 +31,8 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
 import LoginAdminBuilder from './containers/admin/LoginAdminBuilder.tsx';
+import { ResetForgot } from './components/authForm/ResetForgot.tsx';
+import { ResetPassword } from './components/authForm/ResetPassword.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -59,6 +61,8 @@ const App = () => {
 								path="auth/login/psychologist"
 								element={<Login role="psychologist" />}
 							/>
+							<Route path="/auth/reset-forgot" element={<ResetForgot />} />
+							<Route path="/auth/reset-password" element={<ResetPassword />} />
 
 							<Route
 								path="/auth/register/patient"

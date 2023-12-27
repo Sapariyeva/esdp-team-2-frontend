@@ -1,11 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IUser, IUserAdminLogin } from '../../interfaces/IUser.ts';
+import {
+	IPasswordForgot,
+	IPasswordReset,
+	IUser,
+	IUserAdminLogin,
+} from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { AxiosError, isAxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
+import { useMutation } from '@tanstack/react-query';
+import { message } from 'antd';
 
 interface AuthUserData {
 	email: string;
@@ -114,6 +121,34 @@ export const activateEmail = createAsyncThunk<
 		throw err;
 	}
 });
+
+export const useForgotPassword = () => {
+	return useMutation({
+		mutationFn: async (data: IPasswordForgot) => {
+			const response = await axiosInstance.post(`auth/reset-forgot`, data);
+			return response.data;
+		},
+		onSuccess: () => {
+			message.success(
+				'Вам отправлена ссылка на почту для восстановления пароля!'
+			);
+		},
+	});
+};
+
+export const useResetPassword = (token: string | null) => {
+	return useMutation({
+		mutationFn: async (data: IPasswordReset) => {
+			const response = await axiosInstance.post(`auth/reset-password`, data, {
+				params: { token },
+			});
+			return response.data;
+		},
+		onSuccess: () => {
+			message.success('Пароль восстановлен!');
+		},
+	});
+};
 
 interface UserState {
 	userInfo: IUser | null;
