@@ -105,22 +105,21 @@ const App = () => {
 								<Route path="calendar" element={<Calendars />} />
 							</Route>
 
-							{/*<Route*/}
-							{/*	element={*/}
-							{/*		<ProtectedRoute*/}
-							{/*			isAllowed={user?.role === 'admin'}*/}
-							{/*			redirectPath={'*'}*/}
-							{/*		/>*/}
-							{/*	}*/}
-							{/*>*/}
-							{/*</Route>*/}
-							{/*как будет вход по админу включим этот протектед роут*/}
 							<Route path="/admin">
-								<Route index element={<LoginAdminBuilder />} />
-								<Route element={<AdminPage />}>
-									<Route path="psychologists" element={<Psychologists />} />
-									{/*<Route path="posts" element={<ClientsTable />} />*/}
-									{/*<Route path="courses" element={<Calendars />} />*/}
+								<Route
+									element={
+										<ProtectedRoute
+											isAllowed={user?.role === 'admin'}
+											redirectPath={'*'}
+										/>
+									}
+								>
+									<Route index element={<LoginAdminBuilder />} />
+									<Route element={<AdminPage />}>
+										<Route path="psychologists" element={<Psychologists />} />
+										{/*<Route path="posts" element={<ClientsTable />} />*/}
+										{/*<Route path="courses" element={<Calendars />} />*/}
+									</Route>
 								</Route>
 							</Route>
 						</Route>
