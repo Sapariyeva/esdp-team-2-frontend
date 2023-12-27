@@ -106,15 +106,15 @@ const App = () => {
 							</Route>
 
 							<Route path="/admin">
+								<Route index element={<LoginAdminBuilder />} />
 								<Route
 									element={
 										<ProtectedRoute
 											isAllowed={user?.role === 'admin'}
-											redirectPath={'*'}
+											redirectPath={''}
 										/>
 									}
 								>
-									<Route index element={<LoginAdminBuilder />} />
 									<Route element={<AdminPage />}>
 										<Route path="psychologists" element={<Psychologists />} />
 										{/*<Route path="posts" element={<ClientsTable />} />*/}
