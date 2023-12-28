@@ -1,4 +1,4 @@
-@import "../../../assets/styles/config";
+@import '../../../assets/styles/config';
 
 .layout {
 	font-family: Montserrat !important;
@@ -7,7 +7,7 @@
 	justify-content: center;
 	align-items: center;
 	border-radius: 20px;
-
+	background-color: #fbf9ff;
 	.form {
 		display: flex;
 		flex-direction: column;
@@ -17,7 +17,7 @@
 		border-radius: 20px;
 		background: #fff;
 
-		.label_info{
+		.label_info {
 			display: flex;
 			justify-content: space-between;
 		}
