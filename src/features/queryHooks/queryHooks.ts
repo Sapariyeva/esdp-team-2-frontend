@@ -20,6 +20,8 @@ import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsycholog
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 import axios from 'axios';
+import { saveUser } from '../user/userSlice.ts';
+import { Dispatch } from 'redux';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -53,7 +55,10 @@ export const useCityQuery = () => {
 		queryKey: ['GetCities'],
 	});
 };
-export const usePostPsychologist = (navigate: NavigateFunction) => {
+export const usePostPsychologist = (
+	navigate: NavigateFunction,
+	dispatch: Dispatch
+) => {
 	return useMutation({
 		mutationFn: (data: FormData) => {
 			return axiosInstance.post<IPsychologistRegisterData>(
@@ -61,7 +66,8 @@ export const usePostPsychologist = (navigate: NavigateFunction) => {
 				data
 			);
 		},
-		onSuccess: async () => {
+		onSuccess: async (data) => {
+			dispatch(saveUser(data.data));
 			message.success('Вы успешно отправили анкету!');
 			navigate('/auth/confirmation');
 		},

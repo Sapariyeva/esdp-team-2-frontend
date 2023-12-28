@@ -162,6 +162,9 @@ const userSlice = createSlice({
 		resetUser: (state, { payload }) => {
 			state.userInfo = payload;
 		},
+		saveUser: (state, { payload }) => {
+			state.userInfo = payload;
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -257,6 +260,6 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const { resetErrors, resetUser } = userSlice.actions;
+export const { resetErrors, resetUser, saveUser } = userSlice.actions;
 
 export default userSlice;
