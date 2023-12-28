@@ -60,7 +60,7 @@ const Psychologists = () => {
 			key: 'publish',
 			render: (psycho: IPsychologist) => (
 				<Button type="primary" onClick={() => publishAction(psycho.id)}>
-					Опубликовать
+					{activePage ? 'Отменить публикацию' : 'Опубликовать'}
 				</Button>
 			),
 		},
