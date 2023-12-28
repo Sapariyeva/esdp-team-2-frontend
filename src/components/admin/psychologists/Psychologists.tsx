@@ -2,18 +2,22 @@ import { IPsychologist } from '../../../interfaces/IPsychologist';
 import { Button, Table } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
-	useGetPsychologistsAdmin,
+	useGetPsychologistsAdminFalse,
+	useGetPsychologistsAdminTrue,
 	usePsychoDeleteAdmin,
 	usePsychoPublishAdmin,
 } from '../../../features/queryHooks/queryHooks';
+import { useState } from 'react';
 
 const Psychologists = () => {
+	const [activePage, setActive] = useState(false);
 	const navigate = useNavigate();
-	const { data } = useGetPsychologistsAdmin();
-
+	const { data: trueData } = useGetPsychologistsAdminFalse();
+	const { data: falseData } = useGetPsychologistsAdminTrue();
 	const { mutate: publishPsycho } = usePsychoPublishAdmin();
 	const { mutate: deletePsycho } = usePsychoDeleteAdmin();
-	const arrPsycho = data?.data;
+	const arrPsychoTrue = trueData?.data;
+	const arrPsychoFalse = falseData?.data;
 	const publishAction = (id: number) => {
 		publishPsycho(id);
 	};
@@ -22,6 +26,14 @@ const Psychologists = () => {
 	};
 	const viewAction = (id: number) => {
 		navigate(`/psychologists/${id}`);
+	};
+
+	const changePublish = () => {
+		if (activePage === false) {
+			setActive(true);
+		} else {
+			setActive(false);
+		}
 	};
 
 	const columns = [
@@ -72,8 +84,8 @@ const Psychologists = () => {
 		},
 	];
 
-	if (arrPsycho) {
-		const dataSourceWithKeys = arrPsycho.map((item) => {
+	if (arrPsychoTrue != undefined && arrPsychoFalse != undefined) {
+		const dataSourceWithKeysTrue = arrPsychoTrue.map((item) => {
 			const date = new Date(item.birthday);
 			const formattedBirthday = `${date.getDate()}-${
 				date.getMonth() + 1
@@ -85,7 +97,41 @@ const Psychologists = () => {
 			};
 		});
 
-		return <Table columns={columns} dataSource={dataSourceWithKeys} />;
+		const dataSourceWithKeysFalse = arrPsychoFalse.map((item) => {
+			const date = new Date(item.birthday);
+			const formattedBirthday = `${date.getDate()}-${
+				date.getMonth() + 1
+			}-${date.getFullYear()}`;
+			return {
+				...item,
+				birthday: formattedBirthday,
+				key: item.id,
+			};
+		});
+
+		return (
+			<>
+				{activePage ? (
+					<div>
+						<>
+							<Button onClick={changePublish} type="primary">
+								Неопубликован
+							</Button>
+							<Table columns={columns} dataSource={dataSourceWithKeysFalse} />
+						</>
+					</div>
+				) : (
+					<div>
+						<>
+							<Button onClick={changePublish} type="primary">
+								Опубликован
+							</Button>
+							<Table columns={columns} dataSource={dataSourceWithKeysTrue} />
+						</>
+					</div>
+				)}
+			</>
+		);
 	}
 };
 

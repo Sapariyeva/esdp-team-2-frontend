@@ -333,12 +333,23 @@ export const useResetPassword = (
 	});
 };
 
-export const useGetPsychologistsAdmin = () => {
+export const useGetPsychologistsAdminTrue = () => {
 	return useQuery({
 		queryFn: () => {
-			return axiosInstance.get<IPsychologist[]>(`psychologists`);
+			return axiosInstance.get<IPsychologist[]>(`psychologists?isPublish=true`);
 		},
-		queryKey: ['GETADMINPSYCHO'],
+		queryKey: ['GETADMINPSYCHOTRUE'],
+	});
+};
+
+export const useGetPsychologistsAdminFalse = () => {
+	return useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist[]>(
+				`psychologists?isPublish=false`
+			);
+		},
+		queryKey: ['GETADMINPSYCHOFALSE'],
 	});
 };
 
@@ -352,9 +363,10 @@ export const usePsychoPublishAdmin = () => {
 			return response.data;
 		},
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({
-				queryKey: ['GETADMINPSYCHO'],
-			});
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOTRUE'] }),
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOFALSE'] }),
+			]);
 		},
 	});
 };
@@ -369,9 +381,10 @@ export const usePsychoDeleteAdmin = () => {
 			return response.data;
 		},
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({
-				queryKey: ['GETADMINPSYCHO'],
-			});
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOTRUE'] }),
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOFALSE'] }),
+			]);
 		},
 	});
 };
