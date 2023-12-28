@@ -332,3 +332,46 @@ export const useResetPassword = (
 		},
 	});
 };
+
+export const useGetPsychologistsAdmin = () => {
+	return useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist[]>(`psychologists`);
+		},
+		queryKey: ['GETADMINPSYCHO'],
+	});
+};
+
+export const usePsychoPublishAdmin = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.post(`psychologists/publish/${id}`);
+
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GETADMINPSYCHO'],
+			});
+		},
+	});
+};
+
+export const usePsychoDeleteAdmin = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.delete(`psychologists/${id}`);
+
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GETADMINPSYCHO'],
+			});
+		},
+	});
+};
