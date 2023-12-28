@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUser, IUserAdminLogin } from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { AxiosError, isAxiosError } from 'axios';
-import Cookies from 'js-cookie';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
@@ -74,16 +73,7 @@ export const loginAdmin = createAsyncThunk<
 });
 
 export const logoutUser = createAsyncThunk('auth/logout', async () => {
-	const refreshToken = Cookies.get('refreshToken');
-	const response = await axiosInstance.post(
-		'/auth/logout',
-		{},
-		{
-			headers: {
-				Authorization: `Bearer ${refreshToken}`,
-			},
-		}
-	);
+	const response = await axiosInstance.post('/auth/logout');
 	return response.data;
 });
 
@@ -103,6 +93,28 @@ export const activateEmail = createAsyncThunk<
 >('auth/activate', async (id: number, { rejectWithValue }) => {
 	try {
 		const response = await axiosInstance.get<IUser>(`/auth/activate/${id}`);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+		}
+		throw err;
+	}
+});
+
+export const updateTokens = createAsyncThunk<
+	Pick<IUser, 'accessToken'>,
+	void,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/updateTokens', async (_, { rejectWithValue }) => {
+	try {
+		const response =
+			await axiosInstance.get<Pick<IUser, 'accessToken'>>(
+				`/auth/refresh-token/`
+			);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {
@@ -196,7 +208,21 @@ const userSlice = createSlice({
 					errors: payload?.errors ?? [],
 				};
 			})
+			.addCase(updateTokens.fulfilled, (state, { payload }) => {
+				if (!state.userInfo) return;
+
+				state.userInfo = {
+					...state.userInfo,
+					accessToken: payload.accessToken,
+				};
+			})
+			.addCase(updateTokens.rejected, () => {
+				return initialState;
+			})
 			.addCase(logoutUser.fulfilled, () => {
+				return initialState;
+			})
+			.addCase(logoutUser.rejected, () => {
 				return initialState;
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
