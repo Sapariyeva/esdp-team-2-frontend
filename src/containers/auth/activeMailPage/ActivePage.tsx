@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { Result, Typography } from 'antd';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './ActiveMailPage.module.scss';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
 import { activateEmail } from '../../../features/user/userSlice.ts';
-import { RootState } from '../../../store';
+import { useAppDispatch } from '../../../store/hooks.ts';
 
 const { Title, Paragraph } = Typography;
 
 export const ActivePage: React.FC = () => {
-	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const id = useAppSelector((state: RootState) => state.users.userInfo?.id);
-
+	const navigate = useNavigate();
+	const { id } = useParams();
+	const location = useLocation();
+	const role = new URLSearchParams(location.search).get('role');
 	useEffect(() => {
-		dispatch(activateEmail(id!));
+		dispatch(activateEmail({ id, role }));
 
 		const confirmationTimeout = setTimeout(() => {
 			redirectToHome();

@@ -86,13 +86,21 @@ export const updateUser = createAsyncThunk(
 	}
 );
 
+interface ActivateEmailArgs {
+	id: string | undefined;
+	role: string | null;
+}
+
 export const activateEmail = createAsyncThunk<
 	IUser,
-	number,
+	ActivateEmailArgs,
 	{ rejectValue: ServerFormValidationResponse }
->('auth/activate', async (id: number, { rejectWithValue }) => {
+>('auth/activate', async ({ id, role }, { rejectWithValue }) => {
 	try {
-		const response = await axiosInstance.get<IUser>(`/auth/activate/${id}`);
+		console.log(role, id);
+		const response = await axiosInstance.get<IUser>(
+			`/auth/activate/${id}?role=${role}`
+		);
 		return response.data;
 	} catch (err) {
 		if (isAxiosError(err)) {

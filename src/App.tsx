@@ -46,7 +46,6 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route element={<CustomLayout />}>
-						<Route path="/" element={<HomePage />} />
 						<Route
 							path="/auth/login/patient"
 							element={<Login role="patient" />}
@@ -59,6 +58,7 @@ const App = () => {
 								/>
 							}
 						>
+							<Route path="/" element={<HomePage />} />
 							<Route
 								path="auth/login/psychologist"
 								element={<Login role="psychologist" />}
