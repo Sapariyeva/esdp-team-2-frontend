@@ -13,7 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 					token: {
 						colorPrimary: '#834eeb',
 						borderRadius: 8,
-						colorBgContainer: '#ffffff',
 					},
 					components: {
 						Button: {
@@ -24,9 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							colorPrimary: '#8031b7',
 							algorithm: true,
 						},
-						Layout: {
-							borderRadius: 9,
-						},
+
 						Table: {
 							headerBg: '#FFF',
 							headerColor: '#9F9F9F',

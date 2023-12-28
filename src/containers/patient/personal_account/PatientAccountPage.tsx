@@ -17,7 +17,13 @@ const PatientAccountPage = () => {
 	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<string>('profile');
+	const [activeTab, setActiveTab] = useState<string>('');
+
+	useEffect(() => {
+		const pathArray = window.location.pathname.split('/');
+		const lastPath = pathArray[pathArray.length - 1];
+		setActiveTab(lastPath);
+	}, []);
 
 	useEffect(() => {
 		navigate(`/patient/${activeTab}`);
