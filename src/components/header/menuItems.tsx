@@ -6,7 +6,13 @@ import styles from './Header.module.scss';
 import search from '../../assets/icon/search-normal.svg';
 import favorites from '../../assets/icon/love.svg';
 import profile from '../../assets/icon/profile-circle.svg';
+import profileBlack from '../../assets/icon/profile.svg';
 import LogoutBtn from '../UI/LogoutBtn.tsx';
+import record from '../../assets/icon/record.svg';
+import history from '../../assets/icon/history.svg';
+import heart from '../../assets/icon/heart.svg';
+import book from '../../assets/icon/book-saved.svg';
+import logout from '../../assets/icon/logout.svg';
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
@@ -19,6 +25,7 @@ type Options = {
 	type?: 'group' | 'divider';
 	style?: React.CSSProperties;
 	className?: string;
+	disable?: boolean;
 };
 
 type GetItem = (options: Options) => MenuItem;
@@ -32,6 +39,7 @@ export const getItem: GetItem = ({
 	type,
 	style,
 	className,
+	disable,
 }) => {
 	return {
 		label: isLink ? <NavLink to={key}>{label}</NavLink> : label,
@@ -41,6 +49,7 @@ export const getItem: GetItem = ({
 		type,
 		style,
 		className,
+		disable,
 	};
 };
 
@@ -67,13 +76,47 @@ export const patientItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: <img src={profile} alt={'profile'} className={styles.customIcon} />,
-		key: 'profile',
+		key: 'l',
 		children: [
-			getItem({ label: <LogoutBtn />, key: 'logout' }),
 			getItem({
-				label: 'Личный кабинет',
-				key: '/patient/profile',
+				label: 'Профиль',
+				key: 'patient/profile',
 				isLink: true,
+				icon: (
+					<img className={styles.item_icon} src={profileBlack} alt="profile" />
+				),
+			}),
+			getItem({
+				label: 'Мои записи',
+				key: 'patient/records',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={record} alt="record" />,
+			}),
+			getItem({
+				label: 'История посещений',
+				key: 'patient/history',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={history} alt="history" />,
+			}),
+			getItem({
+				label: 'Избранное',
+				key: 'patient/favorites',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={heart} alt="heart" />,
+			}),
+			getItem({
+				label: 'Курсы',
+				key: 'patient/course',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={book} alt="book" />,
+			}),
+			getItem({
+				label: (
+					<LogoutBtn>
+						<img className={styles.item_icon} src={logout} alt="history" />
+					</LogoutBtn>
+				),
+				key: 'logout',
 			}),
 		],
 	}),
@@ -89,11 +132,14 @@ export const adminItems: MenuProps['items'] = [
 		label: <img src={profile} alt={'profile'} className={styles.customIcon} />,
 		key: 'profile',
 		children: [
-			getItem({ label: <LogoutBtn />, key: 'logout' }),
 			getItem({
 				label: 'Админ панель',
 				key: 'admin/psychologists',
 				isLink: true,
+			}),
+			getItem({
+				label: <LogoutBtn />,
+				key: 'logout',
 			}),
 		],
 	}),
@@ -109,11 +155,39 @@ export const psychologistItems: MenuProps['items'] = [
 		label: <img src={profile} alt={'profile'} className={styles.customIcon} />,
 		key: 'profile',
 		children: [
-			getItem({ label: <LogoutBtn />, key: 'logout' }),
 			getItem({
-				label: 'Личный кабинет',
-				key: '/psychologist',
+				label: 'Профиль',
+				key: 'psychologist/profile',
 				isLink: true,
+				icon: (
+					<img className={styles.item_icon} src={profileBlack} alt="profile" />
+				),
+			}),
+			getItem({
+				label: 'Календарь',
+				key: 'psychologist/calendar',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={record} alt="record" />,
+			}),
+			getItem({
+				label: 'Мои Клиенты',
+				key: 'psychologist/records',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={record} alt="record" />,
+			}),
+			getItem({
+				label: 'История записей',
+				key: 'psychologist/history',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={history} alt="history" />,
+			}),
+			getItem({
+				label: (
+					<LogoutBtn>
+						<img className={styles.item_icon} src={logout} alt="history" />
+					</LogoutBtn>
+				),
+				key: 'logout',
 			}),
 		],
 	}),
@@ -199,5 +273,107 @@ export const commonItems: MenuProps['items'] = [
 		label: <Button className={styles.button}>подобрать психолога</Button>,
 		key: '/psychologists',
 		isLink: true,
+	}),
+];
+
+export const itemsSideBar: MenuProps['items'] = [
+	getItem({
+		label: 'Профиль',
+		key: 'profile',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={profileBlack} alt="profile" />,
+	}),
+	getItem({
+		label: 'Мои записи',
+		key: 'records',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="record" />,
+	}),
+	getItem({
+		label: 'История посещений',
+		key: 'history',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={history} alt="history" />,
+	}),
+	getItem({
+		label: 'Избранное',
+		key: 'favorites',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={heart} alt="heart" />,
+	}),
+	getItem({
+		label: 'Курсы',
+		key: 'course',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={book} alt="book" />,
+	}),
+];
+
+export const itemsSideBarPsychologists: MenuProps['items'] = [
+	getItem({
+		label: 'Профиль',
+		key: 'profile',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={profileBlack} alt="profile" />,
+	}),
+	getItem({
+		label: 'Календарь',
+		key: 'calendar',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="record" />,
+	}),
+	getItem({
+		label: 'Мои Клиенты',
+		key: 'records',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="record" />,
+	}),
+	getItem({
+		label: 'История записей',
+		key: 'history',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={history} alt="history" />,
+	}),
+];
+
+export const itemsSideBarAdmin: MenuProps['items'] = [
+	getItem({
+		label: 'Психологи',
+		key: 'psychologists',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={profileBlack} alt="profile" />,
+	}),
+	getItem({
+		label: 'Посты',
+		key: 'Посты',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={history} alt="history" />,
+	}),
+
+	getItem({
+		label: 'Методы терапии',
+		key: 'therapies',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="Therapies" />,
+	}),
+	getItem({
+		label: 'Симтомы',
+		key: 'symptoms',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="symptoms" />,
+	}),
+	getItem({
+		label: 'Техники',
+		key: 'techniques',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={record} alt="techniques" />,
+	}),
+	getItem({
+		label: (
+			<LogoutBtn>
+				<img className={styles.item_icon} src={logout} alt="history" />
+			</LogoutBtn>
+		),
+		key: 'logout',
 	}),
 ];

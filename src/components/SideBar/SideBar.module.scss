@@ -13,4 +13,8 @@
 	border-radius: 20px;
 	font-family: 'Montserrat';
 	font-size: 13px !important;
+
+	@media screen and (max-width: 950px) {
+		display: none;
+	}
 }
