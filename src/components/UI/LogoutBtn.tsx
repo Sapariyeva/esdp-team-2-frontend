@@ -1,18 +1,33 @@
 import { logoutUser } from '../../features/user/userSlice';
 import { useAppDispatch } from '../../store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { ReactNode } from 'react';
 
-const LogoutBtn = () => {
+type Props = {
+	children?: ReactNode;
+};
+const LogoutBtn = ({ children }: Props) => {
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const logoutHandler = () => {
 		dispatch(logoutUser());
+		navigate('/');
+		message.success('Вы успешно вышли с учетной записи!');
 	};
 
 	return (
 		<div
-			style={{ margin: '0 -16px', padding: '0 16px' }}
 			onClick={logoutHandler}
+			style={{
+				display: 'flex',
+				justifyContent: 'flex-start',
+				alignItems: 'center',
+				gap: '10px',
+			}}
 		>
-			Выйти
+			{children}
+			<div>Выйти</div>
 		</div>
 	);
 };

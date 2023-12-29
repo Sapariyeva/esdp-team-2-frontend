@@ -6,12 +6,22 @@
 	flex-wrap: wrap;
 	padding: 10px;
 	width: 100%;
+	@media screen and (max-width: 950px) {
+		flex-direction: column;
+		gap: -10px;
+	}
+	@media screen and (max-width: 950px) {
+		display: block;
+	}
 }
 
 .content {
 	flex: 1;
 	min-height: 80svh;
 	margin-top: 33px;
+	@media screen and (max-width: 950px) {
+		margin-top: 15px;
+	}
 }
 
 .img {
