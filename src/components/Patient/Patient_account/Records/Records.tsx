@@ -29,6 +29,13 @@ const Records = () => {
 		deleteRecord.mutate(id);
 	};
 
+	const dataSourceWithKeysFalse = records.map((item) => {
+		return {
+			...item,
+			key: item.id,
+		};
+	});
+
 	const columns: ColumnsType<IRecord> = [
 		{
 			title: 'ФИО',
@@ -158,7 +165,7 @@ const Records = () => {
 					<Table
 						rowClassName={styles.row}
 						columns={columns}
-						dataSource={records}
+						dataSource={dataSourceWithKeysFalse}
 						locale={{ emptyText }}
 						virtual={false}
 						pagination={{ position: ['none'] }}
