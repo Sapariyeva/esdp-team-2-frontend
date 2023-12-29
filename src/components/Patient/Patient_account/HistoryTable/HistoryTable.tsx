@@ -12,6 +12,13 @@ import { CiCircleInfo } from 'react-icons/ci';
 const HistoryTable = () => {
 	const { data: history = [], isPending = [] } = useGetRecordsHistoryPatient();
 
+	const dataSourceWithKeysFalse = history.map((item) => {
+		return {
+			...item,
+			key: item.id,
+		};
+	});
+
 	const columns: ColumnsType<IRecord> = [
 		{
 			title: 'ФИО',
@@ -88,7 +95,7 @@ const HistoryTable = () => {
 					<Table
 						rowClassName={styles.row}
 						columns={columns}
-						dataSource={history}
+						dataSource={dataSourceWithKeysFalse}
 						locale={{ emptyText }}
 						virtual={false}
 						pagination={{ position: ['none'] }}
