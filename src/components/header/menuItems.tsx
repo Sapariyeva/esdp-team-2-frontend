@@ -134,7 +134,7 @@ export const adminItems: MenuProps['items'] = [
 		children: [
 			getItem({
 				label: 'Психологи',
-				key: 'psychologists',
+				key: 'admin/psychologists',
 				isLink: true,
 				icon: (
 					<img className={styles.item_icon} src={profileBlack} alt="profile" />
@@ -142,26 +142,26 @@ export const adminItems: MenuProps['items'] = [
 			}),
 			getItem({
 				label: 'Посты',
-				key: 'Посты',
+				key: 'admin/posts',
 				isLink: true,
 				icon: <img className={styles.item_icon} src={history} alt="history" />,
 			}),
 
 			getItem({
 				label: 'Методы терапии',
-				key: 'therapies',
+				key: 'admin/therapies',
 				isLink: true,
 				icon: <img className={styles.item_icon} src={record} alt="Therapies" />,
 			}),
 			getItem({
 				label: 'Симтомы',
-				key: 'symptoms',
+				key: 'admin/symptoms',
 				isLink: true,
 				icon: <img className={styles.item_icon} src={record} alt="symptoms" />,
 			}),
 			getItem({
 				label: 'Техники',
-				key: 'techniques',
+				key: 'admin/techniques',
 				isLink: true,
 				icon: (
 					<img className={styles.item_icon} src={record} alt="techniques" />
