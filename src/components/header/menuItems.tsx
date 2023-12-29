@@ -133,12 +133,46 @@ export const adminItems: MenuProps['items'] = [
 		key: 'profile',
 		children: [
 			getItem({
-				label: 'Админ панель',
-				key: 'admin/psychologists',
+				label: 'Психологи',
+				key: 'psychologists',
 				isLink: true,
+				icon: (
+					<img className={styles.item_icon} src={profileBlack} alt="profile" />
+				),
 			}),
 			getItem({
-				label: <LogoutBtn />,
+				label: 'Посты',
+				key: 'Посты',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={history} alt="history" />,
+			}),
+
+			getItem({
+				label: 'Методы терапии',
+				key: 'therapies',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={record} alt="Therapies" />,
+			}),
+			getItem({
+				label: 'Симтомы',
+				key: 'symptoms',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={record} alt="symptoms" />,
+			}),
+			getItem({
+				label: 'Техники',
+				key: 'techniques',
+				isLink: true,
+				icon: (
+					<img className={styles.item_icon} src={record} alt="techniques" />
+				),
+			}),
+			getItem({
+				label: (
+					<LogoutBtn>
+						<img className={styles.item_icon} src={logout} alt="history" />
+					</LogoutBtn>
+				),
 				key: 'logout',
 			}),
 		],
