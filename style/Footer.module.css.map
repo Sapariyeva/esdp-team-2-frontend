@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/assets/styles/_config.scss","Footer.module.css","../src/components/Footer/Footer.module.scss"],"names":[],"mappings":"AAAQ,6HAAA;AACR;EACC,kBAAA;EACA,oCAAA;ACCD;;ADuBA;EACC,cArBa;ACCd;;ADuBA;EACC,cAxBc;ACIf;;ADmCA;EACC,mBAnCe;ACGhB;;ACdA;EAGC,iBAAA;ADeD;ACTC;EACC,kBAAA;EACM,UAAA;ADWR;ACVE;EACC,kBAAA;EACA,SAAA;ADYH","file":"Footer.module.css"}
