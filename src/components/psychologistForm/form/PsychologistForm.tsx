@@ -12,7 +12,7 @@ import {
 	InputNumber,
 } from 'antd';
 import { IPsychologistRegisterData } from '../../../interfaces/IPsychologist.ts';
-import InformationText from '../../UI/Text/InformationText.tsx';
+import InformationText from '../../ui/Text/InformationText.tsx';
 import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse.ts';
 import { ITechnique } from '../../../interfaces/ITechnique.ts';
 import { ISymptom } from '../../../interfaces/ISymptom.ts';
@@ -20,16 +20,16 @@ import { ITherapyMethod } from '../../../interfaces/ITherapyMethod.ts';
 import { ICity } from '../../../interfaces/IPsychologistForm.ts';
 import { useState } from 'react';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
-import { UploadButton } from '../../UI/Button/UploadButton.tsx';
+import { UploadButton } from '../../ui/Button/UploadButton.tsx';
 import './PsychologistForm.scss';
-import UploadInput from '../../UI/Upload/UploadInput.tsx';
+import UploadInput from '../../ui/Upload/UploadInput.tsx';
 import {
 	appendArrayToFormData,
 	appendValuesToFormData,
 } from '../../../helpers/appendValuesToFormData.ts';
 import AboutModerationModal from '../aboutModerationModal/AboutModerationModal.tsx';
 import infoIcon from '../../../assets/icon/info-circle.svg';
-import Alert from '../../UI/Alert/Alert.tsx';
+import Alert from '../../ui/Alert/Alert.tsx';
 const { Title } = Typography;
 const { Option } = Select;
 

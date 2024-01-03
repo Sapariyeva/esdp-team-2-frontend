@@ -1,4 +1,4 @@
-import styles from '../Record.module.scss';
+import styles from './ConfirmationRecord.module.scss';
 import back from '../../../../public/arrow-left.svg';
 import * as dayjs from 'dayjs';
 import { Button, Spin } from 'antd';

@@ -1,11 +1,11 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { Space, Spin, Table } from 'antd';
-import styles from '../Records/Record.module.scss';
+import styles from '../records/Record.module.scss';
 import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
-import Alert from '../../../UI/Alert/Alert.tsx';
+import Alert from '../../../ui/Alert/Alert.tsx';
 
 import { CiCircleInfo } from 'react-icons/ci';
 

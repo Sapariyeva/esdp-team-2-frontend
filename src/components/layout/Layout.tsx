@@ -3,7 +3,7 @@ import { Layout, Layout as AntLayout } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
 import { Header } from '../header/Header.tsx';
-import { FooterMenu } from '../Footer/Footer.tsx';
+import { FooterMenu } from '../footer/Footer.tsx';
 import styles from './Layout.module.scss';
 import { userSelect } from '../../features/user/userSlice.ts';
 const { Content, Footer } = AntLayout;

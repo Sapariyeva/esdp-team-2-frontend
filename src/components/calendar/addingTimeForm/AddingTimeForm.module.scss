@@ -46,7 +46,7 @@
 	justify-content: space-between;
 	margin-bottom: 20px;
 	align-items: center;
-
+	gap: 2%;
 	@media screen and (max-width: 400px) {
 		justify-content: center;
 		margin-bottom: 20px;
@@ -59,7 +59,6 @@
 .form {
 	display: flex;
 	flex-direction: column;
-
 	.label {
 		color: #9f9f9f;
 		text-align: left;
@@ -225,4 +224,13 @@
 	background-color: #f5f5f5;
 	margin-top: 5px;
 	padding: 20px;
+}
+.error {
+	position: absolute;
+	top: -60px;
+	z-index: 99;
+	left: 0;
+	max-width: max-content;
+	font-family: Montserrat !important;
+	font-size: 12px;
 }

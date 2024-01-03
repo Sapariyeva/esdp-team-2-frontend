@@ -7,7 +7,7 @@ import search from '../../assets/icon/search-normal.svg';
 import favorites from '../../assets/icon/love.svg';
 import profile from '../../assets/icon/profile-circle.svg';
 import profileBlack from '../../assets/icon/profile.svg';
-import LogoutBtn from '../UI/LogoutBtn.tsx';
+import LogoutBtn from '../ui/LogoutBtn.tsx';
 import record from '../../assets/icon/record.svg';
 import history from '../../assets/icon/history.svg';
 import heart from '../../assets/icon/heart.svg';

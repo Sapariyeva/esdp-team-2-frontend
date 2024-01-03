@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import styles from './AdminPage.module.scss';
-import SideBar from '../../components/SideBar/SideBar.tsx';
+import SideBar from '../../components/sideBar/SideBar.tsx';
 import { itemsSideBarAdmin } from '../../components/header/menuItems.tsx';
 
 const AdminPage = () => {
