@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { MonthObject } from '../interfaces/IMonthObject.ts';
 
 export const generateMonthDays = (): MonthObject[] => {

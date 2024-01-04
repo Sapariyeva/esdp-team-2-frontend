@@ -1,5 +1,5 @@
 import styles from './SelectionBookingTime.module.scss';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Button } from 'antd';
 import back from '../../../../public/arrow-left.svg';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';

@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useAppointmentsSelectDayQuery } from '../../../../features/queryHooks/queryHooks.ts';
 import { MonthObject } from '../../../../interfaces/IMonthObject.ts';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { generateMonthDays } from '../../../../helpers/generateMonthDays.ts';
 import { useState } from 'react';
 import { ITimeSlot } from '../../../../interfaces/ITimeSlot.ts';

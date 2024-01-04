@@ -1,6 +1,6 @@
 import styles from './ConfirmationRecord.module.scss';
 import back from '../../../../public/arrow-left.svg';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Button, Spin } from 'antd';
 import { useAppSelector } from '../../../store/hooks.ts';
 import { userSelect } from '../../../features/user/userSlice.ts';
