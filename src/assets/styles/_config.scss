@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+body {
+	position: relative;
+	font-family: 'Montserrat' !important;
+}
+
+$color-white: #f5f5f5;
+$color-black: #000000;
+$color-purple: #864ce9;
+$color-soft-purple: #e0bcff;
+$color-green: #88ff00;
+$color-gray: #3a3a3a;
+
+$bgcolor-white: #f5f5f5;
+$bgcolor-purple: #834eeb;
+$bgcolor-soft-purple: #e0bcff;
+$bgcolor-green: #88ff00;
+$bgcolor-gray: #3a3a3a;
+$bgcolor-light-gray: #f5f5f5;
+
+$hover-bgcolor: #88ff00;
+$hover-color: black;
+
+%color-white {
+	color: $color-white;
+}
+
+%color-black {
+	color: $color-black;
+}
+
+%color-purple {
+	color: $color-purple;
+}
+
+%color-soft-purple {
+	color: $color-soft-purple;
+}
+
+%color-green {
+	color: $color-green;
+}
+
+%color-gray {
+	color: $color-gray;
+}
+
+%bgcolor-white {
+	background: $bgcolor-white;
+}
+
+%bgcolor-purple {
+	background: $bgcolor-purple;
+}
+
+%bgcolor-soft-purple {
+	background: $bgcolor-soft-purple;
+}
+
+%bgcolor-green {
+	background: $bgcolor-green;
+}
+
+%bgcolor-gray {
+	background: $bgcolor-gray;
+}
+
+%bgcolor-light-gray {
+	background: $bgcolor-light-gray;
+}
+
+%hover {
+	background: $hover-bgcolor;
+	color: $hover-color;
+}
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline > .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical
+	> .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline
+	> .ant-menu-submenu
+	> .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical
+	> .ant-menu-submenu
+	> .ant-menu-submenu-title {
+	height: 45px;
+	line-height: 45px;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-layout
+	.ant-layout-sider-children {
+	@media screen and (max-width: 830px) {
+		overflow: scroll;
+	}
+}
+
+.ant-layout-sider {
+	width: 300px;
+	background-color: transparent !important;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-layout
+	.ant-layout-sider-children {
+	width: 300px !important;
+}
+
+.ant-tooltip-inner {
+	display: flex;
+	width: 280px !important;
+	height: 100px !important;
+	color: #3c3c3c !important;
+	text-align: left;
+	text-decoration: none;
+	word-wrap: break-word;
+	background-color: #f5f5f5 !important;
+}
+
+//.ant-table-cell {
+//	display: flex;
+//}
+//
+//.ant-table-thead {
+//	display: none; /* Скрыть заголовок на узких экранах */
+//}
+//
+//.ant-table-tbody {
+//	width: 100%;
+//}
+//
+//.ant-table-row {
+//	margin-bottom: 16px; /* Разделение между записями */
+//}
+//.menu-container {
+//	overflow: hidden;
+//}
+
+/* Use a media query to change the menu layout to horizontal at 500px or less */
+
+
+:where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal >.ant-menu-item::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu::after {
+	display: none !important;
+	border:none !important;
+
+}
+:where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal >.ant-menu-item:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu:hover {
+		color: tomato;
+}
+:where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu-selected::after {
+	display: none !important;
+	border:none !important;
+}

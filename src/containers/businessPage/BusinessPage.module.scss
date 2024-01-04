@@ -1,0 +1,76 @@
+@import '../../assets/styles/config';
+
+.businesspage {
+	@extend %bgcolor-white;
+	.businesspage_container {
+		padding: 50px;
+		text-align: center;
+		display: flex;
+
+		.businesspage_container_text {
+			margin: 0 0 0 20px;
+			display: flex;
+			text-align: left;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		.businesspage_button {
+			background-color: $color-purple;
+		}
+		.businesspage_img {
+			margin-top: 20px;
+			max-width: 100%;
+		}
+	}
+
+	.stress_statistic_container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.stress_statistic_paragraph {
+			color: darkgrey;
+			a {
+				color: darkgrey;
+			}
+		}
+		.stress_statistic_img_container {
+			display: flex;
+			justify-content: center;
+			margin: 50px 0;
+			.stress_statistic_img {
+				margin-top: 20px;
+				max-width: 63%;
+			}
+		}
+	}
+
+	.plusses_container {
+		display: flex;
+		margin: 50px 0;
+		.plusses_card {
+			max-width: 300px;
+			margin: 0 15px;
+		}
+	}
+	.ask_container {
+		margin: 50px 0;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+
+		.ask_title {
+			max-width: 1000px;
+			text-align: center;
+			font-size: 56px;
+		}
+		.ask_button {
+			margin: 20px 0;
+			background-color: $color-purple;
+			font-size: 25px;
+			height: 60px;
+		}
+	}
+}

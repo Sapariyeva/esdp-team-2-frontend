@@ -1,0 +1,30 @@
+.card {
+	width: 290px;
+	position: relative;
+	gap: 10px;
+
+	.cover {
+		position: relative;
+		width: 100%;
+		height: 200px;
+
+		.heart {
+			position: absolute;
+			top: 9px;
+			right: 14px;
+			font-size: 21px;
+			transition: color 0.3s ease;
+			color: rgb(255, 255, 255);
+
+			&:hover {
+				color: red;
+			}
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}

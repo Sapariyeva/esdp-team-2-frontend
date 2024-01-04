@@ -1,0 +1,13 @@
+.container {
+	margin: 0 50px;
+	.form {
+		width: 600px;
+		display: flex;
+	}
+	.list {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+}
