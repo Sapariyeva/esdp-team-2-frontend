@@ -2,10 +2,16 @@ import { Card, message } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styles from './PsychologistCard.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
+import {
+	IPsychologist,
+	IPsychologistWithLikes,
+} from '../../../interfaces/IPsychologist';
 import { useAppSelector } from '../../../store/hooks';
 import updateStorageViewedPsychologists from '../../../helpers/updateStorageViewedPsychologists';
 import { useSaveVievedPsychologist } from '../../../features/queryHooks/queryHooks';
+import { userSelect } from '../../../features/user/userSlice';
+import { useState } from 'react';
+import Record from '../../record/Record';
 
 const { Meta } = Card;
 
@@ -17,6 +23,18 @@ interface Props {
 export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
 	const navigate = useNavigate();
+
+	const [active, setActive] = useState(false);
+	const user = useAppSelector(userSelect);
+
+	const psychologistForRecord: IPsychologist =
+		psychologist as unknown as IPsychologist;
+
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation();
+		if (!user || !user.patient) navigate('/auth/login/patient');
+		setActive(true);
+	};
 
 	const onClickReadMore = () => {
 		navigate(`/psychologists/${psychologist.id}`);
@@ -68,16 +86,32 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 
 					<img
 						alt={psychologist.fullName}
+						// src={
+						// 	psychologist.photos && psychologist.photos.length > 0
+						// 		? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
+						// 		: ''
+						// }
 						src={
-							psychologist.photos && psychologist.photos.length > 0
-								? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
-								: ''
+							'https://s3-alpha-sig.figma.com/img/8c65/0dc5/b92c3bd43ad8f5a902af6860419f45ad?Expires=1705276800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=eNdXdHinAs14p6yFh2nOw7mYsCTz4tC-BB7Y583ZDKMSdl4iBXBaGW5nD3N3f1mEs~aTLpARwx3lB~9ZNzDc5VdZnv0l6UtVF8lD0xgqPMG7kPYqTqxWMhcwtKw1LX-zAUjNwQv7Ry9YIRAGdAXKJBN~nSinixJ8XaRWGor91mrWraEMU-vOmEjcXmhjC0pcUdRhH3NbrM2xONErm-H4cfxETqwzllgOdW10hTiCQB9IlF43wj8wLtwHsjl91EL3pSSpbPIE8WkZLDqQIL5VEBwqZP-EzRzN8p~0dWUSx5kJC-d8MCcgcpJqCe~tkMmgr-TPNlnEBtxKlFDF3q8-lw__'
 						}
 						className={styles.img}
 					/>
 					<div
 						className={styles.experienceYears}
 					>{`Опыт ${psychologist.experienceYears} лет`}</div>
+
+					<button
+						onClick={handleClick}
+						disabled={user?.role === 'psychologist'}
+						className={styles.card_button}
+					>
+						записаться
+					</button>
+					<Record
+						psychologist={psychologistForRecord}
+						active={active}
+						setActive={setActive}
+					/>
 				</div>
 			}
 		>

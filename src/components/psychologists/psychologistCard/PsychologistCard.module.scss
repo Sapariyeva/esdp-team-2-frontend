@@ -4,7 +4,8 @@
 	padding: 20px;
 	align-items: flex-start;
 	flex-shrink: 0;
-	height: 290px;
+	min-height: 290px;
+	justify-content: space-between;
 
 	.cover {
 		position: relative;
@@ -25,14 +26,14 @@
 		}
 
 		img {
-			max-width: 280px;
-			max-height: 250px;
+			width: 250px;
+			height: 250px;
 			object-fit: cover;
 			border-radius: 15px;
 		}
 		.experienceYears {
 			position: absolute;
-			left: 15px;
+			left: 10px;
 			top: 15px;
 			border-radius: 50px;
 			background: rgba(245, 245, 245, 0.5);
@@ -44,6 +45,33 @@
 			font-weight: 400;
 		}
 	}
+
+	.card_button {
+		display: flex;
+		width: 227px;
+		padding: 15px 5px;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		color: #fff;
+		font-family: Montserrat;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+		border-radius: 100px;
+		background: #9f67fd;
+		position: absolute;
+		left: 13px;
+		bottom: -33px;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		border: 1px solid #9f67fd;
+	}
+	&:hover .card_button {
+		opacity: 1;
+	}
+
 	.education {
 		color: #9f9f9f;
 		font-family: Montserrat;
@@ -54,15 +82,16 @@
 	}
 	.container_city_country {
 		display: flex;
+		margin: 10px 0;
 		.container_city {
 			display: flex;
-			padding: 10px 15px;
+			padding: 5px 10px;
 			justify-content: center;
 			align-items: center;
 			gap: 10px;
 			border-radius: 50px;
 			background: rgba(131, 78, 235, 0.2);
-			margin: 5px 5px 0 0;
+			margin: 0 5px 0 0;
 			.city {
 				color: #9f67fd;
 				font-family: Montserrat;
@@ -74,13 +103,13 @@
 		}
 		.container_country {
 			display: flex;
-			padding: 10px 15px;
+			padding: 5px 10px;
 			justify-content: center;
 			align-items: center;
 			gap: 10px;
 			border-radius: 50px;
 			background: rgba(131, 78, 235, 0.2);
-			margin: 5px 0 0 0;
+			margin: 0 5px 0 0;
 
 			.country {
 				color: #9f67fd;
@@ -98,10 +127,12 @@
 
 	.container_therapyMethod {
 		display: flex;
+		margin: 5px 0;
+		flex-wrap: wrap;
 
 		.therapyMethod {
 			display: flex;
-			padding: 10px 15px;
+			padding: 5px 10px;
 			justify-content: center;
 			align-items: center;
 			gap: 10px;
@@ -113,7 +144,7 @@
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
-			margin: 0 5px 0 0;
+			margin: 0 5px 5px 0;
 		}
 	}
 
@@ -124,15 +155,19 @@
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
-		margin: 5px 0;
 	}
 	.cost {
 		color: #7ed957;
 		font-family: Montserrat;
-		font-size: 26px;
+		font-size: 24px;
 		font-style: normal;
 		font-weight: 600;
 		line-height: normal;
+		position: absolute;
+		bottom: 17px;
+	}
+	&:hover .cost {
+		color: #9f67fd;
 	}
 }
 
@@ -149,12 +184,96 @@
 	line-height: normal;
 }
 
+@media screen and (max-width: 1468px) {
+	.card {
+		display: flex;
+		max-width: 550px;
+		padding: 16px;
+		align-items: flex-start;
+		min-height: 270px;
+
+		.cover {
+			position: relative;
+			width: 100%;
+			height: 150px;
+
+			.heart {
+				top: -7px;
+				right: -279px;
+				font-size: 18px;
+			}
+			img {
+				max-width: 230px;
+				height: 230px;
+				object-fit: cover;
+				border-radius: 12px;
+			}
+			.experienceYears {
+				left: 10px;
+				top: 10px;
+				padding: 4px 8px;
+				font-size: 12px;
+			}
+
+			.card_button {
+				display: flex;
+				width: 204px;
+				padding: 10px 4px;
+				justify-content: center;
+				align-items: center;
+				gap: 10px;
+				color: #fff;
+				font-family: Montserrat;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				border-radius: 100px;
+				background: #9f67fd;
+				position: absolute;
+				left: 12px;
+				bottom: -67px;
+				opacity: 0;
+				transition: opacity 0.3s ease;
+				border: 1px solid #9f67fd;
+			}
+			:hover {
+				opacity: 1;
+			}
+		}
+
+		.education {
+			font-size: 11px;
+		}
+
+		.country,
+		.city {
+			font-size: 11px;
+		}
+
+		.hr_line {
+			border-top: 1px solid #f5f5f5;
+		}
+
+		.description {
+			font-size: 11px;
+			margin: 3px 0;
+		}
+
+		.cost {
+			font-size: 22px;
+			position: absolute;
+			bottom: 17px;
+		}
+	}
+}
+
 @media (max-width: 750px) {
 	.card {
 		display: block;
-		width: 100%;
+		width: 248px;
 		padding: 10px;
-		height: auto;
+		height: 430px;
 
 		.cover {
 			width: 100%;
@@ -184,6 +303,29 @@
 				background: rgba(245, 245, 245, 0.5);
 				font-size: 12px;
 			}
+
+			.card_button {
+				display: flex;
+				width: 204px;
+				padding: 10px 4px;
+				justify-content: center;
+				align-items: center;
+				gap: 10px;
+				color: #fff;
+				font-family: Montserrat;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				border-radius: 100px;
+				background: #9f67fd;
+				opacity: 1;
+				transition: opacity 0.3s ease;
+				border: 1px solid #9f67fd;
+				position: absolute;
+				bottom: -253px;
+				left: 13px;
+			}
 		}
 
 		.education {
@@ -208,7 +350,6 @@
 			.therapyMethod {
 				padding: 5px 8px;
 				font-size: 9px;
-				
 			}
 		}
 
@@ -220,6 +361,9 @@
 			text-align: center;
 			margin: 10px 0;
 			font-size: 22px;
+			position: absolute;
+			bottom: 42px;
+			left: 84px;
 		}
 	}
 
