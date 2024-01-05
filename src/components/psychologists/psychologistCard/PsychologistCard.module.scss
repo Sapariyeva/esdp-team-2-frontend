@@ -215,34 +215,34 @@
 				padding: 4px 8px;
 				font-size: 12px;
 			}
-
-			.card_button {
-				display: flex;
-				width: 204px;
-				padding: 10px 4px;
-				justify-content: center;
-				align-items: center;
-				gap: 10px;
-				color: #fff;
-				font-family: Montserrat;
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 500;
-				line-height: normal;
-				border-radius: 100px;
-				background: #9f67fd;
-				position: absolute;
-				left: 12px;
-				bottom: -67px;
-				opacity: 0;
-				transition: opacity 0.3s ease;
-				border: 1px solid #9f67fd;
-			}
-			:hover {
-				opacity: 1;
-			}
 		}
 
+		.card_button {
+			display: flex;
+			width: 204px;
+			padding: 10px 4px;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+			color: #fff;
+			font-family: Montserrat;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: normal;
+			border-radius: 100px;
+			background: #9f67fd;
+			position: absolute;
+			left: 12px;
+			bottom: -67px;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+			border: 1px solid #9f67fd;
+		}
+		&:hover .card_button {
+			opacity: 1;
+		}
+		
 		.education {
 			font-size: 11px;
 		}
