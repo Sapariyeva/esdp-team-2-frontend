@@ -13,7 +13,7 @@ import { UploadOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
 
 export const AdminPost = () => {
-	const { data: posts = [], isPending } = useGetAllPosts();
+	const { data: posts = [], isPending, refetch } = useGetAllPosts();
 	const { mutate: editText } = usePostEditText();
 	const { mutate: postPosts } = usePostOnePosts();
 	const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
@@ -26,6 +26,13 @@ export const AdminPost = () => {
 	const activePosts = sortedPosts.filter((post: IPost) => post.isPublish);
 	const inProgressPosts = sortedPosts.filter((post: IPost) => !post.isPublish);
 
+	const [renderKey, setRenderKey] = useState(0);
+
+	const triggerRender = async () => {
+		setRenderKey((prevKey) => prevKey + 1);
+		await refetch();
+	};
+
 	const handleUpload = async (values: IPost) => {
 		const formData = new FormData();
 		formData.append('title', values.title);
@@ -37,6 +44,8 @@ export const AdminPost = () => {
 		}
 
 		postPosts(formData);
+		await refetch();
+		await triggerRender();
 	};
 
 	const handleEditClick = (postId: number, currentValues: IPost) => {
@@ -70,6 +79,7 @@ export const AdminPost = () => {
 		editText(formData);
 		setEditMode((prevEditMode) => ({ ...prevEditMode, [postId]: false }));
 		setCurrentValues(null);
+		triggerRender();
 	};
 
 	const handleCancelClick = (postId: number) => {
@@ -225,7 +235,7 @@ export const AdminPost = () => {
 	];
 
 	return (
-		<div>
+		<div key={renderKey}>
 			{isPending ? (
 				<Spin />
 			) : (
