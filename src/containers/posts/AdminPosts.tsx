@@ -64,10 +64,18 @@ export const AdminPost = () => {
 
 	const handleEditClick = (postId: number, currentValues: IPost) => {
 		setEditMode((prevEditMode) => ({
-			...prevEditMode,
+			...Object.fromEntries(
+				Object.keys(prevEditMode).map((key) => [key, false])
+			),
 			[postId]: true,
 		}));
+
 		setCurrentValues(currentValues);
+		form.resetFields();
+		form.setFieldsValue({
+			title: currentValues.title || '',
+			description: currentValues.description || '',
+		});
 	};
 
 	const handleTitleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
