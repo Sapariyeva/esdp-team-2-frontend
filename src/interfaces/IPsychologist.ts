@@ -51,7 +51,7 @@ export interface IPsychologist {
 	isPublish: boolean;
 	city: ICity;
 	techniques: ITechnique[];
-	therapyMethod: ITherapyMethod[];
+	therapyMethods: ITherapyMethod[];
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
@@ -91,7 +91,7 @@ export interface IPsychologistWithLikes {
 	isPublish: boolean;
 	city: ICity;
 	techniques: ITechnique[];
-	therapyMethod: ITherapyMethod[];
+	therapyMethods: ITherapyMethod[];
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
