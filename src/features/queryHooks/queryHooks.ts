@@ -320,3 +320,12 @@ export const usePostEditText = () => {
 		},
 	});
 };
+
+export const usePublishPost = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.post(`posts/publish/${id}`);
+			return response.data;
+		},
+	});
+};

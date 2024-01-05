@@ -5,6 +5,7 @@ import {
 	useGetAllPosts,
 	usePostEditText,
 	usePostOnePosts,
+	usePublishPost,
 } from '../../features/queryHooks/queryHooks';
 import { IPost } from '../../interfaces/IPost';
 import './AdminPosts.scss';
@@ -16,6 +17,7 @@ export const AdminPost = () => {
 	const { data: posts = [], isPending, refetch } = useGetAllPosts();
 	const { mutate: editText } = usePostEditText();
 	const { mutate: postPosts } = usePostOnePosts();
+	const { mutate: publishPost } = usePublishPost();
 	const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
 	const [titleInput, setTitleInput] = useState('');
 	const [descriptionInput, setDescriptionInput] = useState('');
@@ -44,6 +46,12 @@ export const AdminPost = () => {
 		}
 
 		postPosts(formData);
+		await refetch();
+		await triggerRender();
+	};
+
+	const handlePushed = async (postId: number) => {
+		await publishPost(postId);
 		await refetch();
 		await triggerRender();
 	};
@@ -165,6 +173,14 @@ export const AdminPost = () => {
 									src={`http://localhost:8000/uploads/${post.image}`}
 									className="posts-block-item-image"
 								/>
+								<br />
+								<Button
+									type="primary"
+									htmlType="submit"
+									onClick={() => handlePushed(post.id)}
+								>
+									Опубликовать
+								</Button>
 							</Panel>
 						</Collapse>
 					))}
@@ -217,15 +233,8 @@ export const AdminPost = () => {
 						</Form.Item>
 
 						<Form.Item>
-							<Button
-								type="primary"
-								htmlType="submit"
-								className="posts-block-item-form-btn"
-							>
-								Опубликовать
-							</Button>
 							<Button type="primary" htmlType="submit">
-								В черновик
+								В процессе
 							</Button>
 						</Form.Item>
 					</Form>
