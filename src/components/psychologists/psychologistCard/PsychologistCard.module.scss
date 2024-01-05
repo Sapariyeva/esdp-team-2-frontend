@@ -203,7 +203,7 @@
 				font-size: 18px;
 			}
 			img {
-				max-width: 230px;
+				width: 230px;
 				height: 230px;
 				object-fit: cover;
 				border-radius: 12px;
@@ -273,7 +273,7 @@
 		display: block;
 		width: 248px;
 		padding: 10px;
-		height: 430px;
+		height: 470px;
 
 		.cover {
 			width: 100%;
@@ -286,8 +286,8 @@
 			}
 
 			img {
-				width: 100%;
-				height: auto;
+				width: 230px;
+				height: 200px;
 				border-radius: 10px;
 			}
 
@@ -323,7 +323,7 @@
 				transition: opacity 0.3s ease;
 				border: 1px solid #9f67fd;
 				position: absolute;
-				bottom: -253px;
+				bottom: -243px;
 				left: 13px;
 			}
 		}
@@ -359,10 +359,9 @@
 
 		.cost {
 			text-align: center;
-			margin: 10px 0;
 			font-size: 22px;
 			position: absolute;
-			bottom: 42px;
+			bottom: 57px;
 			left: 84px;
 		}
 	}

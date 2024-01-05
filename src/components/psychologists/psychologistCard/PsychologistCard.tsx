@@ -86,13 +86,10 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 
 					<img
 						alt={psychologist.fullName}
-						// src={
-						// 	psychologist.photos && psychologist.photos.length > 0
-						// 		? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
-						// 		: ''
-						// }
 						src={
-							'https://s3-alpha-sig.figma.com/img/8c65/0dc5/b92c3bd43ad8f5a902af6860419f45ad?Expires=1705276800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=eNdXdHinAs14p6yFh2nOw7mYsCTz4tC-BB7Y583ZDKMSdl4iBXBaGW5nD3N3f1mEs~aTLpARwx3lB~9ZNzDc5VdZnv0l6UtVF8lD0xgqPMG7kPYqTqxWMhcwtKw1LX-zAUjNwQv7Ry9YIRAGdAXKJBN~nSinixJ8XaRWGor91mrWraEMU-vOmEjcXmhjC0pcUdRhH3NbrM2xONErm-H4cfxETqwzllgOdW10hTiCQB9IlF43wj8wLtwHsjl91EL3pSSpbPIE8WkZLDqQIL5VEBwqZP-EzRzN8p~0dWUSx5kJC-d8MCcgcpJqCe~tkMmgr-TPNlnEBtxKlFDF3q8-lw__'
+							psychologist.photos && psychologist.photos.length > 0
+								? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
+								: ''
 						}
 						className={styles.img}
 					/>
