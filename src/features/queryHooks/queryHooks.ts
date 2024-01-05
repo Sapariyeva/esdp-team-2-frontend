@@ -321,6 +321,17 @@ export const usePostEditText = () => {
 	});
 };
 
+export const usePostEditPhoto = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.put(
+				`posts/${data.get('id')}/change-image`,
+				data
+			);
+		},
+	});
+};
+
 export const usePublishPost = () => {
 	return useMutation({
 		mutationFn: async (id: number) => {

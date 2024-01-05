@@ -4,6 +4,7 @@ import type { TabsProps, UploadFile } from 'antd';
 import {
 	useDeletePost,
 	useGetAllPosts,
+	usePostEditPhoto,
 	usePostEditText,
 	usePostOnePosts,
 	usePublishPost,
@@ -17,13 +18,16 @@ const { Panel } = Collapse;
 export const AdminPost = () => {
 	const { data: posts = [], isPending, refetch } = useGetAllPosts();
 	const { mutate: editText } = usePostEditText();
+	const { mutate: editPhoto } = usePostEditPhoto();
 	const { mutate: postPosts } = usePostOnePosts();
 	const { mutate: publishPost } = usePublishPost();
 	const { mutate: deletePost } = useDeletePost();
 	const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
 	const [titleInput, setTitleInput] = useState('');
 	const [descriptionInput, setDescriptionInput] = useState('');
+	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [currentValues, setCurrentValues] = useState<IPost | null>(null);
+	const [form] = Form.useForm();
 
 	const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
 
@@ -77,19 +81,35 @@ export const AdminPost = () => {
 		setDescriptionInput(value);
 	};
 
-	const handleSaveClick = (postId: number) => {
+	const handleUpdateImage = async (
+		values: IPost,
+		selectedImage: File | null
+	) => {
 		const formData = new FormData();
-		formData.append('title', titleInput || currentValues?.title || '');
+
+		if (selectedImage) {
+			formData.append('image', selectedImage);
+		}
+
+		formData.append('id', values.id.toString());
+
+		editPhoto(formData);
+	};
+
+	const handleSaveClick = async (postId: number) => {
+		const formData = new FormData();
+		formData.append('title', titleInput || (currentValues?.title ?? ''));
 		formData.append(
 			'description',
-			descriptionInput || currentValues?.description || ''
+			descriptionInput || (currentValues?.description ?? '')
 		);
 		formData.append('id', postId.toString());
 
-		editText(formData);
+		await editText(formData);
+
 		setEditMode((prevEditMode) => ({ ...prevEditMode, [postId]: false }));
-		setCurrentValues(null);
-		triggerRender();
+		await refetch();
+		await triggerRender();
 	};
 
 	const handleCancelClick = (postId: number) => {
@@ -100,7 +120,7 @@ export const AdminPost = () => {
 		if (editMode[post.id]) {
 			return (
 				<div>
-					<Form onFinish={() => handleSaveClick(post.id)}>
+					<Form onFinish={() => handleSaveClick(post.id)} form={form}>
 						<Form.Item label="Название" name="title" initialValue={post.title}>
 							<Input onChange={handleTitleInput} value={titleInput} />
 						</Form.Item>
@@ -113,6 +133,21 @@ export const AdminPost = () => {
 								onChange={handleDescriptionInput}
 								value={descriptionInput}
 							/>
+						</Form.Item>
+						<Form.Item label="Фото" name="image">
+							<Upload
+								name="image"
+								listType="picture"
+								beforeUpload={(file) => {
+									setSelectedImage(file as File);
+									return false;
+								}}
+							>
+								<Button icon={<UploadOutlined />}>Выберите файлы</Button>
+							</Upload>
+							<Button onClick={() => handleUpdateImage(post, selectedImage)}>
+								Сохранить фото
+							</Button>
 						</Form.Item>
 						<Form.Item>
 							<Button type="primary" onClick={() => handleSaveClick(post.id)}>
