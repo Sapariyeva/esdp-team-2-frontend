@@ -5,7 +5,7 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/plugins/code_view.min.css';
 import 'froala-editor/css/plugins/image.min.css';
 
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Button, Collapse, Tabs, Spin, Form, Input, Upload } from 'antd';
 import type { UploadFile } from 'antd';
 import {
@@ -35,6 +35,7 @@ export const AdminPost = () => {
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [currentValues, setCurrentValues] = useState<IPost | null>(null);
 	const [form] = Form.useForm();
+	const [activeTabKey, setActiveTabKey] = useState('1');
 
 	const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
 
@@ -42,6 +43,10 @@ export const AdminPost = () => {
 	const inProgressPosts = sortedPosts.filter((post: IPost) => !post.isPublish);
 
 	const [renderKey, setRenderKey] = useState(0);
+
+	useEffect(() => {
+		setDescriptionInput('');
+	}, [activeTabKey]);
 
 	const triggerRender = async () => {
 		setRenderKey((prevKey) => prevKey + 1);
@@ -51,7 +56,7 @@ export const AdminPost = () => {
 	const handleUpload = async (values: IPost) => {
 		const formData = new FormData();
 		formData.append('title', values.title);
-		formData.append('description', values.description);
+		formData.append('description', descriptionInput);
 		if (values.image && values.image.fileList) {
 			values.image.fileList.forEach((file: UploadFile) => {
 				formData.append('image', file.originFileObj as Blob);
@@ -81,7 +86,7 @@ export const AdminPost = () => {
 		form.resetFields();
 		form.setFieldsValue({
 			title: currentValues.title || '',
-			description: currentValues.description || '',
+			description: currentValues.description,
 		});
 		setDescriptionInput(currentValues.description || ' ');
 	};
@@ -90,14 +95,6 @@ export const AdminPost = () => {
 		const { value } = e.target;
 		setTitleInput(value);
 	};
-	// const handleDescriptionInput = (
-	// 	e: React.ChangeEvent<HTMLTextAreaElement>
-	// ) => {
-	// 	if (e.target) {
-	// 		const { value } = e.target;
-	// 		setDescriptionInput(value);
-	// 	}
-	// };
 
 	const handleUpdateImage = async (
 		values: IPost,
@@ -265,19 +262,12 @@ export const AdminPost = () => {
 							<Input />
 						</Form.Item>
 
-						<Form.Item
-							label="Описание"
-							name="description"
-							rules={[{ required: true, message: 'Введите описание' }]}
-						>
+						<Form.Item label="Описание" name="description">
 							<FroalaEditor
 								onModelChange={(model: SetStateAction<string>) => {
 									setDescriptionInput(model);
 								}}
 								model={descriptionInput}
-								config={{
-									editorClass: 'editor-height',
-								}}
 							/>
 						</Form.Item>
 
@@ -317,7 +307,11 @@ export const AdminPost = () => {
 				<Spin />
 			) : (
 				<>
-					<Tabs defaultActiveKey="1" items={items} />
+					<Tabs
+						defaultActiveKey="1"
+						items={items}
+						onChange={(key) => setActiveTabKey(key)}
+					/>
 				</>
 			)}
 		</div>
