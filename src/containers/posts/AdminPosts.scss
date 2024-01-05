@@ -8,7 +8,13 @@
 	&-description {
 		width: 300px;
 	}
-	&-form-btn{
+	&-form-btn {
 		margin-right: 30px;
 	}
+}
+.fr-wrapper {
+	min-height: 350px;
+}
+.ant-tabs-content-holder {
+	width: 800px;
 }
