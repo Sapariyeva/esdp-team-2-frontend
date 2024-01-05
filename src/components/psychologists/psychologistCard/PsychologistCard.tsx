@@ -11,7 +11,7 @@ import updateStorageViewedPsychologists from '../../../helpers/updateStorageView
 import { useSaveVievedPsychologist } from '../../../features/queryHooks/queryHooks';
 import { userSelect } from '../../../features/user/userSlice';
 import { useState } from 'react';
-import Record from '../../record/Record';
+import Record from '../../../containers/record/Record';
 
 const { Meta } = Card;
 
