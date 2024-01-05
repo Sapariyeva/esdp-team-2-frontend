@@ -237,15 +237,12 @@ export const useDeleteRecord = () => {
 	});
 };
 
-export const useAppointmentsСurrentDayQuery = (
-	psychologistId: number,
-	date: string
-) => {
+export const useGetUpcomingRecordings = (psychologistId: number) => {
 	return useQuery<ITimeSlot[]>({
-		queryKey: ['getAppointmentsDay', date],
+		queryKey: ['getAppointmentsDay'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
-				`/appointments/${psychologistId}?date=${date}`
+				`appointments/nearest/${psychologistId}`
 			);
 			return response.data;
 		},

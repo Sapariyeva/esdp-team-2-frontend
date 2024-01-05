@@ -2,11 +2,11 @@ import styles from './Record.module.scss';
 import { Tabs, TabsProps } from 'antd';
 import 'dayjs/locale/ru';
 import { useState } from 'react';
-import SelectionBookingTime from './selectionBookingTime/SelectionBookingTime.tsx';
-import BookingForm from './bookingForm/BookingForm.tsx';
+import SelectionBookingTime from '../../components/record/selectionBookingTime/SelectionBookingTime.tsx';
+import BookingForm from '../../components/record/bookingForm/BookingForm.tsx';
 import { IPsychologist } from '../../interfaces/IPsychologist.ts';
-import ConfirmationRecord from './confirmationRecord/ConfirmationRecord.tsx';
-import Wrapper from '../UI/Wrapper/Wrapper.tsx';
+import ConfirmationRecord from '../../components/record/confirmationRecord/ConfirmationRecord.tsx';
+import Wrapper from '../../components/ui/Wrapper/Wrapper.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useGoToRecord } from '../../features/queryHooks/queryHooks.ts';
 

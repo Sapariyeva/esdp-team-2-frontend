@@ -6,10 +6,10 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { useState } from 'react';
-import Record from '../../../record/Record.tsx';
 import { useAppSelector } from '../../../../store/hooks.ts';
 import { userSelect } from '../../../../features/user/userSlice.ts';
 import { useNavigate } from 'react-router-dom';
+import Record from '../../../../containers/record/Record.tsx';
 
 type PsychologistCardProps = {
 	psychologist: IPsychologist;

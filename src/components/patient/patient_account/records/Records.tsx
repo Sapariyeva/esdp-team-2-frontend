@@ -1,4 +1,4 @@
-import { message, Popconfirm, Space, Spin, Table } from 'antd';
+import { message, Popconfirm, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { IRecord } from '../../../../interfaces/IRecord.ts';
@@ -9,20 +9,28 @@ import {
 } from '../../../../features/queryHooks/queryHooks.ts';
 import styles from './Record.module.scss';
 import info_error from '../../../../assets/icon/info-error.svg';
-import Alert from '../../../UI/Alert/Alert.tsx';
+import Alert from '../../../ui/Alert/Alert.tsx';
 import { CiCircleInfo } from 'react-icons/ci';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useState } from 'react';
-import Wrapper from '../../../UI/Wrapper/Wrapper.tsx';
-import RecordTransfer from './recordTransfer/RecordTransfer.tsx';
+import Wrapper from '../../../ui/Wrapper/Wrapper.tsx';
+import RecordTransfer from '../../../../containers/record/recordTransfer/RecordTransfer.tsx';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
 const Records = () => {
-	const [activeStates, setActiveStates] = useState<Record<string, boolean>>({});
+	const [modalVisible, setModalVisible] = useState(false);
+	const [record, setRecord] = useState<IRecord>();
+	const openModal = (record: IRecord) => {
+		setRecord(record);
+		setModalVisible(true);
+	};
+	const closeModal = () => {
+		setModalVisible(false);
+	};
 
-	const { data: records = [], isPending = [] } = useGetActualRecordsPatient();
+	const { data: records = [] } = useGetActualRecordsPatient();
 	const deleteRecord = useDeleteRecord();
 
 	const confirm = (id: number) => {
@@ -103,9 +111,7 @@ const Records = () => {
 				return (
 					<div className={styles.editor}>
 						<IoSettingsOutline
-							onClick={() => {
-								setActiveStates((prev) => ({ ...prev, [record.id]: true }));
-							}}
+							onClick={() => openModal(record)}
 							className={styles.setting}
 						/>
 						<Popconfirm
@@ -143,35 +149,20 @@ const Records = () => {
 
 	return (
 		<>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					{records.map((record) => (
-						<Wrapper
-							key={record.id}
-							active={activeStates[record.id] || false}
-							onClick={() =>
-								setActiveStates((prev) => ({ ...prev, [record.id]: false }))
-							}
-						>
-							<RecordTransfer
-								recordId={record.id}
-								psychologistId={record.psychologistId}
-								recordTime={record.datetime}
-							/>
-						</Wrapper>
-					))}
-					<Table
-						rowClassName={styles.row}
-						columns={columns}
-						dataSource={dataSourceWithKeysFalse}
-						locale={{ emptyText }}
-						virtual={false}
-						pagination={{ position: ['none'] }}
-					/>
-				</>
+			{record && (
+				<Wrapper key={record?.id} active={modalVisible} onClick={closeModal}>
+					<RecordTransfer record={record} closeModal={closeModal} />
+				</Wrapper>
 			)}
+
+			<Table
+				rowClassName={styles.row}
+				columns={columns}
+				dataSource={dataSourceWithKeysFalse}
+				locale={{ emptyText }}
+				virtual={false}
+				pagination={{ position: ['none'] }}
+			/>
 		</>
 	);
 };

@@ -2,7 +2,7 @@ import imgContent from '../../../assets/icon/Group 40.svg';
 
 import { useState } from 'react';
 import { Typography } from 'antd';
-import UIWrapper from '../../UI/Wrapper/Wrapper';
+import UIWrapper from '../../ui/Wrapper/Wrapper';
 import './AboutModerationModal.scss';
 
 const { Link } = Typography;

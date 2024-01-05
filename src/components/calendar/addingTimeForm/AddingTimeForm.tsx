@@ -5,8 +5,8 @@ import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
 import AvailableTimeSlots from './availableTimeSlots/AvailableTimeSlots.tsx';
 import AddingTimeBlock from './addingTimeBlock/AddingTimeBlock.tsx';
 import UnavailableTimeSlots from './unavailableTimeSlots/UnavailableTimeSlots.tsx';
-import Wrapper from '../../UI/Wrapper/Wrapper.tsx';
-import Loading from '../../UI/Loading/Loading.tsx';
+import Wrapper from '../../ui/Wrapper/Wrapper.tsx';
+import Loading from '../../ui/Loading/Loading.tsx';
 import { useAddingTimeForm } from '../../../features/queryHooks/queryHooks.ts';
 
 type Props = {

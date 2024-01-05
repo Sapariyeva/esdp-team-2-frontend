@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import SideBar from '../../../components/SideBar/SideBar.tsx';
+import SideBar from '../../../components/sideBar/SideBar.tsx';
 import { Outlet } from 'react-router-dom';
 import styles from './PatientAccountPage.module.scss';
 import { itemsSideBar } from '../../../components/header/menuItems.tsx';
