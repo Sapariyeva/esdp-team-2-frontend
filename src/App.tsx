@@ -31,6 +31,7 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
 import LoginAdminBuilder from './containers/admin/LoginAdminBuilder.tsx';
+import { Posts } from './components/admin/posts/Posts.tsx';
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -117,7 +118,7 @@ const App = () => {
 								>
 									<Route element={<AdminPage />}>
 										<Route path="psychologists" element={<Psychologists />} />
-										{/*<Route path="posts" element={<ClientsTable />} />*/}
+										<Route path="posts" element={<Posts />} />
 										{/*<Route path="courses" element={<Calendars />} />*/}
 									</Route>
 								</Route>

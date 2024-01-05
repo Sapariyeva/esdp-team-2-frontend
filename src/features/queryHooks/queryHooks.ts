@@ -19,7 +19,6 @@ import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsycholog
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 
-
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
@@ -278,6 +277,43 @@ export const usePostEditUserName = () => {
 			const response = await axiosInstance.put(
 				`patients/edit/${data.userId}`,
 				data
+			);
+
+			return response.data;
+		},
+	});
+};
+
+export const useGetAllPosts = () => {
+	return useQuery({
+		queryKey: ['useGetAllPosts'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/posts`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOnePosts = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			const response = await axiosInstance.post('posts/create', data);
+			return response.data;
+		},
+	});
+};
+
+export const usePostEditText = () => {
+	return useMutation({
+		mutationFn: async (formData: FormData) => {
+			const postData = {
+				title: formData.get('title'),
+				description: formData.get('description'),
+			};
+
+			const response = await axiosInstance.put(
+				`posts/${formData.get('id')}/edit`,
+				postData
 			);
 
 			return response.data;
