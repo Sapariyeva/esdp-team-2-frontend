@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import FroalaEditor from 'react-froala-wysiwyg';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/plugins/code_view.min.css';
+import 'froala-editor/css/plugins/image.min.css';
+
+import { SetStateAction, useState } from 'react';
 import { Button, Collapse, Tabs, Spin, Form, Input, Upload } from 'antd';
 import type { UploadFile } from 'antd';
 import {
@@ -76,18 +82,21 @@ export const AdminPost = () => {
 			title: currentValues.title || '',
 			description: currentValues.description || '',
 		});
+		setDescriptionInput(currentValues.description || '');
 	};
 
 	const handleTitleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setTitleInput(value);
 	};
-	const handleDescriptionInput = (
-		e: React.ChangeEvent<HTMLTextAreaElement>
-	) => {
-		const { value } = e.target;
-		setDescriptionInput(value);
-	};
+	// const handleDescriptionInput = (
+	// 	e: React.ChangeEvent<HTMLTextAreaElement>
+	// ) => {
+	// 	if (e.target) {
+	// 		const { value } = e.target;
+	// 		setDescriptionInput(value);
+	// 	}
+	// };
 
 	const handleUpdateImage = async (
 		values: IPost,
@@ -137,9 +146,11 @@ export const AdminPost = () => {
 							name="description"
 							initialValue={post.description}
 						>
-							<Input.TextArea
-								onChange={handleDescriptionInput}
-								value={descriptionInput}
+							<FroalaEditor
+								onModelChange={(model: SetStateAction<string>) => {
+									setDescriptionInput(model);
+								}}
+								model={descriptionInput}
 							/>
 						</Form.Item>
 						<Form.Item label="Фото" name="image">
