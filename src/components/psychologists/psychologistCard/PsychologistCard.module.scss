@@ -1,6 +1,27 @@
+.cardWrapper {
+	position: relative;
+	
+	.heartContainer {
+		position: absolute;
+		right: 16px;
+		top: 16px;
+		z-index: 999;
+	}
+
+	.heart {
+		font-size: 21px;
+		transition: color 0.3s ease;
+		color: #834eeb80;
+
+		&:hover {
+			color: red;
+		}
+	}
+}
+
 .card {
 	display: flex;
-	max-width: 630px;
+	width: 630px;
 	padding: 20px;
 	align-items: flex-start;
 	flex-shrink: 0;
@@ -17,19 +38,6 @@
 			height: 250px;
 			object-fit: cover;
 			border-radius: 15px;
-		}
-
-		.heart {
-			position: absolute;
-			top: -7px;
-			right: -339px;
-			font-size: 21px;
-			transition: color 0.3s ease;
-			color: #834eeb80;
-
-			&:hover {
-				color: red;
-			}
 		}
 
 		.experienceYears {
@@ -200,12 +208,6 @@
 			width: 100%;
 			height: 150px;
 
-			.heart {
-				top: -7px;
-				right: -279px;
-				font-size: 18px;
-			}
-
 			.card_img {
 				width: 230px;
 				height: 230px;
@@ -283,12 +285,6 @@
 		.cover {
 			width: 100%;
 			height: auto;
-
-			.heart {
-				position: absolute;
-				right: 15px;
-				top: 10px;
-			}
 			.card_img {
 				width: 230px;
 				height: 200px;

@@ -64,96 +64,98 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 	};
 
 	return (
-		<Card
-			className={styles.card}
-			hoverable
-			onClick={onClickReadMore}
-			cover={
-				<div className={styles.cover}>
-					{authUser?.role === 'patient' && switchFavorite && (
-						<div>
-							{psychologist.isFavorite ? (
-								<span className={styles.heart}>
-									<HeartFilled style={{ color: 'red' }} onClick={changeHeart} />
-								</span>
-							) : (
-								<span className={styles.heart}>
-									<HeartOutlined onClick={changeHeart} />
-								</span>
-							)}
-						</div>
+		<div className={styles.cardWrapper}>
+			{authUser?.role === 'patient' && switchFavorite && (
+				<div className={styles.heartContainer}>
+					{psychologist.isFavorite ? (
+						<span className={styles.heart}>
+							<HeartFilled style={{ color: 'red' }} onClick={changeHeart} />
+						</span>
+					) : (
+						<span className={styles.heart}>
+							<HeartOutlined onClick={changeHeart} />
+						</span>
 					)}
-
-					<img
-						alt={psychologist.fullName}
-						src={
-							psychologist.photos && psychologist.photos.length > 0
-								? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
-								: ''
-						}
-						className={styles.card_img}
-					/>
-					<div
-						className={styles.experienceYears}
-					>{`Опыт ${psychologist.experienceYears} лет`}</div>
-
-					<button
-						onClick={handleClick}
-						disabled={user?.role === 'psychologist'}
-						className={styles.card_button}
-					>
-						записаться
-					</button>
-					<Record
-						psychologist={psychologistForRecord}
-						active={active}
-						setActive={setActive}
-					/>
 				</div>
-			}
-		>
-			<Meta
-				title={psychologist.fullName}
-				description={
-					<>
-						<p className={styles.education}>
-							{psychologist.education && psychologist.education.length > 60
-								? `${psychologist.education.slice(0, 60)}...`
-								: psychologist.education}
-						</p>
+			)}
+			<Card
+				className={styles.card}
+				hoverable
+				onClick={onClickReadMore}
+				cover={
+					<div className={styles.cover}>
+						<img
+							alt={psychologist.fullName}
+							src={
+								psychologist.photos && psychologist.photos.length > 0
+									? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
+									: ''
+							}
+							className={styles.card_img}
+						/>
+						<div
+							className={styles.experienceYears}
+						>{`Опыт ${psychologist.experienceYears} лет`}</div>
 
-						<div className={styles.container_city_country}>
-							<div className={styles.container_city}>
-								<p className={styles.city}>{psychologist.city.name} </p>
-							</div>
-							<div className={styles.container_country}>
-								<p className={styles.country}>{psychologist.city.country}</p>
-							</div>
-						</div>
-						<hr className={styles.hr_line}></hr>
-
-						{psychologist.therapyMethods &&
-							psychologist.therapyMethods.length > 0 && (
-								<ul className={styles.container_therapyMethod}>
-									{psychologist.therapyMethods
-										.slice(0, 2)
-										.map((therapyMethod, id) => (
-											<li key={id} className={styles.therapyMethod}>
-												{therapyMethod.name}
-											</li>
-										))}
-								</ul>
-							)}
-
-						<p className={styles.description}>
-							{psychologist.description && psychologist.description.length > 80
-								? `${psychologist.description.slice(0, 80)}...`
-								: psychologist.description}
-						</p>
-						<p className={styles.cost}>{`${psychologist.cost} тг`}</p>
-					</>
+						<button
+							onClick={handleClick}
+							disabled={user?.role === 'psychologist'}
+							className={styles.card_button}
+						>
+							записаться
+						</button>
+						<Record
+							psychologist={psychologistForRecord}
+							active={active}
+							setActive={setActive}
+						/>
+					</div>
 				}
-			/>
-		</Card>
+			>
+				<Meta
+					title={psychologist.fullName}
+					description={
+						<>
+							<p className={styles.education}>
+								{psychologist.education && psychologist.education.length > 60
+									? `${psychologist.education.slice(0, 60)}...`
+									: psychologist.education}
+							</p>
+
+							<div className={styles.container_city_country}>
+								<div className={styles.container_city}>
+									<p className={styles.city}>{psychologist.city.name} </p>
+								</div>
+								<div className={styles.container_country}>
+									<p className={styles.country}>{psychologist.city.country}</p>
+								</div>
+							</div>
+							<hr className={styles.hr_line}></hr>
+
+							{psychologist.therapyMethods &&
+								psychologist.therapyMethods.length > 0 && (
+									<ul className={styles.container_therapyMethod}>
+										{psychologist.therapyMethods
+											.slice(0, 2)
+											.map((therapyMethod, id) => (
+												<li key={id} className={styles.therapyMethod}>
+													{therapyMethod.name}
+												</li>
+											))}
+									</ul>
+								)}
+
+							<p className={styles.description}>
+								{psychologist.description &&
+								psychologist.description.length > 80
+									? `${psychologist.description.slice(0, 80)}...`
+									: psychologist.description}
+							</p>
+							<p className={styles.cost}>{`${psychologist.cost} тг`}</p>
+						</>
+					}
+				/>
+			</Card>
+		</div>
 	);
 };

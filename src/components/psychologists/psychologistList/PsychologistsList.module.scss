@@ -12,3 +12,9 @@
 		align-items: flex-start;
 	}
 }
+
+.viewedPsychologists {
+	display: flex;
+	overflow-x: auto;
+	padding: 20px;
+}
