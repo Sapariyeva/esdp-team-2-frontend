@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Collapse, Tabs, Spin, Form, Input, Upload } from 'antd';
 import type { TabsProps, UploadFile } from 'antd';
 import {
+	useDeletePost,
 	useGetAllPosts,
 	usePostEditText,
 	usePostOnePosts,
@@ -18,6 +19,7 @@ export const AdminPost = () => {
 	const { mutate: editText } = usePostEditText();
 	const { mutate: postPosts } = usePostOnePosts();
 	const { mutate: publishPost } = usePublishPost();
+	const { mutate: deletePost } = useDeletePost();
 	const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
 	const [titleInput, setTitleInput] = useState('');
 	const [descriptionInput, setDescriptionInput] = useState('');
@@ -132,7 +134,7 @@ export const AdminPost = () => {
 				<div>
 					<Button onClick={() => handleEditClick(post.id, post)}>Edit</Button>
 
-					<Button>Delete</Button>
+					<Button onClick={() => deletePost(post.id)}>Delete</Button>
 				</div>
 			</div>
 		);

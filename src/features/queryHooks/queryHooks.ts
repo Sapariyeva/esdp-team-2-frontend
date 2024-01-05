@@ -329,3 +329,17 @@ export const usePublishPost = () => {
 		},
 	});
 };
+
+export const useDeletePost = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/posts/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllPosts'],
+			});
+		},
+	});
+};
