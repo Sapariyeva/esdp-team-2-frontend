@@ -91,7 +91,7 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 								? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
 								: ''
 						}
-						className={styles.img}
+						className={styles.card_img}
 					/>
 					<div
 						className={styles.experienceYears}
