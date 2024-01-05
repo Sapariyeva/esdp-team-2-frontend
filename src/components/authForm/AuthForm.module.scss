@@ -5,8 +5,11 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	background-color: #FBF9FF;
 	font-family: Montserrat !important;
 	border-radius: 20px;
+	min-height: 80svh;
+	margin-bottom: 40px;
 	.title {
 		color: #2e2e2e;
 		text-align: left;
@@ -157,4 +160,8 @@
 	border: solid $color-purple;
 	border-width: 0 2px 2px 0;
 	transform: rotate(45deg);
+}
+
+.title_reset_password {
+	font-family: Montserrat !important;
 }

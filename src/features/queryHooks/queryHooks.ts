@@ -6,11 +6,12 @@ import { ISymptom } from '../../interfaces/ISymptom';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import {
 	IPsychologist,
+	IPsychologistRegisterData,
 	IPsychologistWithLikes,
 } from '../../interfaces/IPsychologist';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { IPatient } from '../../interfaces/IPatient';
-import { IUser } from '../../interfaces/IUser';
+import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
 import { message } from 'antd';
 import { NavigateFunction } from 'react-router-dom';
 import { IRecordPost } from '../../interfaces/IRecordpost';
@@ -18,6 +19,10 @@ import IFilteringValues from '../../interfaces/IFilteringValues';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import { IRecord } from '../../interfaces/IRecord.ts';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
+import axios from 'axios';
+import { saveUser } from '../user/userSlice.ts';
+import { Dispatch } from 'redux';
+
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -51,10 +56,29 @@ export const useCityQuery = () => {
 		queryKey: ['GetCities'],
 	});
 };
-export const usePostPsychologist = () => {
+export const usePostPsychologist = (
+	navigate: NavigateFunction,
+	dispatch: Dispatch
+) => {
 	return useMutation({
-		mutationFn: async (data: FormData) => {
-			return await axiosInstance.post('psychologists/create', data);
+		mutationFn: (data: FormData) => {
+			return axiosInstance.post<IPsychologistRegisterData>(
+				'/auth/register/psychologist',
+				data
+			);
+		},
+		onSuccess: async (data) => {
+			dispatch(saveUser(data.data));
+			message.success('Вы успешно отправили анкету!');
+			navigate('/auth/confirmation');
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				const serverMessage = error.response.data.message;
+				message.error(serverMessage || 'Произошла ошибка при отправке анкеты.');
+			} else {
+				message.error('Произошла неизвестная ошибка.');
+			}
 		},
 	});
 };
@@ -214,15 +238,12 @@ export const useDeleteRecord = () => {
 	});
 };
 
-export const useAppointmentsСurrentDayQuery = (
-	psychologistId: number,
-	date: string
-) => {
+export const useGetUpcomingRecordings = (psychologistId: number) => {
 	return useQuery<ITimeSlot[]>({
-		queryKey: ['getAppointmentsDay', date],
+		queryKey: ['getAppointmentsDay'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
-				`/appointments/${psychologistId}?date=${date}`
+				`appointments/nearest/${psychologistId}`
 			);
 			return response.data;
 		},
@@ -351,6 +372,91 @@ export const useDeletePost = () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetAllPosts'],
 			});
+
+export const useForgotPassword = () => {
+	return useMutation({
+		mutationFn: async (data: IPasswordForgot) => {
+			const response = await axiosInstance.post(`auth/reset-forgot`, data);
+			return response.data;
+		},
+		onSuccess: () => {
+			message.success(
+				'Вам отправлена ссылка на почту для восстановления пароля!'
+			);
+		},
+	});
+};
+
+export const useResetPassword = (
+	token: string | null,
+	navigate: NavigateFunction
+) => {
+	return useMutation({
+		mutationFn: async (data: IPasswordReset) => {
+			const response = await axiosInstance.post(`auth/reset-password`, data, {
+				params: { token },
+			});
+			return response.data;
+		},
+		onSuccess: () => {
+			navigate('/');
+			message.success('Восстановление пароля завершено!\n');
+		},
+	});
+};
+
+export const useGetPsychologistsAdminTrue = () => {
+	return useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist[]>(`psychologists?isPublish=true`);
+		},
+		queryKey: ['GETADMINPSYCHOTRUE'],
+	});
+};
+
+export const useGetPsychologistsAdminFalse = () => {
+	return useQuery({
+		queryFn: () => {
+			return axiosInstance.get<IPsychologist[]>(
+				`psychologists?isPublish=false`
+			);
+		},
+		queryKey: ['GETADMINPSYCHOFALSE'],
+	});
+};
+
+export const usePsychoPublishAdmin = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.post(`psychologists/publish/${id}`);
+
+			return response.data;
+		},
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOTRUE'] }),
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOFALSE'] }),
+			]);
+		},
+	});
+};
+
+export const usePsychoDeleteAdmin = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.delete(`psychologists/${id}`);
+
+			return response.data;
+		},
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOTRUE'] }),
+				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOFALSE'] }),
+			]);
 		},
 	});
 };

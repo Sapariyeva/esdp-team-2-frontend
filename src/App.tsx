@@ -1,37 +1,41 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/styles/_normalize.scss';
 import './assets/styles/_reser.scss';
-import { PageNotFound } from './components/pageNotFound/PageNotFound.tsx';
-import Login from './containers/login/Login.tsx';
-import Register from './containers/register/Register.tsx';
+import Login from './containers/auth/login/Login.tsx';
+import Register from './containers/auth/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
 import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
-import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
+import { BusinessPage } from './containers/businessPage/BusinessPage.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CustomLayout } from './components/Layout/Layout.tsx';
-import Records from './components/Patient/Patient_account/Records/Records.tsx';
-import HistoryTable from './components/Patient/Patient_account/HistoryTable/HistoryTable.tsx';
-import Favorites from './components/Patient/Patient_account/Favorites/Favorites.tsx';
-import { PsychologistForm } from './components/psychologistForm/PsychologistForm.tsx';
+import { CustomLayout } from './components/layout/Layout.tsx';
+import Records from './components/patient/patient_account/records/Records.tsx';
+import HistoryTable from './components/patient/patient_account/historyTable/HistoryTable.tsx';
+import Favorites from './components/patient/patient_account/favorites/Favorites.tsx';
 import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
-import { MailConfirmation } from './components/activeMailPage/MailConfirmation.tsx';
-import { ActivePage } from './components/activeMailPage/ActivePage.tsx';
+import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation.tsx';
+import { ActivePage } from './containers/auth/activeMailPage/ActivePage.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
 import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
-import PatientProfile from './components/Patient/Patient_account/Profile/PatientProfile.tsx';
+import PatientProfile from './components/patient/patient_account/profile/PatientProfile.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
+import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
-import LoginAdminBuilder from './containers/admin/LoginAdminBuilder.tsx';
 import { Posts } from './components/admin/posts/Posts.tsx';
+import LoginAdminBuilder from './containers/auth/admin/LoginAdminBuilder.tsx';
+import ResetPassword from './containers/auth/resetPassword/ResetPassword.tsx';
+import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
+import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
+import { HomePage } from './containers/homePage/HomePage.tsx';
+
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -56,10 +60,13 @@ const App = () => {
 								/>
 							}
 						>
+							<Route path="/" element={<HomePage />} />
 							<Route
 								path="auth/login/psychologist"
 								element={<Login role="psychologist" />}
 							/>
+							<Route path="/auth/reset-forgot" element={<ResetForgot />} />
+							<Route path="/auth/reset-password" element={<ResetPassword />} />
 
 							<Route
 								path="/auth/register/patient"
@@ -69,7 +76,7 @@ const App = () => {
 							<Route path="*" element={<PageNotFound />} />
 							<Route
 								path="/auth/register/psychologist"
-								element={<PsychologistForm />}
+								element={<PsychologistRegister />}
 							/>
 							<Route
 								path="/psychologists/"

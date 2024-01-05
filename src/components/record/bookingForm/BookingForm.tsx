@@ -1,5 +1,5 @@
 import { Button, Select } from 'antd';
-import styles from '../Record.module.scss';
+import styles from './BookingForm.module.scss';
 import { DownOutlined } from '@ant-design/icons';
 import { useAppSelector } from '../../../store/hooks.ts';
 import { userSelect } from '../../../features/user/userSlice.ts';

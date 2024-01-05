@@ -6,8 +6,15 @@
 	}
 	.list {
 		display: flex;
+		flex-direction: row;
 		flex-wrap: wrap;
+		justify-content: center;
 		align-items: flex-start;
-		justify-content: space-between;
 	}
+}
+
+.viewedPsychologists {
+	display: flex;
+	overflow-x: auto;
+	padding: 20px;
 }

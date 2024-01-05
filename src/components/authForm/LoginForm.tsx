@@ -139,7 +139,7 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 							<div className={styles.checkbox}>Запомнить меня</div>
 						</div>
 						<div>
-							<NavLink to={'/auth/recovery'} className={styles.link}>
+							<NavLink to={'/auth/reset-forgot'} className={styles.link}>
 								Забыл пароль?
 							</NavLink>
 						</div>

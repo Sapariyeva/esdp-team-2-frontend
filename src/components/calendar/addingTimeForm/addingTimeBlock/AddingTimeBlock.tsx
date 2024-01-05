@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../AddingTimeForm.module.scss';
-import { Select } from 'antd';
+import { Alert, Select } from 'antd';
 import dayjs from 'dayjs';
-import Alert from '../../../UI/Alert/Alert.tsx';
 import { useAddNewTimes } from '../../../../features/queryHooks/queryHooks.ts';
 
 interface AddingTimeBlockProps {
@@ -35,14 +34,16 @@ const AddingTimeBlock: React.FC<AddingTimeBlockProps> = ({ date }) => {
 			time,
 		});
 	};
-
 	return (
 		<div className={styles.time_block}>
 			{isError && (
 				<Alert
+					className={styles.error}
 					message={
 						'Вы не можете повторно выбрать данное время, так как у вас уже оно указано.'
 					}
+					type="error"
+					closable
 				/>
 			)}
 			<div className={styles.form}>

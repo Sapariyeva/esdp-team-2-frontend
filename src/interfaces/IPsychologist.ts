@@ -36,7 +36,7 @@ export interface IPsychologist {
 	id: number;
 	fullName: string;
 	gender: 'male' | 'female';
-	birthday: Date;
+	birthday: Date | string;
 	address: string;
 	cost: number;
 	description: string;
@@ -51,7 +51,7 @@ export interface IPsychologist {
 	isPublish: boolean;
 	city: ICity;
 	techniques: ITechnique[];
-	therapyMethod: ITherapyMethod[];
+	therapyMethods: ITherapyMethod[];
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
@@ -91,9 +91,39 @@ export interface IPsychologistWithLikes {
 	isPublish: boolean;
 	city: ICity;
 	techniques: ITechnique[];
-	therapyMethod: ITherapyMethod[];
+	therapyMethods: ITherapyMethod[];
 	symptoms: ISymptom[];
 	photos: IPhoto[];
 	certificates: ICertificate[];
 	isFavorite: boolean;
+}
+
+export interface IPsychologistRegisterData {
+	email: string;
+	password: string;
+	fullName: string;
+	gender: 'male' | 'female';
+	birthday: Date;
+	address?: string;
+	description: string;
+	video?: string | null;
+	experienceYears: number;
+	languages: Array<'kazakh' | 'russian' | 'english'>;
+	education: string;
+	format: Array<'online' | 'offline'>;
+	cost: number;
+	consultationType: Array<'solo' | 'duo'>;
+	selfTherapy: number;
+	lgbt: boolean;
+	cityId: number;
+	techniqueIds: number[];
+	therapyMethodIds: number[];
+	symptomIds: number[];
+	certificates: {
+		originFileObj: Blob;
+		fileList: UploadFile[];
+	}[];
+	photos: {
+		fileList: UploadFile[];
+	};
 }
