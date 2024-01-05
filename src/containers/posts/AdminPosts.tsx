@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Collapse, Tabs, Spin, Form, Input, Upload } from 'antd';
-import type { TabsProps, UploadFile } from 'antd';
+import type { UploadFile } from 'antd';
 import {
 	useDeletePost,
 	useGetAllPosts,
@@ -143,19 +143,21 @@ export const AdminPost = () => {
 							/>
 						</Form.Item>
 						<Form.Item label="Фото" name="image">
-							<Upload
-								name="image"
-								listType="picture"
-								beforeUpload={(file) => {
-									setSelectedImage(file as File);
-									return false;
-								}}
-							>
-								<Button icon={<UploadOutlined />}>Выберите файлы</Button>
-							</Upload>
-							<Button onClick={() => handleUpdateImage(post, selectedImage)}>
-								Сохранить фото
-							</Button>
+							<div>
+								<Upload
+									name="image"
+									listType="picture"
+									beforeUpload={(file) => {
+										setSelectedImage(file as File);
+										return false;
+									}}
+								>
+									<Button icon={<UploadOutlined />}>Выберите файлы</Button>
+								</Upload>
+								<Button onClick={() => handleUpdateImage(post, selectedImage)}>
+									Сохранить фото
+								</Button>
+							</div>
 						</Form.Item>
 						<Form.Item>
 							<Button type="primary" onClick={() => handleSaveClick(post.id)}>
@@ -183,17 +185,18 @@ export const AdminPost = () => {
 		);
 	};
 
-	const items: TabsProps['items'] = [
+	const items = [
 		{
 			key: '1',
 			label: 'Активные посты',
 			children: (
 				<div>
 					{activePosts.map((post: IPost) => (
-						<Collapse>
+						<Collapse key={post.id}>
 							<Panel key={post.id} header={post.title}>
-								{renderPostContent(post)}
+								{renderPostContent(post)}{' '}
 								<img
+									key={`image-${post.id}`}
 									alt={post.title}
 									src={`http://localhost:8000/uploads/${post.image}`}
 									className="posts-block-item-image"
@@ -210,10 +213,11 @@ export const AdminPost = () => {
 			children: (
 				<div>
 					{inProgressPosts.map((post: IPost) => (
-						<Collapse>
+						<Collapse key={post.id}>
 							<Panel key={post.id} header={post.title}>
-								{renderPostContent(post)}
+								{renderPostContent(post)}{' '}
 								<img
+									key={`image-${post.id}`}
 									alt={post.title}
 									src={`http://localhost:8000/uploads/${post.image}`}
 									className="posts-block-item-image"
