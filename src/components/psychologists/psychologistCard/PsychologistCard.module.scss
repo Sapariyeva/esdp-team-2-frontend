@@ -182,12 +182,13 @@
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	max-width: 263px;
 }
 
 @media screen and (max-width: 1468px) {
 	.card {
 		display: flex;
-		max-width: 550px;
+		width: 550px;
 		padding: 16px;
 		align-items: flex-start;
 		min-height: 270px;
