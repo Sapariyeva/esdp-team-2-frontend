@@ -64,14 +64,15 @@ export const AdminPost = () => {
 		}
 
 		postPosts(formData);
-		await refetch();
 		await triggerRender();
+		await setActiveTabKey('2');
 	};
 
 	const handlePushed = async (postId: number) => {
 		await publishPost(postId);
 		await refetch();
 		await triggerRender();
+		await setActiveTabKey('1');
 	};
 
 	const handleEditClick = (postId: number, currentValues: IPost) => {
@@ -196,7 +197,7 @@ export const AdminPost = () => {
 	const items = [
 		{
 			key: '1',
-			label: 'Активные посты',
+			label: 'Опубликованные посты',
 			children: (
 				<div>
 					{activePosts.map((post: IPost) => (
@@ -217,7 +218,7 @@ export const AdminPost = () => {
 		},
 		{
 			key: '2',
-			label: 'В процессе',
+			label: 'Неопубликованные посты',
 			children: (
 				<div>
 					{inProgressPosts.map((post: IPost) => (
@@ -292,7 +293,7 @@ export const AdminPost = () => {
 
 						<Form.Item>
 							<Button type="primary" htmlType="submit">
-								В процессе
+								Добавить пост
 							</Button>
 						</Form.Item>
 					</Form>
@@ -308,6 +309,7 @@ export const AdminPost = () => {
 			) : (
 				<>
 					<Tabs
+						activeKey={activeTabKey}
 						defaultActiveKey="1"
 						items={items}
 						onChange={(key) => setActiveTabKey(key)}

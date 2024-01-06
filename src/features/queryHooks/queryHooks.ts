@@ -23,7 +23,6 @@ import axios from 'axios';
 import { saveUser } from '../user/userSlice.ts';
 import { Dispatch } from 'redux';
 
-
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
@@ -316,10 +315,16 @@ export const useGetAllPosts = () => {
 };
 
 export const usePostOnePosts = () => {
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (data: FormData) => {
 			const response = await axiosInstance.post('posts/create', data);
 			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllPosts'],
+			});
 		},
 	});
 };
@@ -372,6 +377,9 @@ export const useDeletePost = () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetAllPosts'],
 			});
+		},
+	});
+};
 
 export const useForgotPassword = () => {
 	return useMutation({
