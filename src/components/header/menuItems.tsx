@@ -379,7 +379,7 @@ export const itemsSideBarAdmin: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'Посты',
-		key: 'Посты',
+		key: 'posts',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
 	}),
