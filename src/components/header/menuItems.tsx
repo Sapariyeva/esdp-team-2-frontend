@@ -391,7 +391,7 @@ export const itemsSideBarAdmin: MenuProps['items'] = [
 		icon: <img className={styles.item_icon} src={record} alt="Therapies" />,
 	}),
 	getItem({
-		label: 'Симтомы',
+		label: 'Симптомы',
 		key: 'symptoms',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={record} alt="symptoms" />,
