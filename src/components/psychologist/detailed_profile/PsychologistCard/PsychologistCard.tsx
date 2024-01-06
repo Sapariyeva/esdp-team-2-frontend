@@ -1,9 +1,6 @@
-import { Button, Card, Tag, Typography, Empty } from 'antd';
-import Meta from 'antd/es/card/Meta';
-import { AimOutlined, WifiOutlined } from '@ant-design/icons';
-import './PsychologistCard.scss';
-import YouTube, { YouTubeProps } from 'react-youtube';
-import youtubeVideoId from 'youtube-video-id';
+import { Empty } from 'antd';
+import { Image } from 'antd';
+import styles from './PsychologistCard.module.scss';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { useState } from 'react';
 import { useAppSelector } from '../../../../store/hooks.ts';
@@ -28,80 +25,84 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 		return <Empty description="No psychologist details found" />;
 	}
 
-	const opts: YouTubeProps['opts'] = {
-		width: '100%',
-		height: '300px',
-	};
-	if (psychologist.video != null) {
-		const videoId = youtubeVideoId(psychologist.video);
-		return (
-			<div className="psychologist-profile_container">
-				<Card
-					className="psychologist-profile_card"
-					cover={
-						<img
-							alt={psychologist.fullName}
-							src={
-								psychologist.photos && psychologist.photos.length > 0
-									? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
-									: ''
-							}
-						/>
-					}
-				>
-					<Meta
-						title={
-							<Typography.Text className="card_title">
-								<strong>{psychologist.cost}тг</strong> / сессия
-							</Typography.Text>
-						}
-						description={
-							<div className="card_content">
-								<Typography.Paragraph className="card_content_item ">
-									<AimOutlined className="icon" />
-									Город {psychologist.city.name}
-								</Typography.Paragraph>
-								{Array.isArray(psychologist.format) ? (
-									<Typography.Text className="card_content_item ">
-										<WifiOutlined className="icon" />
-										Формат сессий
-										{psychologist.format.map((item) => (
-											<Tag
-												style={{ margin: 10 }}
-												key={item}
-												bordered={false}
-												color="purple"
-											>
-												{item}
-											</Tag>
-										))}
-									</Typography.Text>
-								) : (
-									<Typography.Text className="card_content_item ">
-										{psychologist.format}
-									</Typography.Text>
-								)}
-								<Button
-									onClick={handleClick}
-									disabled={user?.role === 'psychologist'}
-									className="card_button"
-								>
-									Записаться на приём
-								</Button>
-								<Record
-									psychologist={psychologist}
-									active={active}
-									setActive={setActive}
+	return (
+		<div className={styles.psychologist_profile_container}>
+			<div className={styles.psychologist_profile_card}>
+				<div className={styles.psychologist_photo_experienceYears}>
+					{psychologist.photos && psychologist.photos.length > 0 && (
+						<Image.PreviewGroup
+							items={psychologist.photos
+								.slice(0, 3)
+								.map((photo) => `http://localhost:8000/uploads/${photo.photo}`)}
+						>
+							{psychologist.photos[0] && (
+								<Image
+									src={`http://localhost:8000/uploads/${psychologist.photos[0].photo}`}
+									alt={psychologist.fullName}
+									className={styles.img_photo}
 								/>
-							</div>
-						}
-					/>
-				</Card>
+							)}
+						</Image.PreviewGroup>
+					)}
+					<div
+						className={styles.experienceYears}
+					>{`Опыт ${psychologist.experienceYears} лет`}</div>
+				</div>
 
-				<YouTube className="youtube-video" videoId={videoId} opts={opts} />
+				<div className={styles.card_content}>
+					<p className={styles.card_cost}>
+						<strong className={styles.cost}>{psychologist.cost}тг</strong> /
+						сессия
+					</p>
+
+					{Array.isArray(psychologist.format) ? (
+						<ul className={styles.card_format}>
+							{psychologist.format.map((item) => (
+								<li className={styles.format} key={item}>
+									{item}
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className={styles.format}>{psychologist.format}</p>
+					)}
+
+					<div className={styles.card_city_country}>
+						<p className={styles.city}>{psychologist.city.name}</p>
+						<p className={styles.country}>{psychologist.city.country}</p>
+					</div>
+
+					{Array.isArray(psychologist.languages) ? (
+						<ul className={styles.card_languages}>
+							{psychologist.languages.map((item) => (
+								<li className={styles.languages} key={item}>
+									{item}
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className={styles.languages}>{psychologist.languages}</p>
+					)}
+					{psychologist.lgbt && (
+						<p className={styles.lgbt}>Опыт работы с ЛГБТ</p>
+					)}
+
+					<button
+						onClick={handleClick}
+						disabled={user?.role === 'psychologist'}
+						className={styles.card_button}
+					>
+						записаться
+					</button>
+					<Record
+						psychologist={psychologist}
+						active={active}
+						setActive={setActive}
+					/>
+				</div>
 			</div>
-		);
-	}
+		</div>
+	);
 };
 
 export default PsychologistCard;

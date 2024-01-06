@@ -1,0 +1,86 @@
+@import '../../../../assets/styles/_config.scss';
+
+.psychologist_profile_content {
+	padding: 20px 0 10px 0;
+	width: 60%;
+	@media screen and (max-width: 680px) {
+		width: 100%;
+	}
+	.title {
+		justify-content: flex-start;
+		display: flex;
+		gap: 10px;
+		color: #4a4a4a;
+		font-family: Montserrat;
+		font-size: 26px;
+		font-style: normal;
+		font-weight: 800;
+		line-height: normal;
+		margin: 0 0 10px 0;
+	}
+	.education {
+		color: #9f9f9f;
+		font-family: Montserrat;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+	}
+	.about_me,
+	.title_therapyMethod,
+	.title_techniques,
+	.title_symptoms,
+	.title_video,
+	.title_certificates {
+		margin: 20px 0 5px 0;
+		color: #4a4a4a;
+		font-family: Montserrat;
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+	}
+	.description {
+		color: #4a4a4a;
+		font-family: Montserrat;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 140%;
+	}
+
+	.container_therapyMethod,
+	.container_techniques,
+	.container_symptoms,
+	.certificates_container {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.therapyMethod,
+	.techniques,
+	.symptoms {
+		color: #4a4a4a;
+		font-family: Montserrat;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		display: flex;
+		padding: 10px 15px;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		border-radius: 50px;
+		background: #f5f5f5;
+		margin: 5px 5px 5px 0;
+	}
+
+	.img_certificate {
+		width: 180px;
+		height: 180px;
+		border-radius: 20px;
+		margin: 5px 5px 5px 0;
+	}
+}

@@ -1,0 +1,17 @@
+.detailed_profile_content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	background-color: #fff;
+	position: relative;
+	border-radius: 20px;
+	.purple_circle {
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 999;
+	}
+	@media screen and (max-width: 680px) {
+		flex-direction: column-reverse;
+	}
+}
