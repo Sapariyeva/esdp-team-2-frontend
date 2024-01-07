@@ -129,7 +129,7 @@ export const AdminTechniques = () => {
 	const items = [
 		{
 			key: '1',
-			label: 'Техники',
+			label: 'Психологические техники',
 			children: (
 				<div>
 					{sortedTechnique.map((technique: ITechnique) => (

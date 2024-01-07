@@ -37,6 +37,7 @@ import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
 import { HomePage } from './containers/homePage/HomePage.tsx';
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
+import { Method } from './components/admin/method/Method.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -130,7 +131,7 @@ const App = () => {
 										<Route path="posts" element={<Posts />} />
 										<Route path="symptoms" element={<Symptoms />} />
 										<Route path="techniques" element={<Technique />} />
-										{/*<Route path="courses" element={<Calendars />} />*/}
+										<Route path="therapies" element={<Method />} />
 									</Route>
 								</Route>
 							</Route>

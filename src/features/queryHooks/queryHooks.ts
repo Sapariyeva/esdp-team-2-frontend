@@ -588,3 +588,63 @@ export const useDeleteTechnique = () => {
 		},
 	});
 };
+
+export const useGetAllMethod = () => {
+	return useQuery({
+		queryKey: ['useGetAllMethod'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/methods`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('methods/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
+		},
+	});
+};
+
+export const useEditMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: {
+			name: string;
+			methodId: number | undefined;
+		}) => {
+			const response = await axiosInstance.put(
+				`methods/edit/${data.methodId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
+		},
+	});
+};
+
+export const useDeleteMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/methods/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
+		},
+	});
+};
