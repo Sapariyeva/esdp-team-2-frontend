@@ -2,26 +2,16 @@ import React from 'react';
 import PsychologistCard from '../../../components/psychologist/detailed_profile/PsychologistCard/PsychologistCard';
 import styles from './PsychologistDetailedProfile.module.scss';
 import PsychologistProfileContent from '../../../components/psychologist/detailed_profile/PsychologistProfileContent/PsychologistProfileContent';
-import { useSwitchFavourite } from '../../../features/queryHooks/queryHooks';
-import { useAppSelector } from '../../../store/hooks';
 import { IPsychologist } from '../../../interfaces/IPsychologist';
 
 type PsychologistDetailedProfileProps = {
 	psychologist: IPsychologist | undefined;
+	switchFavorite?: (id: number) => boolean;
 };
 
 const PsychologistDetailedProfile: React.FC<
 	PsychologistDetailedProfileProps
-> = ({ psychologist }) => {
-	const authUser = useAppSelector((state) => state.users.userInfo);
-	const { mutate: switchFavoriteQuery } = useSwitchFavourite();
-
-	const switchFavorite = (id: number): boolean => {
-		if (!authUser || !authUser.patient) return false;
-		switchFavoriteQuery(id);
-		return true;
-	};
-
+> = ({ psychologist, switchFavorite }) => {
 	return (
 		<div className={styles.detailed_profile_content}>
 			{psychologist ? (

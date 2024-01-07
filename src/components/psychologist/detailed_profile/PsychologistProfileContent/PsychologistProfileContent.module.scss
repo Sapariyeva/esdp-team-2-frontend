@@ -1,18 +1,16 @@
 @import '../../../../assets/styles/_config.scss';
 
 .psychologist_profile_content {
-	padding: 20px 0 10px 27px;
-	width: 100%;
+	width:100%;
 	position: relative;
 	@media screen and (max-width: 900px) {
 		width: 100%;
-		padding: 20px 10px 10px 10px;
 	}
 
 	.heartContainer {
 		position: absolute;
 		right: 0;
-		top: 16px;
+		top: 0;
 		z-index: 999;
 	}
 
