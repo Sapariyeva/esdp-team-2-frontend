@@ -304,6 +304,83 @@ export const usePostEditUserName = () => {
 	});
 };
 
+export const useGetAllPosts = () => {
+	return useQuery({
+		queryKey: ['useGetAllPosts'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/posts`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOnePosts = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			const response = await axiosInstance.post('posts/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllPosts'],
+			});
+		},
+	});
+};
+
+export const usePostEditText = () => {
+	return useMutation({
+		mutationFn: async (formData: FormData) => {
+			const postData = {
+				title: formData.get('title'),
+				description: formData.get('description'),
+			};
+
+			const response = await axiosInstance.put(
+				`posts/${formData.get('id')}/edit`,
+				postData
+			);
+
+			return response.data;
+		},
+	});
+};
+
+export const usePostEditPhoto = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.put(
+				`posts/${data.get('id')}/change-image`,
+				data
+			);
+		},
+	});
+};
+
+export const usePublishPost = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			const response = await axiosInstance.post(`posts/publish/${id}`);
+			return response.data;
+		},
+	});
+};
+
+export const useDeletePost = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/posts/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllPosts'],
+			});
+		},
+	});
+};
+
 export const useForgotPassword = () => {
 	return useMutation({
 		mutationFn: async (data: IPasswordForgot) => {

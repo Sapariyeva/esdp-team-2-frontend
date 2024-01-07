@@ -1,0 +1,20 @@
+.posts-block-item {
+	display: flex;
+	justify-content: space-between;
+	&-image {
+		height: 300px;
+		width: 245px;
+	}
+	&-description {
+		width: 300px;
+	}
+	&-form-btn {
+		margin-right: 30px;
+	}
+}
+.fr-wrapper {
+	min-height: 350px;
+}
+.ant-tabs-content-holder {
+	width: 800px;
+}

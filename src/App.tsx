@@ -29,11 +29,13 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
 import AdminPage from './containers/adminPage/AdminPage.tsx';
 import Psychologists from './components/admin/psychologists/Psychologists.tsx';
+import { Posts } from './components/admin/posts/Posts.tsx';
 import LoginAdminBuilder from './containers/auth/admin/LoginAdminBuilder.tsx';
 import ResetPassword from './containers/auth/resetPassword/ResetPassword.tsx';
 import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
 import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
 import { HomePage } from './containers/homePage/HomePage.tsx';
+
 dayjs.extend(utc);
 dayjs.locale('ru');
 
@@ -123,7 +125,7 @@ const App = () => {
 								>
 									<Route element={<AdminPage />}>
 										<Route path="psychologists" element={<Psychologists />} />
-										{/*<Route path="posts" element={<ClientsTable />} />*/}
+										<Route path="posts" element={<Posts />} />
 										{/*<Route path="courses" element={<Calendars />} />*/}
 									</Route>
 								</Route>
