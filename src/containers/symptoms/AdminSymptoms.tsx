@@ -7,7 +7,7 @@ import {
 	usePostOneSymptom,
 } from '../../features/queryHooks/queryHooks';
 import { ISymptom } from '../../interfaces/ISymptom';
-import './AdminSymptoms.scss';
+import '../technique/AdminTechniques.scss';
 
 const { Panel } = Collapse;
 
@@ -64,7 +64,7 @@ export const AdminSymptoms = () => {
 	const handleSaveClick = async (symptomId: number) => {
 		const payload = {
 			name: symptomInput || (currentValues?.name ?? ''),
-			userId: symptomId,
+			symptomId: symptomId,
 		};
 
 		await editSymptom(payload);
@@ -87,7 +87,7 @@ export const AdminSymptoms = () => {
 							<Input.TextArea
 								onChange={handleSymptomInput}
 								value={symptomInput}
-								className="symptom-editBlock-text"
+								className="technique-editBlock-text"
 							/>
 						</Form.Item>
 						<Form.Item>
@@ -111,7 +111,7 @@ export const AdminSymptoms = () => {
 		}
 
 		return (
-			<div className="adminSymptoms-inBlock-item">
+			<div className="adminTechnique-inBlock-item">
 				<div>
 					<Button onClick={() => handleEditClick(symptom.id, symptom)}>
 						Edit
@@ -132,7 +132,7 @@ export const AdminSymptoms = () => {
 						<Collapse key={symptom.id}>
 							<Panel key={symptom.id} header={symptom.name}>
 								<div>
-									<p className="symptom-block-text">{symptom.name}</p>
+									<p className="technique-block-text">{symptom.name}</p>
 									{renderSymptomContent(symptom)}{' '}
 								</div>
 							</Panel>
@@ -155,7 +155,7 @@ export const AdminSymptoms = () => {
 							label="Название симптома"
 							name="name"
 							rules={[{ required: true, message: 'Введите название' }]}
-							className="symptom-editBlock-text"
+							className="technique-editBlock-text"
 						>
 							<Input.TextArea onChange={handleSymptomInput} />
 						</Form.Item>

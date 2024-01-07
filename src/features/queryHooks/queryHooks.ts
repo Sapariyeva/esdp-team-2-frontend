@@ -497,9 +497,12 @@ export const usePostOneSymptom = () => {
 export const useEditSymptom = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: async (data: { name: string; userId: number | undefined }) => {
+		mutationFn: async (data: {
+			name: string;
+			symptomId: number | undefined;
+		}) => {
 			const response = await axiosInstance.put(
-				`symptoms/edit/${data.userId}`,
+				`symptoms/edit/${data.symptomId}`,
 				data
 			);
 			return response.data;
@@ -521,6 +524,66 @@ export const useDeleteSymptom = () => {
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useGetAllTechnique = () => {
+	return useQuery({
+		queryKey: ['useGetAllTechnique'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/techniques`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('techniques/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
+			});
+		},
+	});
+};
+
+export const useEditTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: {
+			name: string;
+			techniqueId: number | undefined;
+		}) => {
+			const response = await axiosInstance.put(
+				`techniques/edit/${data.techniqueId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
+			});
+		},
+	});
+};
+
+export const useDeleteTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/techniques/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
 			});
 		},
 	});
