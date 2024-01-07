@@ -468,3 +468,60 @@ export const usePsychoDeleteAdmin = () => {
 		},
 	});
 };
+
+export const useGetAllSymptoms = () => {
+	return useQuery({
+		queryKey: ['useGetAllSymptoms'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/symptoms`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('symptoms/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useEditSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string; userId: number | undefined }) => {
+			const response = await axiosInstance.put(
+				`symptoms/edit/${data.userId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useDeleteSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/symptoms/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
