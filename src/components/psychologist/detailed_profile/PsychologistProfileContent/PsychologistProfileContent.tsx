@@ -1,4 +1,5 @@
-import { Empty } from 'antd';
+import { Empty, message } from 'antd';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styles from './PsychologistProfileContent.module.scss';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { ISymptom } from '../../../../interfaces/ISymptom';
@@ -7,17 +8,23 @@ import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
 import { Image } from 'antd';
+import { useAppSelector } from '../../../../store/hooks';
 
 type PsychologistProfileContentProps = {
 	psychologist: IPsychologist;
+	switchFavorite?: (id: number) => boolean;
 };
 
 const PsychologistProfileContent = ({
 	psychologist,
+	switchFavorite,
 }: PsychologistProfileContentProps) => {
+	const authUser = useAppSelector((state) => state.users.userInfo);
+
 	if (!psychologist || Object.keys(psychologist).length === 0) {
 		return <Empty description="No psychologist details found" />;
 	}
+
 	const opts: YouTubeProps['opts'] = {
 		width: '100%',
 		height: '400px',
@@ -25,8 +32,37 @@ const PsychologistProfileContent = ({
 	const videoId = psychologist.video
 		? youtubeVideoId(psychologist.video)
 		: null;
+
+	const changeHeart = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation();
+
+		if (switchFavorite === undefined) return;
+
+		const isSwitched = switchFavorite(psychologist.id);
+		if (!isSwitched) return;
+
+		if (!psychologist.isFavorite)
+			message.success('Психолог был успешно Добавлен в список избранных.');
+		else message.success('Психолог был успешно удален из списка избранных.');
+
+		psychologist.isFavorite = !psychologist.isFavorite;
+	};
+
 	return (
 		<div className={styles.psychologist_profile_content}>
+			{authUser?.role === 'patient' && switchFavorite && (
+				<div className={styles.heartContainer}>
+					{psychologist.isFavorite ? (
+						<span className={styles.heart}>
+							<HeartFilled style={{ color: 'red' }} onClick={changeHeart} />
+						</span>
+					) : (
+						<span className={styles.heart}>
+							<HeartOutlined onClick={changeHeart} />
+						</span>
+					)}
+				</div>
+			)}
 			<h2 className={styles.title}>{psychologist.fullName}</h2>
 			<p className={styles.education}>{psychologist.education}</p>
 			<h5 className={styles.about_me}>о себе</h5>

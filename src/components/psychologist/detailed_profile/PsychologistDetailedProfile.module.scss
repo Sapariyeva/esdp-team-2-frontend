@@ -1,0 +1,29 @@
+.detailed_profile_content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+
+	.item_content {
+		padding: 30px;
+		background-color: #fff;
+		position: relative;
+		margin: 0 30px 0 0;
+		border-radius: 20px;
+	}
+	.purple_circle {
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 999;
+	}
+	@media screen and (max-width: 900px) {
+		flex-direction: column-reverse;
+		align-items: center;
+		background-color: #fff;
+		border-radius: 20px;
+		padding: 20px 0 0 0;
+		.purple_circle {
+			display: none;
+		}
+	}
+}

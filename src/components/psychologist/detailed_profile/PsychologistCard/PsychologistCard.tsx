@@ -7,6 +7,7 @@ import { useAppSelector } from '../../../../store/hooks.ts';
 import { userSelect } from '../../../../features/user/userSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import Record from '../../../../containers/record/Record.tsx';
+import { EnvironmentOutlined, WifiOutlined } from '@ant-design/icons';
 
 type PsychologistCardProps = {
 	psychologist: IPsychologist;
@@ -59,16 +60,53 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 						<ul className={styles.card_format}>
 							{psychologist.format.map((item) => (
 								<li className={styles.format} key={item}>
-									{item}
+									{item === 'online' ? (
+										<span>
+											<WifiOutlined className={styles.format_icon} />
+											{item}
+										</span>
+									) : item === 'offline' ? (
+										<span>
+											<img
+												className={styles.format_img}
+												src="/routing.svg"
+												alt="format"
+											/>
+											{item}
+										</span>
+									) : (
+										item
+									)}
 								</li>
 							))}
 						</ul>
 					) : (
-						<p className={styles.format}>{psychologist.format}</p>
+						<p className={styles.format}>
+							{psychologist.format === 'online' ? (
+								<span>
+									<WifiOutlined className={styles.format_icon} />
+									{psychologist.format}
+								</span>
+							) : psychologist.format === 'offline' ? (
+								<span>
+									<img
+										className={styles.format_img}
+										src="/routing.svg"
+										alt="format"
+									/>
+									{psychologist.format}
+								</span>
+							) : (
+								psychologist.format
+							)}
+						</p>
 					)}
 
 					<div className={styles.card_city_country}>
-						<p className={styles.city}>{psychologist.city.name}</p>
+						<p className={styles.city}>
+							<EnvironmentOutlined className={styles.city_icon} />
+							{psychologist.city.name}
+						</p>
 						<p className={styles.country}>{psychologist.city.country}</p>
 					</div>
 

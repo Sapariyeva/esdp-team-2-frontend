@@ -4,7 +4,7 @@ import './assets/styles/_reser.scss';
 import Login from './containers/auth/login/Login.tsx';
 import Register from './containers/auth/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
-import PsychologistDetailedProfile from './containers/psychologist/detailed_profile/PsychologistDetailedProfile.tsx';
+import PsychologistDetailedProfileContainer from './containers/psychologist/detailed_profile/PsychologistDetailedProfileContainer.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
 import { BusinessPage } from './containers/businessPage/BusinessPage.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
@@ -82,7 +82,7 @@ const App = () => {
 							/>
 							<Route
 								path="/psychologists/:id"
-								element={<PsychologistDetailedProfile />}
+								element={<PsychologistDetailedProfileContainer />}
 							/>
 
 							<Route path="/business" element={<BusinessPage />} />
