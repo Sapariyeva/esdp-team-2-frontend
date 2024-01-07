@@ -4,8 +4,9 @@
 	padding: 20px 0 10px 27px;
 	width: 100%;
 	position: relative;
-	@media screen and (max-width: 680px) {
+	@media screen and (max-width: 900px) {
 		width: 100%;
+		padding: 20px 10px 10px 10px;
 	}
 
 	.heartContainer {
