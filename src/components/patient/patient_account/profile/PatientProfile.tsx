@@ -2,9 +2,10 @@ import { ChangeEvent, useState } from 'react';
 import styles from './PatientProfile.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { IUserEdit } from '../../../../interfaces/IUserEdit';
-import { usePostEditUserName } from '../../../../features/queryHooks/queryHooks';
-import { message } from 'antd';
-import { updateUser } from '../../../../features/user/userSlice';
+import {
+	updatePatientName,
+	updateUser,
+} from '../../../../features/user/userSlice';
 
 function PatientProfile() {
 	const [active, setActive] = useState(false);
@@ -15,20 +16,13 @@ function PatientProfile() {
 			setActive(false);
 		}
 	};
-
+	const dispatch = useAppDispatch();
 	const userInfo = useAppSelector((state) => state.users.userInfo);
 	const [password, setPassword] = useState('');
-	const [currentPassword, setCurrentPassword] = useState('');
+	const [currentPasswordEdit, setCurrentPassword] = useState('');
 	const [email, setEmail] = useState(userInfo?.email || '');
 	const [phone, setPhone] = useState(userInfo?.phone || '');
 	const [name, setName] = useState(userInfo?.patient?.name || '');
-	const [user, setUser] = useState<IUserEdit>({
-		email: '',
-		password: '',
-		phone: '',
-		name: '',
-		сurrentPassword: '',
-	});
 	const onChangeHandlerName = (e: ChangeEvent<HTMLInputElement>) => {
 		setName(e.target.value);
 	};
@@ -44,21 +38,27 @@ function PatientProfile() {
 	const onChangeHandlerPhone = (e: ChangeEvent<HTMLInputElement>) => {
 		setPhone(e.target.value);
 	};
-	const { mutate: postName } = usePostEditUserName();
-	const dispatch = useAppDispatch();
-	const postChanges = () => {
-		user.email = email;
-		user.name = name;
-		user.password = password;
-		user.сurrentPassword = currentPassword;
-		user.phone = phone;
-		setUser(user);
-		dispatch(updateUser(user));
-		message.success('Ваши изменения приняты');
+
+	const postChanges = async () => {
+		const updatedUser: IUserEdit = {
+			email,
+			password,
+			phone,
+			name,
+			сurrentPassword: currentPasswordEdit,
+		};
+		if (currentPasswordEdit != '') {
+			await dispatch(updateUser(updatedUser));
+			setActive(false);
+		}
 		if (name) {
-			postName({ name: name, userId: userInfo?.patient?.id });
+			await dispatch(
+				updatePatientName({ name, userId: userInfo?.patient?.id })
+			);
 		}
 	};
+	console.log(userInfo);
+
 	return (
 		<div className={styles.edit_container}>
 			{active ? (
@@ -96,7 +96,7 @@ function PatientProfile() {
 								<label>Текущий пароль</label>
 								<input
 									onChange={onChangeHandlerCurrentPassword}
-									value={currentPassword}
+									value={currentPasswordEdit}
 									type="text"
 								/>
 							</div>
@@ -135,7 +135,7 @@ function PatientProfile() {
 						<div className={styles.flex_input}>
 							<div className={styles.input_block_small}>
 								<label>Текущий пароль</label>
-								<input disabled type="text" value={currentPassword} />
+								<input disabled type="text" value={currentPasswordEdit} />
 							</div>
 							<div className={styles.input_block_small}>
 								<label>Новый пароль</label>
