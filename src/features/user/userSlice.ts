@@ -79,25 +79,25 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	return response.data;
 });
 
-export const updateUser = createAsyncThunk(
-	'auth/edit',
-	async (data: IUserEdit, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.put(`auth/edit`, data);
-			return response.data;
-		} catch (err) {
-			if (isAxiosError(err)) {
-				const error: AxiosError<ServerFormValidationResponse> = err;
-				if (error.response?.data) {
-					console.log(error);
-					message.error(error.response.data.message);
-					return rejectWithValue(error.response.data);
-				}
+export const updateUser = createAsyncThunk<
+	IUserEdit,
+	IUserEdit,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/edit', async (data: IUserEdit, { rejectWithValue }) => {
+	try {
+		const response = await axiosInstance.put(`auth/edit`, data);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				message.error(error.response.data.message);
+				return rejectWithValue(error.response.data);
 			}
-			throw err;
 		}
+		throw err;
 	}
-);
+});
 
 export const updatePatientName = createAsyncThunk(
 	'patientName/edit',
@@ -262,14 +262,19 @@ const userSlice = createSlice({
 				return initialState;
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
+				state.loginError = null;
 				if (state.userInfo) {
-					state.userInfo.email = payload.email;
-					state.userInfo.phone = payload.phone;
+					state.userInfo.email = payload.email as string;
+					state.userInfo.phone = payload.phone as string;
 					message.success('Ваши изменения успешно приняты');
 				}
 			})
-			.addCase(updateUser.rejected, (state) => {
+			.addCase(updateUser.rejected, (state, { payload }) => {
 				state.loading = false;
+				state.loginError = {
+					message: payload?.message ?? 'Error occurred',
+					errors: payload?.errors ?? [],
+				};
 			})
 			.addCase(activateEmail.pending, (state) => {
 				state.loading = true;

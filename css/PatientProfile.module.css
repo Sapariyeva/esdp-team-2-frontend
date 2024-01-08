@@ -1,0 +1,262 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap");
+body {
+  position: relative;
+  font-family: "Montserrat" !important;
+}
+
+.btn_confirm, .btn_edit {
+  color: #f5f5f5;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline > .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical > .ant-menu-item,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-1e6wn80).ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title {
+  height: 45px;
+  line-height: 45px;
+}
+
+@media screen and (max-width: 830px) {
+  :where(.css-dev-only-do-not-override-1e6wn80).ant-layout .ant-layout-sider-children {
+    overflow: scroll;
+  }
+}
+
+.ant-layout-sider {
+  width: 300px;
+  background-color: transparent !important;
+}
+
+:where(.css-dev-only-do-not-override-1e6wn80).ant-layout .ant-layout-sider-children {
+  width: 300px !important;
+}
+
+.ant-tooltip-inner {
+  display: flex;
+  width: 280px !important;
+  height: 100px !important;
+  color: #3c3c3c !important;
+  text-align: left;
+  text-decoration: none;
+  word-wrap: break-word;
+  background-color: #f5f5f5 !important;
+}
+
+/* Use a media query to change the menu layout to horizontal at 500px or less */
+:where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal > .ant-menu-item::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-item::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu::after, :where(.css-dev-only-do-not-override-hem318).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-submenu::after {
+  display: none !important;
+  border: none !important;
+}
+
+:where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal > .ant-menu-item:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-item:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu:hover, :where(.css-dev-only-do-not-override-hem318).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-submenu:hover {
+  color: tomato;
+}
+
+:where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light.ant-menu-horizontal > .ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-item-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu-selected::after, :where(.css-dev-only-do-not-override-f9tg7f).ant-menu-light > .ant-menu.ant-menu-horizontal > .ant-menu-submenu-selected::after {
+  display: none !important;
+  border: none !important;
+}
+
+.edit_container {
+  padding: 40px;
+  background-color: white;
+  width: 100%;
+  border-radius: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .edit_container {
+    padding: 20px;
+  }
+}
+
+.btn_edit {
+  background: #864ce9;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: 0px;
+  cursor: pointer;
+}
+
+.btn_edit:hover {
+  opacity: 80%;
+}
+
+.btn_edit:active {
+  background-color: #834eeb;
+  opacity: 100%;
+}
+
+.btn_confirm {
+  background: #864ce9;
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: 0px;
+  cursor: pointer;
+}
+
+.btn_confirm:hover {
+  opacity: 80%;
+  transition-duration: 1s;
+}
+
+.btn_cancel {
+  background: #F5F5F5;
+  color: #3C3C3C;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: 0px;
+  cursor: pointer;
+}
+
+.btn_cancel:hover {
+  color: #FFFFFF;
+  background-color: #DC2626;
+  transition-duration: 1s;
+}
+
+.btn_flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.input_container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+.input_container input::-webkit-outer-spin-button,
+.input_container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+@media only screen and (max-width: 768px) {
+  .input_container {
+    gap: 5px;
+  }
+}
+
+.flex_input {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+@media only screen and (max-width: 768px) {
+  .flex_input {
+    gap: 5px;
+  }
+}
+
+.input_block_top {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+.input_block_top input {
+  color: #3c3c3c;
+  width: 100%;
+  padding: 15px 10px;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 3px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+}
+.input_block_top label {
+  padding-top: 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  color: #9f9f9f;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.input_block_small {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+.input_block_small input {
+  color: #3c3c3c;
+  width: 100%;
+  padding: 15px 10px;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 3px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+}
+.input_block_small label {
+  padding-top: 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  color: #9f9f9f;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.input_block_small_highlight {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+.input_block_small_highlight input {
+  color: #3c3c3c;
+  width: 100%;
+  padding: 15px 10px;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 3px;
+  border-radius: 10px;
+  border: 1px red solid;
+  outline: none;
+  background-color: #f5f5f5;
+}
+.input_block_small_highlight label {
+  padding-top: 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  color: #9f9f9f;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+@media only screen and (max-width: 768px) {
+  .input_container {
+    flex-wrap: wrap;
+  }
+  .flex_input {
+    flex-wrap: wrap;
+  }
+}/*# sourceMappingURL=PatientProfile.module.css.map */
