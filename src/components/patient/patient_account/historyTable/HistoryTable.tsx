@@ -89,13 +89,13 @@ const HistoryTable = () => {
 				let statusLabel = '';
 				switch (text) {
 					case 'active':
-						statusLabel = 'Активна';
+						statusLabel = 'Активный';
 						break;
 					case 'canceled':
 						statusLabel = 'Отменен';
 						break;
 					case 'inactive':
-						statusLabel = 'Неактивна';
+						statusLabel = 'Неактивный';
 						break;
 					default:
 						statusLabel = 'Неизвестный статус';
