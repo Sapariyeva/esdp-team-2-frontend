@@ -17,6 +17,7 @@
 
 .content {
 	flex: 1;
+	overflow: scroll;
 	min-height: 80svh;
 	margin-top: 33px;
 	@media screen and (max-width: 950px) {
@@ -28,4 +29,8 @@
 	padding-top: 1px;
 	width: 17px;
 	height: 17px;
+}
+.sds {
+	display: flex;
+	flex-direction: column;
 }
