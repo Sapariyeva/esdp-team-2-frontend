@@ -87,7 +87,7 @@ export const AdminMethod = () => {
 							<Input.TextArea
 								onChange={handleMethodInput}
 								value={methodInput}
-								className="technique-editBlock-text"
+								className="technique-editBlock-text technique-editBlock-textarea"
 							/>
 						</Form.Item>
 						<Form.Item>
@@ -154,7 +154,10 @@ export const AdminMethod = () => {
 							rules={[{ required: true, message: 'Введите название' }]}
 							className="technique-editBlock-text"
 						>
-							<Input.TextArea onChange={handleMethodInput} />
+							<Input.TextArea
+								onChange={handleMethodInput}
+								className="technique-editBlock-textarea"
+							/>
 						</Form.Item>
 
 						<Form.Item>
