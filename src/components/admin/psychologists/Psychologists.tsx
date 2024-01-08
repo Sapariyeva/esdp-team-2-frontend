@@ -112,10 +112,10 @@ const Psychologists = () => {
 
 		return (
 			<Tabs activeKey={activePage ? 'false' : 'true'} onChange={changePublish}>
-				<TabPane tab="Неопубликованные психологи" key="false">
+				<TabPane tab="Опубликованные психологи" key="false">
 					<Table columns={columns} dataSource={dataSourceWithKeysFalse} />
 				</TabPane>
-				<TabPane tab="Опубликованные психологи" key="true">
+				<TabPane tab="Неопубликованные психологи" key="true">
 					<Table columns={columns} dataSource={dataSourceWithKeysTrue} />
 				</TabPane>
 			</Tabs>
