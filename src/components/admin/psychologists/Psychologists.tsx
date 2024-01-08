@@ -1,5 +1,5 @@
 import { IPsychologist } from '../../../interfaces/IPsychologist';
-import { Button, Table } from 'antd';
+import { Button, Table, Tabs } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
 	useGetPsychologistsAdminFalse,
@@ -8,6 +8,7 @@ import {
 	usePsychoPublishAdmin,
 } from '../../../features/queryHooks/queryHooks';
 import { useState } from 'react';
+import TabPane from 'antd/es/tabs/TabPane';
 
 const Psychologists = () => {
 	const [activePage, setActive] = useState(false);
@@ -110,27 +111,14 @@ const Psychologists = () => {
 		});
 
 		return (
-			<>
-				{activePage ? (
-					<div>
-						<>
-							<Button onClick={changePublish} type="primary">
-								Неопубликован
-							</Button>
-							<Table columns={columns} dataSource={dataSourceWithKeysFalse} />
-						</>
-					</div>
-				) : (
-					<div>
-						<>
-							<Button onClick={changePublish} type="primary">
-								Опубликован
-							</Button>
-							<Table columns={columns} dataSource={dataSourceWithKeysTrue} />
-						</>
-					</div>
-				)}
-			</>
+			<Tabs activeKey={activePage ? 'false' : 'true'} onChange={changePublish}>
+				<TabPane tab="Опубликованные психологи" key="false">
+					<Table columns={columns} dataSource={dataSourceWithKeysFalse} />
+				</TabPane>
+				<TabPane tab="Неопубликованные психологи" key="true">
+					<Table columns={columns} dataSource={dataSourceWithKeysTrue} />
+				</TabPane>
+			</Tabs>
 		);
 	}
 };
