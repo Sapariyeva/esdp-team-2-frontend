@@ -4,23 +4,25 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ConfigProvider } from 'antd';
+import ruRU from 'antd/lib/locale/ru_RU';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<Provider store={store}>
 		<PersistGate loading={null} persistor={persistor}>
 			<ConfigProvider
+				locale={ruRU}
 				theme={{
 					token: {
-						colorPrimary: '#834eeb',
+						colorPrimary: '#9F67FD',
 						borderRadius: 8,
 					},
 					components: {
 						Button: {
-							colorPrimary: '#834eeb',
+							colorPrimary: '#9F67FD',
 							algorithm: true,
 						},
 						Input: {
-							colorPrimary: '#8031b7',
+							colorPrimary: '#9F67FD',
 							algorithm: true,
 						},
 
@@ -30,7 +32,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							fontFamily: 'Montserrat',
 							fontWeightStrong: 400,
 							borderRadius: 10,
+							colorBgContainer: '#FFF',
 						},
+
 						Slider: {
 							colorBgBase: 'transparent',
 						},

@@ -1,16 +1,24 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { Space, Spin, Table } from 'antd';
-import styles from '../records/Record.module.scss';
-import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
+
+import 'dayjs/locale/ru';
+import styles from '../ClientsTable/ClientsTable.module.scss';
+import { useGetRecordsActualPsychologists } from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
-
+import { Space, Table } from 'antd';
 import { CiCircleInfo } from 'react-icons/ci';
+import DatePicker from '../../../datePicker/DatePicker.tsx';
+import { useState } from 'react';
 
-const HistoryTable = () => {
-	const { data: history = [], isPending = [] } = useGetRecordsHistoryPatient();
+const HistoryClients = () => {
+	const currentDate = dayjs().format('YYYY-MM-DD');
+	const [selectDate, setSelectDate] = useState<string>(currentDate);
+	const { data: history = [] } = useGetRecordsActualPsychologists(
+		selectDate,
+		false
+	);
 
 	const dataSourceWithKeysFalse = history.map((item) => {
 		return {
@@ -22,14 +30,11 @@ const HistoryTable = () => {
 	const columns: ColumnsType<IRecord> = [
 		{
 			title: 'ФИО',
-			dataIndex: 'psychologistName',
+			dataIndex: 'patientName',
 			width: 90,
 			className: `${styles.colum}`,
 			render: (text, history) => (
-				<Link
-					className={styles.colum}
-					to={`/some-link/${history.psychologistName}`}
-				>
+				<Link className={styles.colum} to={`/some-link/${history.patientName}`}>
 					{text}
 				</Link>
 			),
@@ -41,7 +46,7 @@ const HistoryTable = () => {
 			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
-			title: 'Встреча',
+			title: 'Адрес ссессии',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
 			render: (text, history) => (
@@ -106,25 +111,20 @@ const HistoryTable = () => {
 	];
 
 	const emptyText =
-		'В настоящее время у вас нет истории записей о предыдущих консультациях с нашими специалистами. ';
+		'В настоящее время у вас нет истории клиентов на выбранную дату.';
 
 	return (
 		<>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Table
-						rowClassName={styles.row}
-						columns={columns}
-						dataSource={dataSourceWithKeysFalse}
-						locale={{ emptyText }}
-						virtual={false}
-						pagination={{ position: ['none'] }}
-					/>
-				</>
-			)}
+			<DatePicker onPanelChange={setSelectDate} />
+			<Table
+				className={styles.row}
+				columns={columns}
+				dataSource={dataSourceWithKeysFalse}
+				locale={{ emptyText }}
+				virtual={false}
+				pagination={{ position: ['none'] }}
+			/>
 		</>
 	);
 };
-export default HistoryTable;
+export default HistoryClients;

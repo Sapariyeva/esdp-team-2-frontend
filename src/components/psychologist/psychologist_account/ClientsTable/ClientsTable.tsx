@@ -1,63 +1,113 @@
-import { Table, Typography } from 'antd';
-import { clients } from '../../../../mocks/psychologistProfile';
+import { ColumnsType } from 'antd/es/table';
+import { Link } from 'react-router-dom';
 
-const { Text } = Typography;
+import 'dayjs/locale/ru';
+import styles from './ClientsTable.module.scss';
+import { useGetRecordsActualPsychologists } from '../../../../features/queryHooks/queryHooks';
+import { IRecord } from '../../../../interfaces/IRecord';
+import dayjs from 'dayjs';
+import Alert from '../../../ui/Alert/Alert.tsx';
+import { Space, Table } from 'antd';
+import { CiCircleInfo } from 'react-icons/ci';
+import DatePicker from '../../../datePicker/DatePicker.tsx';
+import { useState } from 'react';
 
 const ClientsTable = () => {
-	const columns = [
+	const currentDate = dayjs().format('YYYY-MM-DD');
+	const [selectDate, setSelectDate] = useState<string>(currentDate);
+	const { data: history = [] } = useGetRecordsActualPsychologists(
+		selectDate,
+		true
+	);
+
+	const dataSourceWithKeysFalse = history.map((item) => {
+		return {
+			...item,
+			key: item.id,
+		};
+	});
+
+	const columns: ColumnsType<IRecord> = [
 		{
-			title: 'Имя',
-			dataIndex: 'name',
-			key: 'name',
+			title: 'ФИО',
+			dataIndex: 'patientName',
+			width: 90,
+			className: `${styles.colum}`,
+			render: (text, history) => (
+				<Link className={styles.colum} to={`/some-link/${history.patientName}`}>
+					{text}
+				</Link>
+			),
 		},
 		{
-			title: 'Дата последней сессии',
-			dataIndex: 'lastSessionDate',
-			key: 'lastSessionDate',
+			title: 'Цена',
+			dataIndex: 'cost',
+			className: `${styles.colum}`,
+			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
-			title: 'Следующая сессия',
-			dataIndex: 'nextSessionDate',
-			key: 'nextSessionDate',
+			title: 'Адрес ссессии',
+			dataIndex: 'address',
+			className: `${styles.colum}`,
+			render: (text, history) => (
+				<>
+					{text ? (
+						<span>{text}</span>
+					) : (
+						<Link className={styles.colum} to={`/some-link/${history.address}`}>
+							Ссылка
+						</Link>
+					)}
+				</>
+			),
 		},
 		{
-			title: 'Всего сессий',
-			dataIndex: 'totalSessions',
-			key: 'totalSessions',
+			title: 'Дата',
+			dataIndex: 'datetime',
+			className: `${styles.colum}`,
+			render: (text) => <>{dayjs(text).format('YYYY-MM-DD')}</>,
+		},
+		{
+			title: 'Время',
+			dataIndex: 'datetime',
+			className: `${styles.colum}`,
+			render: (text) => (
+				<>
+					<Space className={styles.info_container}>
+						<Alert
+							title={'Запись на консультацию'}
+							message="Редактировать время записи можно за 2 часа до встречи, в ином случае запись можно только отменить."
+						>
+							<CiCircleInfo className={styles.info} />
+
+							<span>{dayjs(text).format('HH:mm')}</span>
+						</Alert>
+					</Space>
+				</>
+			),
+		},
+		{
+			title: 'Статус',
+			dataIndex: 'status',
+			className: `${styles.colum}`,
+			render: () => <>Активный</>,
 		},
 	];
 
-	const dataSource = clients.map((client) => ({
-		...client,
-		key: client.id,
-	}));
+	const emptyText = 'На текущую дату нет актуальных записей на приём. ';
 
 	return (
-		<Table
-			scroll={{ x: true }}
-			dataSource={dataSource}
-			columns={columns}
-			pagination={false}
-			bordered
-			summary={(pageData) => {
-				let totalSessions = 0;
-				pageData.forEach(({ totalSessions: clientTotalSessions }) => {
-					totalSessions += clientTotalSessions;
-				});
-
-				return (
-					<>
-						<Table.Summary.Row>
-							<Table.Summary.Cell index={0}>Всего сессий</Table.Summary.Cell>
-							<Table.Summary.Cell index={1} colSpan={3}>
-								<Text strong>{totalSessions}</Text>
-							</Table.Summary.Cell>
-						</Table.Summary.Row>
-					</>
-				);
-			}}
-		/>
+		<>
+			<DatePicker onPanelChange={setSelectDate} />
+			<Table
+				className={styles.row}
+				columns={columns}
+				dataSource={dataSourceWithKeysFalse}
+				locale={{ emptyText }}
+				virtual={false}
+				pagination={{ position: ['none'] }}
+			/>
+		</>
 	);
 };
-
 export default ClientsTable;
