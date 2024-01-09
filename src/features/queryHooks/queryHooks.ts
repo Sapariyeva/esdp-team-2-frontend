@@ -666,3 +666,13 @@ export const useDeleteMethod = () => {
 		},
 	});
 };
+
+export const useGetAllFeelings = () => {
+	return useQuery({
+		queryKey: ['useGetAllFeelings'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/posts`);
+			return response.data;
+		},
+	});
+};
