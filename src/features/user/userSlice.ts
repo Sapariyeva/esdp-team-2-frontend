@@ -6,6 +6,7 @@ import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
 import { IPatient } from '../../interfaces/IPatient.ts';
+import { message } from 'antd';
 
 interface AuthUserData {
 	email: string;
@@ -164,6 +165,7 @@ interface UserState {
 	registerError: ServerFormValidationResponse | null;
 	loginError: ServerFormValidationResponse | null;
 	logged: boolean;
+	pagelock: boolean;
 }
 
 const initialState: UserState = {
@@ -172,6 +174,7 @@ const initialState: UserState = {
 	loginError: null,
 	loading: false,
 	logged: false,
+	pagelock: false,
 };
 
 const userSlice = createSlice({
@@ -187,6 +190,9 @@ const userSlice = createSlice({
 		},
 		saveUser: (state, { payload }) => {
 			state.userInfo = payload;
+		},
+		changePageLock: (state, { payload }) => {
+			state.pagelock = payload;
 		},
 	},
 	extraReducers(builder) {
@@ -261,13 +267,16 @@ const userSlice = createSlice({
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
 				state.loginError = null;
+				state.pagelock = false;
 				if (state.userInfo) {
 					state.userInfo.email = payload.email as string;
 					state.userInfo.phone = payload.phone as string;
 				}
+				message.success('Ваши изменения приняты');
 			})
 			.addCase(updateUser.rejected, (state, { payload }) => {
 				state.loading = false;
+				state.pagelock = true;
 				state.loginError = {
 					message: payload?.message ?? 'Error occurred',
 					errors: payload?.errors ?? [],
@@ -302,6 +311,7 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const { resetErrors, resetUser, saveUser } = userSlice.actions;
+export const { resetErrors, resetUser, saveUser, changePageLock } =
+	userSlice.actions;
 
 export default userSlice;

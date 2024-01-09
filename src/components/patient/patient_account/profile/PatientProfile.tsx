@@ -1,69 +1,120 @@
 import { Button, Col, Form, Input, Layout, Row } from 'antd';
 import { IUserEdit } from '../../../../interfaces/IUserEdit';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './PatientProfile.module.scss';
 import {
+	changePageLock,
+	resetErrors,
 	updatePatientName,
 	updateUser,
 } from '../../../../features/user/userSlice';
 function PatientProfile() {
 	const dispatch = useAppDispatch();
 	const errors = useAppSelector((state) => state.users.loginError);
+	const [formKey, setFormKey] = useState(0);
 	const userInfo = useAppSelector((state) => state.users.userInfo);
-	const initialValues = {
+
+	const [initialValues, setInitialValues] = useState<IUserEdit>({
 		email: userInfo?.email,
 		name: userInfo?.patient?.name,
-	};
+		password: '',
+		сurrentPassword: '',
+	});
+
+	const active = useAppSelector((state) => state.users.pagelock);
 	const [serverError, setServerError] = useState<string>('');
-	const getErrorsBy = (name: string) => {
-		const error = errors?.errors?.find((error) => error.type === name);
-		return error?.messages.join(',');
-	};
-	const [isEditing, setIsEditing] = useState<boolean>(false);
+
 	const handleSubmit = async (values: IUserEdit) => {
-		dispatch(
-			updatePatientName({
-				name: values.name as string,
-				userId: userInfo?.patient?.id,
-			})
-		);
-		dispatch(updateUser(values));
+		values.сurrentPassword = (values.сurrentPassword ?? '').trim();
+
+		if (values.сurrentPassword === '') {
+			dispatch(
+				updatePatientName({
+					name: values.name as string,
+					userId: userInfo?.patient?.id,
+				})
+			);
+			dispatch(changePageLock(false));
+		} else {
+			dispatch(updateUser(values));
+			dispatch(
+				updatePatientName({
+					name: values.name as string,
+					userId: userInfo?.patient?.id,
+				})
+			);
+		}
 	};
 
-	const hasRunRef = useRef(false);
+	const [passwordValue, setPasswordValue] = useState('');
+	const [CurrentPasswordValue, setCurrentPasswordValue] = useState('');
+	const [currentPasswordEntered, setCurrentPasswordEntered] = useState(false);
+	const [emailValue, setEmailValue] = useState(initialValues.email || '');
+	const [emailChanged, setEmailChanged] = useState(false);
+	serverError;
+	CurrentPasswordValue;
+	emailValue;
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEmailValue(e.target.value);
+		setEmailChanged(true);
+	};
+
+	const validateEmail = () => {
+		if (emailChanged && !currentPasswordEntered) {
+			return Promise.reject('Введите текущий пароль');
+		}
+		return Promise.resolve();
+	};
+
+	const handleCurrentPasswordChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setCurrentPasswordEntered(e.target.value.trim().length > 0);
+		setCurrentPasswordValue(e.target.value);
+	};
+
+	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPasswordValue(e.target.value);
+	};
 
 	useEffect(() => {
 		setServerError(errors?.message as string);
+	}, [errors, active]);
 
-		setIsEditing((prevEditing) => {
-			if (errors?.message) {
-				return prevEditing;
-			} else {
-				if (!hasRunRef.current) {
-					prevEditing = true;
-				}
-
-				return !prevEditing;
-			}
-		});
-	}, [errors]);
+	useEffect(() => {
+		if (active === false) {
+			setFormKey((prevKey) => prevKey + 1);
+			setInitialValues({
+				email: userInfo?.email,
+				name: userInfo?.patient?.name,
+				password: '',
+				сurrentPassword: '',
+			});
+			setServerError('');
+		}
+	}, [userInfo, active]);
 
 	const handleSingleButtonClick = () => {
-		setIsEditing((prevEditing) => !prevEditing);
+		dispatch(changePageLock(true));
 	};
+	const handleSingleButtonClickCancel = () => {
+		dispatch(changePageLock(false));
+		dispatch(resetErrors());
+	};
+
 	return (
 		<div>
 			<Layout className={styles.layout}>
 				<Form
+					key={formKey}
 					name="update-form"
 					className="form"
 					onFinish={handleSubmit}
 					initialValues={initialValues}
 				>
 					<Row>
-						{/* Отображаем одну кнопку, если isEditing === false */}
-						{!isEditing && (
+						{!active && (
 							<Col xs={24} sm={7} md={9} lg={9} xl={5}>
 								<Form.Item>
 									<Button
@@ -75,9 +126,7 @@ function PatientProfile() {
 								</Form.Item>
 							</Col>
 						)}
-
-						{/* Отображаем две кнопки, если isEditing === true */}
-						{isEditing && (
+						{active && (
 							<>
 								<Col xs={24} sm={7} md={9} lg={9} xl={5}>
 									<Form.Item>
@@ -90,7 +139,7 @@ function PatientProfile() {
 									<Form.Item>
 										<Button
 											className={styles.btn_cancel}
-											onClick={() => setIsEditing(false)}
+											onClick={() => handleSingleButtonClickCancel()}
 										>
 											Отменить изменения
 										</Button>
@@ -109,6 +158,9 @@ function PatientProfile() {
 								hasFeedback
 								rules={[
 									{
+										validator: validateEmail,
+									},
+									{
 										required: true,
 										message: 'Пожалуйста, введите свой электронный адрес.',
 									},
@@ -117,17 +169,29 @@ function PatientProfile() {
 										message: 'Ваш e-mail недействителен.',
 									},
 								]}
-								validateStatus={
-									errors?.errors?.find((error) => error.type === 'email')
-										? 'error'
-										: undefined
+								help={
+									(errors?.message ===
+									'Пользователь с таким email уже существует'
+										? 'Пользователь с таким email уже существует'
+										: '') ||
+									(passwordValue && !currentPasswordEntered
+										? 'Пожалуйста, введите текущий пароль.'
+										: undefined)
 								}
-								help={getErrorsBy('email')}
+								validateStatus={
+									(errors?.message ===
+									'Пользователь с таким email уже существует'
+										? 'error'
+										: '') ||
+									(passwordValue && !currentPasswordEntered ? 'error' : '') ||
+									undefined
+								}
 							>
 								<Input
 									className="input--grey input"
 									placeholder="example@gmail.com"
-									disabled={!isEditing}
+									disabled={!active}
+									onChange={handleEmailChange}
 								/>
 							</Form.Item>
 						</Col>
@@ -142,7 +206,7 @@ function PatientProfile() {
 								<Input
 									placeholder="Введите Имя"
 									className="input--grey input"
-									disabled={!isEditing}
+									disabled={!active}
 								/>
 							</Form.Item>
 						</Col>
@@ -153,14 +217,21 @@ function PatientProfile() {
 							<Form.Item
 								name="сurrentPassword"
 								hasFeedback
-								help={errors?.message}
-								validateStatus={serverError ? 'error' : ''}
+								help={
+									errors?.message === 'Неверный пароль!'
+										? 'Неверный пароль!'
+										: ''
+								}
+								validateStatus={
+									errors?.message === 'Неверный пароль!' ? 'error' : ''
+								}
 							>
 								<Input.Password
 									className="input--grey input"
-									placeholder="Минимум 6 символов"
+									placeholder="Пароль"
 									autoComplete="on"
-									disabled={!isEditing}
+									disabled={!active}
+									onChange={handleCurrentPasswordChange}
 								/>
 							</Form.Item>
 						</Col>
@@ -169,24 +240,23 @@ function PatientProfile() {
 							<label className="label">Новый пароль</label>
 							<Form.Item
 								name="password"
-								dependencies={['password']}
+								dependencies={['сurrentPassword']}
 								hasFeedback
-								rules={[
-									{
-										required: true,
-										message: 'Пожалуйста, введите пароль.',
-									},
-									{
-										min: 6,
-										message: 'Пароль должен состоять минимум из 6 символов.',
-									},
-								]}
+								validateStatus={
+									passwordValue && !currentPasswordEntered ? 'error' : ''
+								}
+								help={
+									passwordValue && !currentPasswordEntered
+										? 'Пожалуйста, введите текущий пароль.'
+										: undefined
+								}
 							>
 								<Input.Password
-									placeholder="Повторите пароль"
+									placeholder="Новый пароль"
 									className="input--grey input"
 									autoComplete="on"
-									disabled={!isEditing}
+									disabled={!active}
+									onChange={handlePasswordChange}
 								/>
 							</Form.Item>
 						</Col>
