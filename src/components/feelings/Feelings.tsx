@@ -1,4 +1,4 @@
-import { FeelingsPage } from '../../containers/feelingsPage/feelingsPage';
+import { FeelingsPage } from '../../containers/feelingsPage/FeelingsPage';
 
 export const Feelings = () => {
 	return <FeelingsPage />;
