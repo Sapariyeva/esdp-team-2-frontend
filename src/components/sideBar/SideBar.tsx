@@ -1,14 +1,23 @@
 import { Menu, MenuProps } from 'antd';
 import styles from './SideBar.module.scss';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface Props {
-	activeTab: string[];
-	onChangeTab: (key: string) => void;
 	items: MenuProps['items'];
 	title: string;
 }
 
-const SideBar = ({ activeTab, onChangeTab, items, title }: Props) => {
+const SideBar = ({ items, title }: Props) => {
+	const [activeTab, setActiveTab] = useState<string>('');
+	const location = useLocation();
+
+	useEffect(() => {
+		const pathArray = window.location.pathname.split('/');
+		const lastPath = pathArray[pathArray.length - 1];
+		setActiveTab(lastPath);
+	}, [location]);
+
 	return (
 		<>
 			<div style={{ height: '100%' }}>
@@ -17,8 +26,7 @@ const SideBar = ({ activeTab, onChangeTab, items, title }: Props) => {
 					<Menu
 						mode={'vertical'}
 						className={styles.menu}
-						defaultSelectedKeys={activeTab}
-						onClick={({ key }) => onChangeTab(key)}
+						selectedKeys={[activeTab]}
 						items={items}
 					/>
 				</div>

@@ -252,7 +252,7 @@ export const useGetUpcomingRecordings = (psychologistId: number) => {
 export const useAppointmentsSelectDayQuery = (
 	psychologistId: number,
 	date: string,
-	enabled: boolean
+	enabled?: boolean
 ) => {
 	return useQuery<ITimeSlot[]>({
 		queryKey: ['getAppointmentsDay', date],
@@ -286,6 +286,24 @@ export const useGetRecordsHistoryPatient = () => {
 		queryKey: ['GetRecordsHistoryPatient'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(`/patients/history`);
+			return response.data;
+		},
+	});
+};
+
+export const useGetRecordsActualPsychologists = (
+	date: string,
+	status: boolean
+) => {
+	return useQuery<IRecord[]>({
+		queryKey: ['useGetRecordsActualPsychologists', date],
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/psychologists/records/actual`,
+				{
+					params: { status: status, date: date },
+				}
+			);
 			return response.data;
 		},
 	});
