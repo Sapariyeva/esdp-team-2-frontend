@@ -14,7 +14,7 @@ export const SingleFeelingsPage = () => {
 				<Spin />
 			) : (
 				<div className="singlePage-block-item-text">
-					<div>
+					<div className="singlePage-block-item-text-block">
 						<p className="singlePage-block-item-text-title">{post?.title}</p>
 						<p className="feelingPage-block-item-text-date">
 							9 января 2024 года
