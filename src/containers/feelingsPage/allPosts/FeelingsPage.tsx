@@ -1,9 +1,10 @@
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 
 import { Spin } from 'antd';
-import { useGetAllPosts } from '../../features/queryHooks/queryHooks';
-import { IPost } from '../../interfaces/IPost';
+import { useGetAllPosts } from '../../../features/queryHooks/queryHooks';
+import { IPost } from '../../../interfaces/IPost';
 import './FeelingsPage.scss';
+import { Link } from 'react-router-dom';
 
 export const FeelingsPage = () => {
 	const { data: posts = [], isPending } = useGetAllPosts();
@@ -17,7 +18,11 @@ export const FeelingsPage = () => {
 					{posts.map(
 						(post: IPost) =>
 							post.isPublish === true && (
-								<div key={post.id} className="feelingPage-block-item">
+								<Link
+									to={`/feelings/${post.id}`}
+									key={post.id}
+									className="feelingPage-block-item"
+								>
 									<div className="feelingPage-block-item-text">
 										<img
 											src={`http://localhost:8000/uploads/${post.image}`}
@@ -38,7 +43,7 @@ export const FeelingsPage = () => {
 											/>
 										</div>
 									</div>
-								</div>
+								</Link>
 							)
 					)}
 				</div>
