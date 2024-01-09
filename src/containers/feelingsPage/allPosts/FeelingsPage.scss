@@ -2,6 +2,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	margin-right: 88px;
 	&-item {
 		margin: 0 15px 0 78px;
 		box-sizing: border-box;
@@ -35,7 +36,88 @@
 		}
 	}
 }
-.pagination-container{
+.pagination-container {
 	text-align: right;
 	margin: 0 16% 100px 0;
+}
+
+@media screen and (max-width: 1290px) {
+	.pagination-container {
+		margin: 0 8% 100px 0;
+	}
+}
+
+@media screen and (max-width: 1135px) {
+	.pagination-container {
+		margin: 0 2% 100px 0;
+	}
+}
+
+@media screen and (max-width: 1111px) {
+	.pagination-container {
+		margin: 38px 0 100px 0;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 798px) {
+	.feelingPage-block {
+		margin-right: 75px;
+		&-item-text {
+			&-image {
+				width: 325px;
+				height: 300px;
+			}
+			&-description {
+				width: 293px;
+			}
+			&-title {
+				font-size: 19px;
+				margin-top: 30px;
+				width: 275px;
+				line-height: 25px;
+			}
+		}
+	}
+	.pagination-container {
+		margin: 38px 0 100px 0;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.feelingPage-block {
+		margin-right: 60px;
+		&-item-text {
+			&-image {
+				width: 300px;
+				height: 275px;
+			}
+		}
+	}
+	.pagination-container {
+		margin: 38px 0 100px 0;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 360px) {
+	.feelingPage-block {
+		margin-right: 60px;
+	}
+	.feelingPage-block-item-text {
+		&-image {
+			width: 270px;
+			height: 245px;
+		}
+		&-description {
+			width: 238px;
+		}
+		&-title {
+			font-size: 18px;
+			margin-top: 12px;
+			width: 240px;
+			line-height: 21px;
+		}
+	}
 }
