@@ -300,7 +300,7 @@ export const commonItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'чувства',
-		key: '/psychologist/form',
+		key: '/feelings',
 		isLink: true,
 	}),
 	getItem({

@@ -22,6 +22,7 @@ import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 import axios from 'axios';
 import { saveUser } from '../user/userSlice.ts';
 import { Dispatch } from 'redux';
+import { IPost } from '../../interfaces/IPost.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -664,5 +665,25 @@ export const useDeleteMethod = () => {
 				queryKey: ['useGetAllMethod'],
 			});
 		},
+	});
+};
+
+export const useGetAllFeelings = () => {
+	return useQuery({
+		queryKey: ['useGetAllFeelings'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/posts`);
+			return response.data;
+		},
+	});
+};
+
+export const useGetOneFeeling = (id: number) => {
+	return useQuery({
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPost>(`/posts/${id}`);
+			return response.data;
+		},
+		queryKey: ['useGetOneFeeling', id],
 	});
 };
