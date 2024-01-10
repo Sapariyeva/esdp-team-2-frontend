@@ -252,7 +252,7 @@ export const useGetUpcomingRecordings = (psychologistId: number) => {
 export const useAppointmentsSelectDayQuery = (
 	psychologistId: number,
 	date: string,
-	enabled: boolean
+	enabled?: boolean
 ) => {
 	return useQuery<ITimeSlot[]>({
 		queryKey: ['getAppointmentsDay', date],
@@ -286,6 +286,24 @@ export const useGetRecordsHistoryPatient = () => {
 		queryKey: ['GetRecordsHistoryPatient'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(`/patients/history`);
+			return response.data;
+		},
+	});
+};
+
+export const useGetRecordsActualPsychologists = (
+	date: string,
+	status: boolean
+) => {
+	return useQuery<IRecord[]>({
+		queryKey: ['useGetRecordsActualPsychologists', date],
+		queryFn: async () => {
+			const response = await axiosInstance.get(
+				`/psychologists/records/actual`,
+				{
+					params: { status: status, date: date },
+				}
+			);
 			return response.data;
 		},
 	});
@@ -465,6 +483,186 @@ export const usePsychoDeleteAdmin = () => {
 				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOTRUE'] }),
 				queryClient.invalidateQueries({ queryKey: ['GETADMINPSYCHOFALSE'] }),
 			]);
+		},
+	});
+};
+
+export const useGetAllSymptoms = () => {
+	return useQuery({
+		queryKey: ['useGetAllSymptoms'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/symptoms`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('symptoms/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useEditSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: {
+			name: string;
+			symptomId: number | undefined;
+		}) => {
+			const response = await axiosInstance.put(
+				`symptoms/edit/${data.symptomId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useDeleteSymptom = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/symptoms/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllSymptoms'],
+			});
+		},
+	});
+};
+
+export const useGetAllTechnique = () => {
+	return useQuery({
+		queryKey: ['useGetAllTechnique'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/techniques`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('techniques/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
+			});
+		},
+	});
+};
+
+export const useEditTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: {
+			name: string;
+			techniqueId: number | undefined;
+		}) => {
+			const response = await axiosInstance.put(
+				`techniques/edit/${data.techniqueId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
+			});
+		},
+	});
+};
+
+export const useDeleteTechnique = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/techniques/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllTechnique'],
+			});
+		},
+	});
+};
+
+export const useGetAllMethod = () => {
+	return useQuery({
+		queryKey: ['useGetAllMethod'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/methods`);
+			return response.data;
+		},
+	});
+};
+
+export const usePostOneMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: { name: string }) => {
+			const response = await axiosInstance.post('methods/create', data);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
+		},
+	});
+};
+
+export const useEditMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (data: {
+			name: string;
+			methodId: number | undefined;
+		}) => {
+			const response = await axiosInstance.put(
+				`methods/edit/${data.methodId}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
+		},
+	});
+};
+
+export const useDeleteMethod = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (id: number) => {
+			return axiosInstance.delete(`/methods/${id}`);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetAllMethod'],
+			});
 		},
 	});
 };

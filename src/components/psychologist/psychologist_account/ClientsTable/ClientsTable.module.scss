@@ -2,7 +2,7 @@
 	text-align: center !important;
 	color: #2e2e2e;
 	font-size: 14px;
-	min-width: 120px;
+	min-width: 110px;
 
 	:nth-last-child(2) {
 		width: 16px !important;
@@ -92,4 +92,14 @@
 		background-color: #f5f5f5;
 		border-radius: 5px;
 	}
+}
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+}
+.row {
+	background-color: #fff !important;
+	overflow: scroll;
 }

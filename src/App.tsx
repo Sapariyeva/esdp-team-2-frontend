@@ -36,6 +36,10 @@ import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
 import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
 import { HomePage } from './containers/homePage/HomePage.tsx';
 import { ConsultationTypePsychologists } from './containers/psychologists/catalog/ConsultationTypePsychologists.tsx';
+import HistoryClients from './components/psychologist/psychologist_account/HistoryClients/HistoryClients.tsx';
+import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
+import { Technique } from './components/admin/technique/Technique.tsx';
+import { Method } from './components/admin/method/Method.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -135,6 +139,7 @@ const App = () => {
 							<Route path="/psychologist" element={<PsychologistAccountPage />}>
 								<Route path="profile" element={<Profile />} />
 								<Route path="records" element={<ClientsTable />} />
+								<Route path="history" element={<HistoryClients />} />
 								<Route path="calendar" element={<Calendars />} />
 							</Route>
 
@@ -151,7 +156,9 @@ const App = () => {
 									<Route element={<AdminPage />}>
 										<Route path="psychologists" element={<Psychologists />} />
 										<Route path="posts" element={<Posts />} />
-										{/*<Route path="courses" element={<Calendars />} />*/}
+										<Route path="symptoms" element={<Symptoms />} />
+										<Route path="techniques" element={<Technique />} />
+										<Route path="therapies" element={<Method />} />
 									</Route>
 								</Route>
 							</Route>
