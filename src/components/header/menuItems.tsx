@@ -358,7 +358,7 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		icon: <img className={styles.item_icon} src={record} alt="record" />,
 	}),
 	getItem({
-		label: 'История записей',
+		label: 'История клиентов',
 		key: 'history',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
