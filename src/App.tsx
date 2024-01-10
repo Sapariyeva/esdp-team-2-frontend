@@ -23,7 +23,6 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
-import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 import PatientProfile from './components/patient/patient_account/profile/PatientProfile.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
@@ -39,6 +38,7 @@ import HistoryClients from './components/psychologist/psychologist_account/Histo
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
 import { Method } from './components/admin/method/Method.tsx';
+import { Profile } from './components/psychologist/psychologist_account/profileContent/ProfileContent.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
