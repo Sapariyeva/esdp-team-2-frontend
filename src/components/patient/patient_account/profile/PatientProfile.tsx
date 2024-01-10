@@ -50,6 +50,7 @@ function PatientProfile() {
 					userId: userInfo?.patient?.id,
 				})
 			);
+
 			dispatch(changePageLock(false));
 		} else {
 			dispatch(updateUser(values));
@@ -60,7 +61,10 @@ function PatientProfile() {
 				})
 			);
 		}
+		dispatch(resetErrors());
+		setPasswordValue('');
 		form.resetFields();
+		setCurrentPasswordEntered(false);
 	};
 
 	const [passwordValue, setPasswordValue] = useState('');
@@ -108,11 +112,19 @@ function PatientProfile() {
 		form.resetFields();
 		dispatch(changePageLock(false));
 		dispatch(resetErrors());
+		setPasswordValue('');
+		setCurrentPasswordEntered(false);
 	};
 
 	const getErrorsBy = (name: string) => {
 		const error = errors?.errors?.find((error) => error.type === name);
 		return error?.messages.join(',');
+	};
+	const validatePassword = () => {
+		if (!currentPasswordEntered && passwordValue.trim() !== '') {
+			return Promise.reject('Введите текущий пароль');
+		}
+		return Promise.resolve();
 	};
 
 	return (
@@ -140,7 +152,7 @@ function PatientProfile() {
 						)}
 						{active && (
 							<>
-								<Col xs={24} sm={10} md={9} lg={9} xl={7}>
+								<Col xs={24} sm={12} md={9} lg={9} xl={7}>
 									<Form.Item>
 										<Button className={styles.btn_confirm} htmlType="submit">
 											Применить изменения
@@ -256,6 +268,11 @@ function PatientProfile() {
 								validateStatus={
 									passwordValue && !currentPasswordEntered ? 'error' : ''
 								}
+								rules={[
+									{
+										validator: validatePassword,
+									},
+								]}
 								help={
 									passwordValue && !currentPasswordEntered
 										? 'Пожалуйста, введите текущий пароль.'
