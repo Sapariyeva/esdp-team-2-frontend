@@ -24,7 +24,6 @@ export const appendValuesToFormData = (
 			formData.append(key, value[0]);
 		} else {
 			formData.append(key, value);
-			console.log(`${key}: ${value}`);
 		}
 	});
 };
