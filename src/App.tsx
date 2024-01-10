@@ -35,6 +35,7 @@ import ResetPassword from './containers/auth/resetPassword/ResetPassword.tsx';
 import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
 import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
 import { HomePage } from './containers/homePage/HomePage.tsx';
+import { ConsultationTypePsychologists } from './containers/psychologists/catalog/ConsultationTypePsychologists.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -81,6 +82,30 @@ const App = () => {
 							<Route
 								path="/psychologists/"
 								element={<PsychologistsListContainer />}
+							/>
+							<Route
+								path="/psychologists/family"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'duo' }}
+									/>
+								}
+							/>
+							<Route
+								path="/psychologists/children"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'children' }}
+									/>
+								}
+							/>
+							<Route
+								path="/psychologists/group-therapy"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'group' }}
+									/>
+								}
 							/>
 							<Route
 								path="/psychologists/:id"
