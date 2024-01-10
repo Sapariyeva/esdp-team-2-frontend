@@ -1,5 +1,4 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
-import IFilteringValues from '../../../interfaces/IFilteringValues';
 import { useState } from 'react';
 import { Alert } from 'antd';
 import { AxiosError } from 'axios';
@@ -12,13 +11,18 @@ import {
 	useTechniqueQuery,
 	useTherapyMethodQuery,
 } from '../../../features/queryHooks/queryHooks';
+import PsychologistFilterForm from '../../../components/filteringForm/FilteringForm';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../../interfaces/IFilteringValues';
 
 export const PsychologistsListContainer = () => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
 
-	const [filterValues, setFilterValues] = useState<null | IFilteringValues>(
-		null
-	);
+	const [filterValues, setFilterValues] = useState<
+		null | IFilteringValues | IFilteringConsultationType
+	>(null);
 
 	const {
 		data: psychologists,
@@ -47,7 +51,9 @@ export const PsychologistsListContainer = () => {
 		return true;
 	};
 
-	const filterHandler = (values: IFilteringValues) => {
+	const filterHandler = (
+		values: IFilteringValues | IFilteringConsultationType
+	) => {
 		setFilterValues(values);
 	};
 
@@ -65,13 +71,15 @@ export const PsychologistsListContainer = () => {
 					showIcon
 				/>
 			)}
-			<PsychologistsList
-				psychologists={psychologistsList}
+			<PsychologistFilterForm
+				onFilter={filterHandler}
 				cities={cities}
-				filterHandler={filterHandler}
 				symptoms={symptoms}
 				techniques={techniques}
-				therapyMethod={therapyMethods}
+				therapyMethods={therapyMethods}
+			/>
+			<PsychologistsList
+				psychologists={psychologistsList}
 				switchFavorite={switchFavorite}
 			/>
 		</>

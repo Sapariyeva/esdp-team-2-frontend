@@ -1,10 +1,14 @@
 import { Form, Select, Button, Slider } from 'antd';
-import IFilteringValues from '../../interfaces/IFilteringValues';
+
 import { ICity } from '../../interfaces/IPsychologistForm';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
 import { useEffect } from 'react';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../interfaces/IFilteringValues';
 
 const { Option } = Select;
 
@@ -46,7 +50,7 @@ const ageMappings = {
 };
 
 type Props = {
-	onFilter: (values: IFilteringValues) => void;
+	onFilter: (values: IFilteringValues | IFilteringConsultationType) => void;
 	cities: ICity[] | null;
 	techniques: ITechnique[] | null;
 	therapyMethods: ITherapyMethod[] | null;
@@ -171,8 +175,10 @@ const PsychologistFilterForm = ({
 					style={{ width: '230px' }}
 					placeholder={'Выбрать вид консультации'}
 				>
-					<Option value="solo">Один человек</Option>
+					<Option value="solo">Индивидуальная</Option>
 					<Option value="duo">Вдвоем</Option>
+					<Option value="children">Детская</Option>
+					<Option value="group">Групповая</Option>
 				</Select>
 			</Form.Item>
 
