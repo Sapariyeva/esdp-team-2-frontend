@@ -1,8 +1,20 @@
 import { useAppSelector } from '../../../../store/hooks';
 import { RootState } from '../../../../store';
-import { Layout, Row, Col, Typography, Form } from 'antd';
+import {
+	Layout,
+	Row,
+	Col,
+	Typography,
+	Form,
+	Button,
+	Input,
+	Select,
+	InputNumber,
+} from 'antd';
 import Alert from '../../../ui/Alert/Alert.tsx';
 import infoIcon from '../../../../assets/icon/info-circle.svg';
+import InformationText from '../../../ui/Text/InformationText.tsx';
+import './ProfileContent.scss';
 
 export const Profile = () => {
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
@@ -28,6 +40,8 @@ export const Profile = () => {
 						// onFinish={handleSubmit}
 						// initialValues={initialValues}
 					>
+						<Button className="form-edit-btn">Редактировать</Button>
+						<InformationText text="Вся ниже указанная информация будет отображаться в вашей анкете психолога, кроме номера телефона и почты. Адрес, только при выборе работы оффлайн." />
 						<Row gutter={16}>
 							<Col xs={24} sm={24} md={12} lg={12} xl={12}>
 								<label className="label">Почта</label>
@@ -46,7 +60,71 @@ export const Profile = () => {
 										},
 									]}
 								>
-									<Typography.Text>{user?.email}</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.email}
+										readOnly
+									/>
+								</Form.Item>
+							</Col>
+							<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+								<label className="label">Пароль</label>
+								<Form.Item
+									name="password"
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message: 'Пожалуйста, введите пароль.',
+										},
+										{
+											min: 6,
+											message: 'Пароль должен состоять минимум из 6 символов.',
+										},
+									]}
+								>
+									<Input.Password
+										className="input--grey input"
+										placeholder="Минимум 6 символов"
+										autoComplete="on"
+										size="small"
+									/>
+								</Form.Item>
+							</Col>
+
+							<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+								<label className="label">Повторите пароль</label>
+								<Form.Item
+									name="confirm"
+									dependencies={['password']}
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message: 'Пожалуйста, подтвердите свой пароль!',
+										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (!value || getFieldValue('password') === value) {
+													return Promise.resolve();
+												}
+												return Promise.reject(
+													new Error(
+														'The new password that you entered do not match!'
+													)
+												);
+											},
+										}),
+									]}
+								>
+									<Input.Password
+										placeholder="Повторите пароль"
+										className="input--grey input"
+										autoComplete="on"
+										size="small"
+									/>
 								</Form.Item>
 							</Col>
 						</Row>
@@ -63,9 +141,13 @@ export const Profile = () => {
 										{ required: true, message: 'Введите имя пользователя' },
 									]}
 								>
-									<Typography.Text>
-										{user?.psychologist?.fullName}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.fullName}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -77,9 +159,13 @@ export const Profile = () => {
 										{ required: true, message: 'Выберите хотя бы один город!' },
 									]}
 								>
-									<Typography.Text>
-										{user?.psychologist?.city.name}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.city.name}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={6} xl={6}>
@@ -88,9 +174,13 @@ export const Profile = () => {
 									name="gender"
 									rules={[{ required: true, message: 'Выберите пол' }]}
 								>
-									<Typography.Text>
-										{user?.psychologist?.gender}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.gender}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -99,7 +189,13 @@ export const Profile = () => {
 									name="birthday"
 									rules={[{ required: true, message: 'Введите дату рождения' }]}
 								>
-									<Typography.Text>{formattedBirthday}</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={formattedBirthday}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 						</Row>
@@ -114,9 +210,14 @@ export const Profile = () => {
 									name="languages"
 									rules={[{ required: true, message: 'Выберите язык' }]}
 								>
-									<Typography.Text>
-										{user?.psychologist?.languages}
-									</Typography.Text>
+									<Select
+										placeholder="Выберите язык"
+										mode="multiple"
+										showSearch={false}
+										defaultValue={user?.psychologist?.languages}
+										style={{ width: '180px' }}
+										disabled
+									/>
 								</Form.Item>
 							</Col>
 
@@ -128,9 +229,13 @@ export const Profile = () => {
 										{ required: true, message: 'Введите личную терапию' },
 									]}
 								>
-									<Typography.Text>
-										{user?.psychologist?.selfTherapy}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.selfTherapy}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -139,15 +244,28 @@ export const Profile = () => {
 									name="techniqueIds"
 									rules={[{ required: true, message: 'Выберите технику!' }]}
 								>
-									{user?.psychologist?.techniques.map((technique, index) => (
-										<div key={index}>
-											{technique && technique.name ? (
-												<Typography.Text>{technique.name}</Typography.Text>
-											) : (
-												<Typography.Text>Техники отсутствуют</Typography.Text>
+									{user?.psychologist?.techniques &&
+									user?.psychologist?.techniques.length > 0 ? (
+										<Select
+											placeholder="Выберите техники"
+											mode="multiple"
+											showSearch={false}
+											defaultValue={user?.psychologist?.techniques.map(
+												(technique) => technique.name
 											)}
-										</div>
-									))}
+											disabled
+										>
+											{user?.psychologist?.techniques.map(
+												(technique, index) => (
+													<Select.Option key={index} value={technique.name}>
+														{technique.name}
+													</Select.Option>
+												)
+											)}
+										</Select>
+									) : (
+										<Typography.Text>Техники отсутствуют</Typography.Text>
+									)}
 								</Form.Item>
 							</Col>
 
@@ -159,9 +277,13 @@ export const Profile = () => {
 										{ required: true, message: 'Введите свой стаж работы!' },
 									]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.experienceYears}
-									</Typography.Text>
+									<InputNumber
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.experienceYears}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -171,9 +293,14 @@ export const Profile = () => {
 									name="cost"
 									rules={[{ required: true, message: 'Введите стоимость!' }]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.cost}
-									</Typography.Text>
+									<InputNumber
+										prefix="KZT"
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.cost}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -183,15 +310,28 @@ export const Profile = () => {
 									name="therapyMethodIds"
 									rules={[{ required: true, message: 'Выберите методы!' }]}
 								>
-									{user?.psychologist?.therapyMethods.map((method, index) => (
-										<div key={index}>
-											{method && method.name ? (
-												<Typography.Text>{method.name}</Typography.Text>
-											) : (
-												<Typography.Text>Методы отсутствуют</Typography.Text>
+									{user?.psychologist?.therapyMethods &&
+									user?.psychologist?.therapyMethods.length > 0 ? (
+										<Select
+											placeholder="Выберите методы"
+											mode="multiple"
+											showSearch={false}
+											defaultValue={user?.psychologist?.therapyMethods.map(
+												(method) => method.name
 											)}
-										</div>
-									))}
+											disabled
+										>
+											{user?.psychologist?.therapyMethods.map(
+												(method, index) => (
+													<Select.Option key={index} value={method.name}>
+														{method.name}
+													</Select.Option>
+												)
+											)}
+										</Select>
+									) : (
+										<Typography.Text>Методы отсутствуют</Typography.Text>
+									)}
 								</Form.Item>
 							</Col>
 
@@ -206,9 +346,13 @@ export const Profile = () => {
 									</Alert>
 								</label>
 								<Form.Item name="lgbt">
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.lgbt ? 'Да' : 'Нет'}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.lgbt ? 'Да' : 'Нет'}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -220,9 +364,13 @@ export const Profile = () => {
 										{ required: true, message: 'Выберите формат приема' },
 									]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.format}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.format}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -232,15 +380,26 @@ export const Profile = () => {
 									name="symptomIds"
 									rules={[{ required: true, message: 'Выберите симптомы!' }]}
 								>
-									{user?.psychologist?.symptoms.map((symptom, index) => (
-										<div key={index}>
-											{symptom && symptom.name ? (
-												<Typography.Text>{symptom.name}</Typography.Text>
-											) : (
-												<Typography.Text>Симптомы отсутствуют</Typography.Text>
+									{user?.psychologist?.symptoms &&
+									user?.psychologist?.symptoms.length > 0 ? (
+										<Select
+											placeholder="Выберите симптомы"
+											mode="multiple"
+											showSearch={false}
+											defaultValue={user?.psychologist?.symptoms.map(
+												(symptom) => symptom.name
 											)}
-										</div>
-									))}
+											disabled
+										>
+											{user?.psychologist?.symptoms.map((symptom, index) => (
+												<Select.Option key={index} value={symptom.name}>
+													{symptom.name}
+												</Select.Option>
+											))}
+										</Select>
+									) : (
+										<Typography.Text>Симптомы отсутствуют</Typography.Text>
+									)}
 								</Form.Item>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -254,9 +413,13 @@ export const Profile = () => {
 									</Alert>
 								</label>
 								<Form.Item name="address">
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.address}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.address}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -268,9 +431,21 @@ export const Profile = () => {
 										{ required: true, message: 'Введите вид консультации' },
 									]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.consultationType}
-									</Typography.Text>
+									{/* <Select mode="multiple" placeholder="Вид консультации">
+										<Option value="solo" className="option">
+											Один человек
+										</Option>
+										<Option value="duo" className="option">
+											Вдвоем
+										</Option>
+									</Select> */}
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.psychologist?.consultationType}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -280,9 +455,12 @@ export const Profile = () => {
 									name="education"
 									rules={[{ required: true, message: 'Введите специализацию' }]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.education}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="Клинический психолог, MS. Psychology"
+										defaultValue={user?.psychologist?.education}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -292,9 +470,12 @@ export const Profile = () => {
 									name="description"
 									rules={[{ required: true, message: 'Введите данные о себе' }]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.description}
-									</Typography.Text>
+									<Input.TextArea
+										className="input--grey input text-area"
+										placeholder="Напишите о себе"
+										defaultValue={user?.psychologist?.description}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 
@@ -310,11 +491,16 @@ export const Profile = () => {
 										{ required: true, message: 'Введите ссылку на видео' },
 									]}
 								>
-									<Typography.Text className="input--grey input">
-										{user?.psychologist?.video
-											? user?.psychologist?.video
-											: 'Видео отсутствует'}
-									</Typography.Text>
+									<Input
+										className="input--grey input"
+										placeholder="Вставьте ссылку из youtube"
+										defaultValue={
+											user?.psychologist?.video
+												? user?.psychologist?.video
+												: 'Видео отсутствует'
+										}
+										readOnly
+									/>
 								</Form.Item>
 							</Col>
 							<Col span={24} style={{ marginLeft: 2 }}>
