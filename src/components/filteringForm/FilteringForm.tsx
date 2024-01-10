@@ -175,8 +175,10 @@ const PsychologistFilterForm = ({
 					style={{ width: '230px' }}
 					placeholder={'Выбрать вид консультации'}
 				>
-					<Option value="solo">Один человек</Option>
+					<Option value="solo">Индивидуальная</Option>
 					<Option value="duo">Вдвоем</Option>
+					<Option value="children">Детская</Option>
+					<Option value="group">Групповая</Option>
 				</Select>
 			</Form.Item>
 
