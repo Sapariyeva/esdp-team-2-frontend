@@ -56,6 +56,10 @@
 			margin: 20px 0 50px 0;
 			width: 363px;
 			font-size: 17px;
+			overflow: hidden;
+			-webkit-line-clamp: 3;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
 		}
 	}
 }

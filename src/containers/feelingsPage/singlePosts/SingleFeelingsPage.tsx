@@ -29,7 +29,7 @@ export const SingleFeelingsPage = () => {
 						<img
 							src={`http://localhost:8000/uploads/${post?.image}`}
 							alt={post?.title}
-							className="feelingPage-block-item-text-image"
+							className="feelingPage-block-item-text-image singlePage-block-item-text"
 						/>
 					</div>
 				</div>

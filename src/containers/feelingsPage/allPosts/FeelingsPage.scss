@@ -32,6 +32,10 @@
 				color: #4a4a4a;
 				margin-top: 20px;
 				width: 424px;
+				overflow: hidden;
+				-webkit-line-clamp: 3;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
 			}
 		}
 	}
