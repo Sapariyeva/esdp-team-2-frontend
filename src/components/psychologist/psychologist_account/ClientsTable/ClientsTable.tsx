@@ -90,7 +90,7 @@ const ClientsTable = () => {
 			title: 'Статус',
 			dataIndex: 'status',
 			className: `${styles.colum}`,
-			render: () => <span>Активный</span>,
+			render: () => <div style={{ wordWrap: 'break-word' }}>Активный</div>,
 		},
 	];
 	const emptyText = 'На текущую дату нет актуальных записей на приём. ';

@@ -7,11 +7,17 @@ import { useGetRecordsActualPsychologists } from '../../../../features/queryHook
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
-import { Space, Table } from 'antd';
+import { Space, Table, Typography } from 'antd';
 import { CiCircleInfo } from 'react-icons/ci';
 import DatePicker from '../../../datePicker/DatePicker.tsx';
 import { useState } from 'react';
+interface ScrollableTextProps {
+	text: string;
+}
 
+const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
+	<div className={styles.scrollableText}>{text}</div>
+);
 const HistoryClients = () => {
 	const currentDate = dayjs().format('YYYY-MM-DD');
 	const [selectDate, setSelectDate] = useState<string>(currentDate);
@@ -84,6 +90,16 @@ const HistoryClients = () => {
 						</Alert>
 					</Space>
 				</>
+			),
+		},
+		{
+			title: 'Комментарий',
+			dataIndex: 'commentPatient',
+			className: `${styles.colum}`,
+			render: (text) => (
+				<Typography.Text ellipsis>
+					<ScrollableText text={text} />
+				</Typography.Text>
 			),
 		},
 		{
