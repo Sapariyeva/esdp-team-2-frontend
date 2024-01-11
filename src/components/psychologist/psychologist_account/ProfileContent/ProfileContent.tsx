@@ -36,10 +36,6 @@ export const Profile = () => {
 		setEditing(true);
 	};
 
-	// const handleCancelEdit = () => {
-	// 	setEditing(false);
-	// };
-
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const { data: techniquesData } = useTechniqueQuery();
