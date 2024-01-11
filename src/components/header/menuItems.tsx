@@ -281,11 +281,6 @@ export const commonItems: MenuProps['items'] = [
 				key: '/psychologists/group-therapy',
 				isLink: true,
 			}),
-			getItem({
-				label: 'Коучи',
-				key: '/psychologists/coaches',
-				isLink: true,
-			}),
 		],
 	}),
 	getItem({
@@ -300,7 +295,7 @@ export const commonItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'чувства',
-		key: '/psychologist/form',
+		key: '/feelings',
 		isLink: true,
 	}),
 	getItem({
@@ -363,7 +358,7 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		icon: <img className={styles.item_icon} src={record} alt="record" />,
 	}),
 	getItem({
-		label: 'История записей',
+		label: 'История клиентов',
 		key: 'history',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
@@ -379,7 +374,7 @@ export const itemsSideBarAdmin: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'Посты',
-		key: 'Посты',
+		key: 'posts',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
 	}),
@@ -391,7 +386,7 @@ export const itemsSideBarAdmin: MenuProps['items'] = [
 		icon: <img className={styles.item_icon} src={record} alt="Therapies" />,
 	}),
 	getItem({
-		label: 'Симтомы',
+		label: 'Симптомы',
 		key: 'symptoms',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={record} alt="symptoms" />,

@@ -3,6 +3,7 @@ import { articles } from '../../mocks/articles.ts';
 import { ArticleCard } from '../../components/article/articleCard/ArticleCard.tsx';
 import styles from './HomePage.module.scss';
 import { Typography, Button } from 'antd';
+import { MainFeelingPage } from '../feelingsPage/mainPage/MainFeelingPage.tsx';
 
 const { Title, Paragraph } = Typography;
 
@@ -52,6 +53,7 @@ export const HomePage = () => {
 				</Button>
 			</div>
 			<ViewedPsychologists />
+			<MainFeelingPage />
 		</div>
 	);
 };

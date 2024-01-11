@@ -10,13 +10,11 @@ const ViewedPsychologists = () => {
 	const { data: viewedPsychologists } = useViewedPsychologists(user);
 
 	return (
-		<div className={styles.container}>
+		<div>
 			{viewedPsychologists && viewedPsychologists.length > 0 ? (
 				<>
 					<Typography>Просмотренные ранее психологи</Typography>
-					<Space
-						style={{ display: 'flex', overflowX: 'auto', whiteSpace: 'nowrap' }}
-					>
+					<Space className={styles.viewedPsychologists}>
 						{viewedPsychologists.map((psychologist) => (
 							<PsychologistCard
 								psychologist={psychologist}

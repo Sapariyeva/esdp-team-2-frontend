@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Header.module.scss';
 import { Menu as AntMenu } from 'antd';
 import {
@@ -12,12 +12,20 @@ import {
 import as from '../../assets/icon/vector.svg';
 import { IUser } from '../../interfaces/IUser.ts';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { useLocation } from 'react-router-dom';
 interface ToolbarProps {
 	isAuthenticated: boolean;
 	user: IUser | null;
 }
 
 export const Header: React.FC<ToolbarProps> = ({ isAuthenticated, user }) => {
+	const [activeTab, setActiveTab] = useState<string>('');
+	const location = useLocation();
+	useEffect(() => {
+		const pathArray = location.pathname.substring(1);
+		setActiveTab(pathArray);
+	}, [location]);
+
 	let menuItems;
 
 	if (isAuthenticated && user) {
@@ -42,13 +50,18 @@ export const Header: React.FC<ToolbarProps> = ({ isAuthenticated, user }) => {
 					className={styles.logoMenu}
 				/>
 				<AntMenu
-					className={styles.menuCommon}
+					className={`${styles.menuCommon} menu-burger`}
 					overflowedIndicator={<RxHamburgerMenu className={styles.burger} />}
 					mode="horizontal"
 					items={commonItems}
 				/>
 			</div>
-			<AntMenu mode="horizontal" items={menuItems} className={styles.menu} />
+			<AntMenu
+				mode="horizontal"
+				selectedKeys={[activeTab]}
+				items={menuItems}
+				className={styles.menu}
+			/>
 		</>
 	);
 };
