@@ -30,6 +30,8 @@ import {
 import AboutModerationModal from '../aboutModerationModal/AboutModerationModal.tsx';
 import infoIcon from '../../../assets/icon/info-circle.svg';
 import Alert from '../../ui/Alert/Alert.tsx';
+import { useAppSelector } from '../../../store/hooks.ts';
+import { RootState } from '../../../store/index.ts';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -54,9 +56,27 @@ export const PsychologistForm = ({
 	therapyMethods,
 	cities,
 }: Props) => {
+	const user = useAppSelector((state: RootState) => state.users.userInfo);
+
 	const [certificateFileList, setCertificateFileList] = useState<UploadFile[]>(
 		[]
 	);
+
+	const handleCancelClick = () => {
+		window.location.reload();
+	};
+
+	function formatDateString(dateString: Date | string | undefined): string {
+		if (!dateString) return '';
+
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+	const formattedBirthday = formatDateString(user?.psychologist?.birthday);
+
 	const handleCertificateChange: UploadProps['onChange'] = ({
 		fileList: newFileList,
 	}) => {
@@ -109,11 +129,23 @@ export const PsychologistForm = ({
 					onFinish={handleSubmit}
 					initialValues={initialValues}
 				>
-					<Title level={3} className="form_title text">
-						Регистрация
-					</Title>
+					{user?.accessToken ? (
+						<div>
+							<Button className="form-edit-btn">Применить</Button>
+							<Button
+								onClick={handleCancelClick}
+								className="form-edit-btn-grey"
+							>
+								Отменить изменения
+							</Button>
+						</div>
+					) : (
+						<Title level={3} className="form_title text">
+							Регистрация
+						</Title>
+					)}
 					<InformationText
-						text="Вся ниже указанная информация будет отображаться в вашей анкете
+						text=" Вся ниже указанная информация будет отображаться в вашей анкете
 				психолога, кроме номера телефона и почты. Адрес, только при выборе
 				работы оффлайн."
 					/>
@@ -142,11 +174,20 @@ export const PsychologistForm = ({
 								}
 								help={getErrorsBy('email')}
 							>
-								<Input
-									className="input--grey input"
-									placeholder="example@gmail.com"
-									size="small"
-								/>
+								{user?.accessToken ? (
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+										defaultValue={user?.email}
+									/>
+								) : (
+									<Input
+										className="input--grey input"
+										placeholder="example@gmail.com"
+										size="small"
+									/>
+								)}
 							</Form.Item>
 						</Col>
 						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
@@ -221,10 +262,19 @@ export const PsychologistForm = ({
 									{ required: true, message: 'Введите имя пользователя' },
 								]}
 							>
-								<Input
-									placeholder="Введите ФИО"
-									className="input--grey input"
-								/>
+								{user?.accessToken ? (
+									<Input
+										className="input--grey input"
+										placeholder="Введите ФИО"
+										size="small"
+										defaultValue={user?.psychologist?.fullName}
+									/>
+								) : (
+									<Input
+										placeholder="Введите ФИО"
+										className="input--grey input"
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -239,18 +289,25 @@ export const PsychologistForm = ({
 								<Select
 									placeholder="Выберите город"
 									style={{ display: 'flex', alignItems: 'center' }}
+									defaultValue={
+										user?.accessToken
+											? user?.psychologist?.city.name
+											: undefined
+									}
 								>
-									{cities && cities.length !== 0 ? (
-										<>
-											{cities.map((city, index) => (
-												<Option key={index} value={city.id} className="option">
+									{user?.accessToken
+										? cities.map((city) => (
+												<Select.Option key={city.id} value={city.id}>
 													{city.name}
-												</Option>
-											))}
-										</>
-									) : (
-										<></>
-									)}
+												</Select.Option>
+												// eslint-disable-next-line no-mixed-spaces-and-tabs
+										  ))
+										: cities.map((city) => (
+												<Select.Option key={city.id} value={city.id}>
+													{city.name}
+												</Select.Option>
+												// eslint-disable-next-line no-mixed-spaces-and-tabs
+										  ))}
 								</Select>
 							</Form.Item>
 						</Col>
@@ -263,6 +320,9 @@ export const PsychologistForm = ({
 								<Select
 									placeholder="Выберите пол"
 									style={{ display: 'flex', alignItems: 'center' }}
+									defaultValue={
+										user?.accessToken ? user?.psychologist?.gender : undefined
+									}
 								>
 									<Option className="option" value="male">
 										Мужской
@@ -279,7 +339,16 @@ export const PsychologistForm = ({
 								name="birthday"
 								rules={[{ required: true, message: 'Введите дату рождения' }]}
 							>
-								<DatePicker placeholder="2023-12-01" />
+								{user?.accessToken ? (
+									<Input
+										className="input--grey input"
+										placeholder="Введите дату"
+										size="small"
+										defaultValue={formattedBirthday}
+									/>
+								) : (
+									<DatePicker placeholder="2023-12-01" />
+								)}
 							</Form.Item>
 						</Col>
 					</Row>
@@ -295,9 +364,13 @@ export const PsychologistForm = ({
 								rules={[{ required: true, message: 'Выберите язык' }]}
 							>
 								<Select
-									placeholder="Выберите язык"
 									mode="multiple"
-									showSearch={false}
+									placeholder="Выберите язык"
+									defaultValue={
+										user?.accessToken
+											? user?.psychologist?.languages
+											: undefined
+									}
 								>
 									<Option className="option" value="kazakh">
 										Казахский
@@ -318,11 +391,21 @@ export const PsychologistForm = ({
 								name="selfTherapy"
 								rules={[{ required: true, message: 'Введите личную терапию' }]}
 							>
-								<InputNumber
-									placeholder="Введите число"
-									className="input--grey input"
-									style={{ width: '100%' }}
-								/>
+								{user?.accessToken ? (
+									<InputNumber
+										className="input--grey input"
+										placeholder="Введите дату"
+										size="small"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.selfTherapy}
+									/>
+								) : (
+									<InputNumber
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 						<Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -334,7 +417,12 @@ export const PsychologistForm = ({
 								<Select
 									mode="multiple"
 									placeholder="Выберите псих-кие техники"
-									showSearch={false}
+									defaultValue={
+										user?.accessToken &&
+										user?.psychologist?.techniques.map(
+											(technique) => technique.name
+										)
+									}
 								>
 									{techniques && techniques.length !== 0 ? (
 										<>
@@ -363,11 +451,21 @@ export const PsychologistForm = ({
 									{ required: true, message: 'Введите свой стаж работы!' },
 								]}
 							>
-								<InputNumber
-									placeholder="Введите число"
-									className="input--grey input"
-									style={{ width: '100%' }}
-								/>
+								{user?.accessToken ? (
+									<InputNumber
+										className="input--grey input"
+										placeholder="Введите число"
+										size="small"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.experienceYears}
+									/>
+								) : (
+									<InputNumber
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -377,12 +475,22 @@ export const PsychologistForm = ({
 								name="cost"
 								rules={[{ required: true, message: 'Введите стоимость!' }]}
 							>
-								<InputNumber
-									prefix="KZT"
-									placeholder="Введите число"
-									className="input--grey input"
-									style={{ width: '100%' }}
-								/>
+								{user?.accessToken ? (
+									<InputNumber
+										prefix="KZT"
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.cost}
+									/>
+								) : (
+									<InputNumber
+										prefix="KZT"
+										placeholder="Введите число"
+										className="input--grey input"
+										style={{ width: '100%' }}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -395,17 +503,22 @@ export const PsychologistForm = ({
 								<Select
 									mode="multiple"
 									placeholder="Выберите методы терапии"
-									showSearch={false}
+									defaultValue={
+										user?.accessToken &&
+										user?.psychologist?.therapyMethods.map(
+											(therapyMethods) => therapyMethods.name
+										)
+									}
 								>
 									{therapyMethods && therapyMethods.length !== 0 ? (
 										<>
-											{therapyMethods.map((method) => (
+											{therapyMethods.map((therapyMethods, index) => (
 												<Option
-													key={method.id}
-													value={method.id}
+													key={index}
+													value={therapyMethods.id}
 													className="option"
 												>
-													{method.name}
+													{therapyMethods.name}
 												</Option>
 											))}
 										</>
@@ -448,9 +561,11 @@ export const PsychologistForm = ({
 								rules={[{ required: true, message: 'Выберите формат приема' }]}
 							>
 								<Select
-									showSearch={false}
 									mode="multiple"
-									placeholder={'Выберите формат'}
+									placeholder="Выберите формат"
+									defaultValue={
+										user?.accessToken ? user?.psychologist?.format : undefined
+									}
 								>
 									<Option value="online" className="option">
 										Онлайн
@@ -470,18 +585,23 @@ export const PsychologistForm = ({
 							>
 								<Select
 									mode="multiple"
-									placeholder="Выберите симптомы"
-									showSearch={false}
+									placeholder="Выберите псих-кие техники"
+									defaultValue={
+										user?.accessToken &&
+										user?.psychologist?.symptoms.map(
+											(symptoms) => symptoms.name
+										)
+									}
 								>
 									{symptoms && symptoms.length !== 0 ? (
 										<>
-											{symptoms.map((symptom) => (
+											{symptoms.map((symptoms, index) => (
 												<Option
-													key={symptom.id}
-													value={symptom.id}
+													key={index}
+													value={symptoms.id}
 													className="option"
 												>
-													{symptom.name}
+													{symptoms.name}
 												</Option>
 											))}
 										</>
@@ -502,10 +622,31 @@ export const PsychologistForm = ({
 								</Alert>
 							</label>
 							<Form.Item name="address">
-								<Input
-									className="input--grey input"
-									placeholder="ул. психолога, д.21"
-								/>
+								{user?.accessToken ? (
+									<>
+										{user.psychologist?.address ? (
+											<Input
+												placeholder="ул. психолога, д.21"
+												className="input--grey input"
+												style={{ width: '100%' }}
+												defaultValue={user?.psychologist?.address}
+											/>
+										) : (
+											<Input
+												placeholder="ул. психолога, д.21"
+												className="input--grey input"
+												style={{ width: '100%' }}
+												defaultValue={'Адрес отсутствует'}
+											/>
+										)}
+									</>
+								) : (
+									<Input
+										placeholder="ул. психолога, д.21"
+										className="input--grey input"
+										style={{ width: '100%' }}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -517,7 +658,15 @@ export const PsychologistForm = ({
 									{ required: true, message: 'Введите вид консультации' },
 								]}
 							>
-								<Select mode="multiple" placeholder="Вид консультации">
+								<Select
+									mode="multiple"
+									placeholder="Вид консультации"
+									defaultValue={
+										user?.accessToken
+											? user?.psychologist?.consultationType
+											: undefined
+									}
+								>
 									<Option value="solo" className="option">
 										Один человек
 									</Option>
@@ -534,10 +683,20 @@ export const PsychologistForm = ({
 								name="education"
 								rules={[{ required: true, message: 'Введите специализацию' }]}
 							>
-								<Input
-									className="input--grey input"
-									placeholder="Клинический психолог, MS. Psychology"
-								/>
+								{user?.accessToken ? (
+									<Input
+										placeholder="Клинический психолог, MS. Psychology"
+										className="input--grey input"
+										style={{ width: '100%' }}
+										defaultValue={user?.psychologist?.education}
+									/>
+								) : (
+									<Input
+										placeholder="Клинический психолог, MS. Psychology"
+										className="input--grey input"
+										style={{ width: '100%' }}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -547,10 +706,19 @@ export const PsychologistForm = ({
 								name="description"
 								rules={[{ required: true, message: 'Введите данные о себе' }]}
 							>
-								<Input.TextArea
-									className="input--grey input text-area"
-									placeholder="Напишите о себе"
-								/>
+								{user?.accessToken ? (
+									<Input.TextArea
+										placeholder="Напишите о себе"
+										className="input--grey input"
+										defaultValue={user?.psychologist?.description}
+										style={{ height: '100px' }}
+									/>
+								) : (
+									<Input.TextArea
+										placeholder="Напишите о себе"
+										className="input--grey input"
+									/>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -566,10 +734,27 @@ export const PsychologistForm = ({
 									{ required: true, message: 'Введите ссылку на видео' },
 								]}
 							>
-								<Input
-									className="input--grey input"
-									placeholder="Вставьте ссылку из youtube"
-								/>
+								{user?.accessToken ? (
+									<>
+										{user.psychologist?.video ? (
+											<Input
+												placeholder="Вставьте ссылку из youtube"
+												className="input--grey input"
+												defaultValue={user?.psychologist?.video}
+											/>
+										) : (
+											<Input
+												className="input--grey input"
+												defaultValue="Видео отсутствует"
+											/>
+										)}
+									</>
+								) : (
+									<Input
+										placeholder="Вставьте ссылку из youtube"
+										className="input--grey input"
+									/>
+								)}
 							</Form.Item>
 						</Col>
 						<Col span={24} style={{ marginLeft: 10 }}>
@@ -626,10 +811,14 @@ export const PsychologistForm = ({
 					</Row>
 
 					<Form.Item wrapperCol={{ span: 24 }}>
-						<Button className="button" htmlType="submit">
-							Отправить на модерацию
-						</Button>
-						<AboutModerationModal />
+						{user?.accessToken ? null : (
+							<>
+								<Button className="button" htmlType="submit">
+									Отправить на модерацию
+								</Button>
+								<AboutModerationModal />
+							</>
+						)}
 					</Form.Item>
 				</Form>
 			</Layout>
