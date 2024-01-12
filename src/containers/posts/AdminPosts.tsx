@@ -207,7 +207,7 @@ export const AdminPost = () => {
 								<img
 									key={`image-${post.id}`}
 									alt={post.title}
-									src={`http://localhost:8000/uploads/${post.image}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${post.image}`}
 									className="posts-block-item-image"
 								/>
 							</Panel>
@@ -228,7 +228,7 @@ export const AdminPost = () => {
 								<img
 									key={`image-${post.id}`}
 									alt={post.title}
-									src={`http://localhost:8000/uploads/${post.image}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${post.image}`}
 									className="posts-block-item-image"
 								/>
 								<br />
