@@ -88,7 +88,7 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 							alt={psychologist.fullName}
 							src={
 								psychologist.photos && psychologist.photos.length > 0
-									? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
+									? `http://${import.meta.env.VITE_API_URL}/uploads/${psychologist.photos[0].photo}`
 									: ''
 							}
 							className={styles.card_img}
