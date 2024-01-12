@@ -22,8 +22,8 @@ jobs:
       - name: Copy Docker Image Archive via SCP
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend.tar.gz"
           target: "/opt"
