@@ -1,28 +1,31 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { message } from 'antd';
+import axios from 'axios';
+import { NavigateFunction } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import axiosInstance from '../../api/axiosInstance';
-import { ITechnique } from '../../interfaces/ITechnique';
-import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
-import { ISymptom } from '../../interfaces/ISymptom';
-import { ICity } from '../../interfaces/IPsychologistForm';
+import { IPatient } from '../../interfaces/IPatient';
+import { IPost } from '../../interfaces/IPost.ts';
 import {
 	IPsychologist,
 	IPsychologistRegisterData,
 	IPsychologistWithLikes,
 } from '../../interfaces/IPsychologist';
-import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
-import { IPatient } from '../../interfaces/IPatient';
-import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
-import { message } from 'antd';
-import { NavigateFunction } from 'react-router-dom';
-import { IRecordPost } from '../../interfaces/IRecordpost';
-import IFilteringValues from '../../interfaces/IFilteringValues';
-import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
+import { ICity } from '../../interfaces/IPsychologistForm';
 import { IRecord } from '../../interfaces/IRecord.ts';
+import { IRecordPost } from '../../interfaces/IRecordpost';
+import { ISymptom } from '../../interfaces/ISymptom';
+import { ITechnique } from '../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
+import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
-import axios from 'axios';
+import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
 import { saveUser } from '../user/userSlice.ts';
-import { Dispatch } from 'redux';
-import { IPost } from '../../interfaces/IPost.ts';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../interfaces/IFilteringValues.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -99,7 +102,9 @@ export const useGetPsychologist = (id: string) => {
 	});
 };
 
-export const useGetPsychologists = (filterValues: IFilteringValues | null) => {
+export const useGetPsychologists = (
+	filterValues: IFilteringValues | null | IFilteringConsultationType
+) => {
 	return useQuery({
 		queryFn: async () => {
 			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
