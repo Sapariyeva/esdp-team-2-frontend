@@ -34,11 +34,11 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 						<Image.PreviewGroup
 							items={psychologist.photos
 								.slice(0, 3)
-								.map((photo) => `http://localhost:8000/uploads/${photo.photo}`)}
+								.map((photo) => `{import.meta.env.VITE_API_URL}/uploads/${photo.photo}`)}
 						>
 							{psychologist.photos[0] && (
 								<Image
-									src={`http://localhost:8000/uploads/${psychologist.photos[0].photo}`}
+									src={`{import.meta.env.VITE_API_URL}/uploads/${psychologist.photos[0].photo}`}
 									alt={psychologist.fullName}
 									className={styles.img_photo}
 								/>
