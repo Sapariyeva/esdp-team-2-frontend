@@ -38,3 +38,4 @@ jobs:
           script: |
             docker load -i /opt/frontend.tar.gz
             rm /opt/frontend.tar.gz
+            docker compose up -d --build
