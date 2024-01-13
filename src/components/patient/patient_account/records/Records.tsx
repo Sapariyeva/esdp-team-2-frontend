@@ -1,4 +1,4 @@
-import { message, Popconfirm, Space, Table } from 'antd';
+import { message, Popconfirm, Space, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { IRecord } from '../../../../interfaces/IRecord.ts';
@@ -30,7 +30,7 @@ const Records = () => {
 		setModalVisible(false);
 	};
 
-	const { data: records = [] } = useGetActualRecordsPatient();
+	const { data: records = [], isLoading } = useGetActualRecordsPatient();
 	const deleteRecord = useDeleteRecord();
 
 	const confirm = (id: number) => {
@@ -65,7 +65,7 @@ const Records = () => {
 			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
-			title: 'Встреча',
+			title: 'Адрес ссессии',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
 			render: (text: string | null | undefined, record) => (
@@ -108,12 +108,24 @@ const Records = () => {
 		{
 			width: 10,
 			render: (_, record) => {
+				const currentTime = new Date();
+				const targetTime = new Date(record.datetime);
+
+				const timeDifference = targetTime.getTime() - currentTime.getTime();
+
 				return (
 					<div className={styles.editor}>
-						<IoSettingsOutline
-							onClick={() => openModal(record)}
-							className={styles.setting}
-						/>
+						{timeDifference < 2 * 60 * 60 * 1000 ? (
+							<IoSettingsOutline
+								className={styles.disable}
+								title="Интервал меньше 2 часов, нельзя открыть"
+							/>
+						) : (
+							<IoSettingsOutline
+								onClick={() => openModal(record)}
+								className={styles.setting}
+							/>
+						)}
 						<Popconfirm
 							rootClassName={styles.popconfirm}
 							icon={
@@ -146,6 +158,10 @@ const Records = () => {
 
 	const emptyText =
 		'Пока что у вас нет активных записей на сеансы. Вы можете записаться на приём, чтобы начать свой путь к психологическому благополучию.';
+
+	if (isLoading) {
+		return <Spin className={styles.spinner} size="large" />;
+	}
 
 	return (
 		<>
