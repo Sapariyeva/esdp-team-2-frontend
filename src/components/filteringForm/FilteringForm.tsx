@@ -1,5 +1,5 @@
 import { Form, Select, Button, Slider } from 'antd';
-import IFilteringValues from '../../interfaces/IFilteringValues';
+import { IFilteringValues } from '../../interfaces/IFilteringValues';
 import { ICity } from '../../interfaces/IPsychologistForm';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
@@ -272,4 +272,3 @@ const PsychologistFilterForm = ({
 };
 
 export default PsychologistFilterForm;
-
