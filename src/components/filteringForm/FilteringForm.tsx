@@ -4,8 +4,9 @@ import { ICity } from '../../interfaces/IPsychologistForm';
 import { ITechnique } from '../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ISymptom } from '../../interfaces/ISymptom';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
+import './FilterForm.scss';
+import filterSvg from '../../assets/icon/filter.svg';
 const { Option } = Select;
 
 interface IFilteringValuesAnt extends Omit<IFilteringValues, 'age'> {
@@ -61,12 +62,17 @@ const PsychologistFilterForm = ({
 	therapyMethods,
 }: Props) => {
 	const [form] = Form.useForm();
+	const [cost, setCost] = useState<number[]>([0, 50000]);
+	const [activeFilter, setActiveFilter] = useState(false);
 
 	useEffect(() => {
 		const savedFormValues = localStorage.getItem('psychologistFilterForm');
 		try {
 			if (savedFormValues) {
-				const parsedFormValues = JSON.parse(savedFormValues);
+				const parsedFormValues = JSON.parse(
+					savedFormValues
+				) as IFilteringValues;
+				parsedFormValues.cost && setCost(parsedFormValues.cost);
 				form.setFieldsValue(parsedFormValues);
 			}
 		} catch (error) {
@@ -79,7 +85,6 @@ const PsychologistFilterForm = ({
 	const onValuesChange = (_: unknown, values: IFilteringValuesAnt) => {
 		localStorage.setItem('psychologistFilterForm', JSON.stringify(values));
 	};
-
 	const onFinish = ({ age, ...restValues }: IFilteringValuesAnt) => {
 		const filteredValues: IFilteringValues = {
 			...restValues,
@@ -95,186 +100,174 @@ const PsychologistFilterForm = ({
 	};
 
 	return (
-		<Form
-			form={form}
-			name="psychologistFilter"
-			onFinish={onFinish}
-			initialValues={initialValues}
-			onValuesChange={onValuesChange}
-			style={{
-				display: 'flex',
-				flexDirection: 'row',
-				gap: '10px',
-				flexWrap: 'wrap',
-			}}
-		>
-			<Form.Item name="gender">
-				<Select
-					style={{ width: '130px' }}
-					placeholder={'Выбрать пол'}
-					allowClear
+		<div className="filter">
+			<div className={'mobile'}>
+				<Button
+					className="btn"
+					onClick={() => setActiveFilter((prev) => !prev)}
 				>
-					<Option value="male">Мужской</Option>
-					<Option value="female">Женский</Option>
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="age">
-				<Select
-					style={{ width: '160px' }}
-					placeholder={'Выбрать возраст'}
-					allowClear
-				>
-					{Object.entries(ageMappings).map(([key, { name }]) => (
-						<Option key={key} value={key}>
-							{name}
-						</Option>
-					))}
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="languages">
-				<Select
-					style={{ width: '140px' }}
-					placeholder={'Выбрать язык'}
-					allowClear
-				>
-					<Option value="kazakh">Казахский</Option>
-					<Option value="russian">Русский</Option>
-					<Option value="english">Английский</Option>
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="format">
-				<Select
-					allowClear
-					style={{ width: '220px' }}
-					placeholder={'Выбрать формат приёма'}
-				>
-					<Option value="online">Онлайн</Option>
-					<Option value="offline">Оффлайн</Option>
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="cost" label="Ценовой диапазон">
-				<Slider
-					style={{ width: '200px' }}
-					range
-					max={50000}
-					onChange={(value) => form.setFieldsValue({ cost: value })}
-				/>
-			</Form.Item>
-
-			<Form.Item name="consultationType">
-				<Select
-					allowClear
-					style={{ width: '230px' }}
-					placeholder={'Выбрать вид консультации'}
-				>
-					<Option value="solo">Один человек</Option>
-					<Option value="duo">Вдвоем</Option>
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="lgbt">
-				<Select
-					style={{ width: '200px' }}
-					placeholder={'Опыт работы с lgbt'}
-					allowClear
-				>
-					<Option value={false}>Нет</Option>
-					<Option value={true}>Да</Option>
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="cityId">
-				<Select
-					placeholder={'Выбрать город'}
-					style={{ width: '150px' }}
-					allowClear
-				>
-					{cities && cities.length !== 0 ? (
-						<>
-							{cities.map((city) => (
-								<Option key={city.id} value={city.id}>
-									{city.name}
-								</Option>
-							))}
-						</>
-					) : (
-						<></>
-					)}
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="techniqueIds">
-				<Select
-					mode="multiple"
-					placeholder={'Выбрать психологические техники'}
-					style={{ width: '300px' }}
-				>
-					{techniques && techniques.length !== 0 ? (
-						<>
-							{techniques.map((technique) => (
-								<Option key={technique.id} value={technique.id}>
-									{technique.name}
-								</Option>
-							))}
-						</>
-					) : (
-						<></>
-					)}
-				</Select>
-			</Form.Item>
-			<Form.Item name="therapyMethodIds">
-				<Select
-					mode="multiple"
-					placeholder={'Выбрать методы терапии'}
-					style={{ width: '300px' }}
-				>
-					{therapyMethods && therapyMethods.length !== 0 ? (
-						<>
-							{therapyMethods.map((method) => (
-								<Option key={method.id} value={method.id}>
-									{method.name}
-								</Option>
-							))}
-						</>
-					) : (
-						<></>
-					)}
-				</Select>
-			</Form.Item>
-
-			<Form.Item name="symptomIds">
-				<Select
-					mode="multiple"
-					placeholder={'Выбрать симптомы'}
-					style={{ width: '200px' }}
-				>
-					{symptoms && symptoms.length !== 0 ? (
-						<>
-							{symptoms.map((symptom) => (
-								<Option key={symptom.id} value={symptom.id}>
-									{symptom.name}
-								</Option>
-							))}
-						</>
-					) : (
-						<></>
-					)}
-				</Select>
-			</Form.Item>
-
-			<Form.Item>
-				<Button type="primary" htmlType="submit">
-					Показать психологов
+					<span>Фильтры</span>
+					<img src={filterSvg} alt="filter" />
 				</Button>
-			</Form.Item>
-			<Form.Item>
-				<Button onClick={handleClearFilters}>Очистить фильтры</Button>
-			</Form.Item>
-		</Form>
+				<Button className="mobile-reset" onClick={handleClearFilters}>
+					сбросить все
+				</Button>
+			</div>
+			<Form
+				form={form}
+				name="psychologistFilter"
+				onFinish={onFinish}
+				className={`form ${activeFilter && 'active'}`}
+				initialValues={initialValues}
+				onValuesChange={onValuesChange}
+			>
+				<Form.Item name="format">
+					<Select allowClear placeholder={'Формат приёма'}>
+						<Option value="online">Онлайн</Option>
+						<Option value="offline">Оффлайн</Option>
+					</Select>
+				</Form.Item>
+				<Form.Item name="consultationType">
+					<Select allowClear placeholder={'Вид консультации'}>
+						<Option value="solo">Один человек</Option>
+						<Option value="duo">Вдвоем</Option>
+					</Select>
+				</Form.Item>
+				<Form.Item name="therapyMethodIds">
+					<Select
+						mode="multiple"
+						placeholder={'Методы терапии'}
+						style={{ minWidth: '160px', maxWidth: '360px', height: 30 }}
+					>
+						{therapyMethods && therapyMethods.length !== 0 ? (
+							<>
+								{therapyMethods.map((method) => (
+									<Option key={method.id} value={method.id}>
+										{method.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
+				</Form.Item>
+				<Form.Item name="techniqueIds">
+					<Select
+						mode="multiple"
+						placeholder={'Психологические техники'}
+						style={{ minWidth: '225px', maxWidth: '360px', height: 30 }}
+					>
+						{techniques && techniques.length !== 0 ? (
+							<>
+								{techniques.map((technique) => (
+									<Option key={technique.id} value={technique.id}>
+										{technique.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
+				</Form.Item>
+				<Form.Item name="symptomIds">
+					<Select
+						mode="multiple"
+						placeholder={'Симптомы'}
+						style={{ maxWidth: '360px', minWidth: '120px', height: 30 }}
+					>
+						{symptoms && symptoms.length !== 0 && (
+							<>
+								{symptoms.map((symptom) => (
+									<Option key={symptom.id} value={symptom.id}>
+										{symptom.name}
+									</Option>
+								))}
+							</>
+						)}
+					</Select>
+				</Form.Item>
+				<Form.Item name="languages">
+					<Select
+						dropdownStyle={{ width: 120 }}
+						placeholder={'Язык'}
+						allowClear
+					>
+						<Option value="kazakh">Казахский</Option>
+						<Option value="russian">Русский</Option>
+						<Option value="english">Английский</Option>
+					</Select>
+				</Form.Item>
+				<Form.Item name="cityId">
+					<Select
+						dropdownStyle={{ width: 120 }}
+						placeholder={'Город'}
+						allowClear
+					>
+						{cities && cities.length !== 0 ? (
+							<>
+								{cities.map((city) => (
+									<Option key={city.id} value={city.id}>
+										{city.name}
+									</Option>
+								))}
+							</>
+						) : (
+							<></>
+						)}
+					</Select>
+				</Form.Item>
+				<Form.Item name="age">
+					<Select placeholder={'Возраст психолога'} allowClear>
+						{Object.entries(ageMappings).map(([key, { name }]) => (
+							<Option key={key} value={key}>
+								{name}
+							</Option>
+						))}
+					</Select>
+				</Form.Item>
+				<Form.Item name="gender">
+					<Select dropdownStyle={{ width: 120 }} placeholder={'Пол'} allowClear>
+						<Option value="male">Мужской</Option>
+						<Option value="female">Женский</Option>
+					</Select>
+				</Form.Item>
+				<Form.Item name="lgbt">
+					<Select placeholder={'Опыт работы с lgbt'} allowClear>
+						<Option value={false}>Нет</Option>
+						<Option value={true}>Да</Option>
+					</Select>
+				</Form.Item>
+				<div className={'cost'}>
+					<span>{cost[0].toLocaleString()} ₸</span>
+					<Form.Item className={'costSlider'} name="cost">
+						<Slider
+							style={{ width: 120 }}
+							value={cost}
+							range
+							max={50000}
+							onChange={(value) => {
+								onValuesChange('', { cost: value });
+								form.setFieldsValue({ cost: value });
+								setCost(value);
+							}}
+						/>
+					</Form.Item>
+					<span>{cost[1].toLocaleString()} ₸</span>
+				</div>
+				<Form.Item>
+					<Button className={'btn-ok'} type="primary" htmlType="submit">
+						применить
+					</Button>
+				</Form.Item>
+				<Form.Item className="active">
+					<Button className="reset" onClick={handleClearFilters}>
+						сбросить все
+					</Button>
+				</Form.Item>
+			</Form>
+		</div>
 	);
 };
 

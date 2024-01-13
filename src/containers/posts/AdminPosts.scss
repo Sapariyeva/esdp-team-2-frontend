@@ -16,3 +16,12 @@
 	min-height: 350px;
 }
 
+.spinner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40svh;
+	@media (max-width: 950px) {
+		height: 60svh;
+	}
+}

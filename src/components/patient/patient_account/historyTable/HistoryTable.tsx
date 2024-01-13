@@ -10,7 +10,7 @@ import Alert from '../../../ui/Alert/Alert.tsx';
 import { CiCircleInfo } from 'react-icons/ci';
 
 const HistoryTable = () => {
-	const { data: history = [], isPending = [] } = useGetRecordsHistoryPatient();
+	const { data: history = [], isLoading = [] } = useGetRecordsHistoryPatient();
 
 	const dataSourceWithKeysFalse = history.map((item) => {
 		return {
@@ -28,7 +28,7 @@ const HistoryTable = () => {
 			render: (text, history) => (
 				<Link
 					className={styles.colum}
-					to={`/some-link/${history.psychologistName}`}
+					to={`/psychologists/${history.psychologistId}`}
 				>
 					{text}
 				</Link>
@@ -41,17 +41,17 @@ const HistoryTable = () => {
 			render: (text) => <>{text.toLocaleString()} ₸</>,
 		},
 		{
-			title: 'Встреча',
+			title: 'Адрес ссессии',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
-			render: (text, history) => (
+			render: (text: string | null | undefined, record) => (
 				<>
-					{text ? (
+					{text !== null && text !== undefined ? (
 						<span>{text}</span>
 					) : (
-						<Link className={styles.colum} to={`/some-link/${history.address}`}>
+						<a href={record.broadcast} className={styles.colum}>
 							Ссылка
-						</Link>
+						</a>
 					)}
 				</>
 			),
@@ -108,22 +108,20 @@ const HistoryTable = () => {
 	const emptyText =
 		'В настоящее время у вас нет истории записей о предыдущих консультациях с нашими специалистами. ';
 
+	if (isLoading) {
+		return <Spin className={styles.spinner} size="large" />;
+	}
+
 	return (
 		<>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Table
-						rowClassName={styles.row}
-						columns={columns}
-						dataSource={dataSourceWithKeysFalse}
-						locale={{ emptyText }}
-						virtual={false}
-						pagination={{ position: ['none'] }}
-					/>
-				</>
-			)}
+			<Table
+				rowClassName={styles.row}
+				columns={columns}
+				dataSource={dataSourceWithKeysFalse}
+				locale={{ emptyText }}
+				virtual={false}
+				pagination={{ position: ['none'] }}
+			/>
 		</>
 	);
 };

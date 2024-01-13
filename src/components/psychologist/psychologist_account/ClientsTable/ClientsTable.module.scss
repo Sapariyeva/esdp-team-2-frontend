@@ -103,3 +103,12 @@
 	background-color: #fff !important;
 	overflow: scroll;
 }
+.spinner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 25svh;
+	@media (max-width: 950px) {
+		height: 60svh;
+	}
+}

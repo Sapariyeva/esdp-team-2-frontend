@@ -6,11 +6,20 @@
 	&-text {
 		height: 80px !important;
 	}
-    &-textarea{
-        resize: none !important;
-    }
+	&-textarea {
+		resize: none !important;
+	}
 }
 .technique-block-text {
 	width: 546px;
 	margin-bottom: 30px;
+}
+.spinner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40svh;
+	@media (max-width: 950px) {
+		height: 60svh;
+	}
 }

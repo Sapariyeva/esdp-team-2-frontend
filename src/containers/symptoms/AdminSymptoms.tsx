@@ -12,7 +12,7 @@ import '../technique/AdminTechniques.scss';
 const { Panel } = Collapse;
 
 export const AdminSymptoms = () => {
-	const { data: symptoms = [], isPending, refetch } = useGetAllSymptoms();
+	const { data: symptoms = [], isLoading, refetch } = useGetAllSymptoms();
 	const { mutate: editSymptom } = useEditSymptom();
 	const { mutate: postSymptom } = usePostOneSymptom();
 	const { mutate: deleteSymptom } = useDeleteSymptom();
@@ -174,20 +174,19 @@ export const AdminSymptoms = () => {
 		},
 	];
 
+	if (isLoading) {
+		return <Spin className={'spinner'} size="large" />;
+	}
 	return (
 		<div key={renderKey}>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Tabs
-						activeKey={activeTabKey}
-						defaultActiveKey="1"
-						items={items}
-						onChange={(key) => setActiveTabKey(key)}
-					/>
-				</>
-			)}
+			<>
+				<Tabs
+					activeKey={activeTabKey}
+					defaultActiveKey="1"
+					items={items}
+					onChange={(key) => setActiveTabKey(key)}
+				/>
+			</>
 		</div>
 	);
 };
