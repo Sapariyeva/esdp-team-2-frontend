@@ -1,4 +1,4 @@
-import { Empty, Typography } from 'antd';
+import { Typography } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
@@ -8,6 +8,7 @@ import { ICity } from '../../../interfaces/IPsychologistForm';
 import { ISymptom } from '../../../interfaces/ISymptom';
 import { ITechnique } from '../../../interfaces/ITechnique';
 import { ITherapyMethod } from '../../../interfaces/ITherapyMethod';
+import Empty from '../../ui/Empty/Empty.tsx';
 
 type Props = {
 	psychologists: IPsychologistWithLikes[];
@@ -53,7 +54,7 @@ export const PsychologistsList = ({
 					</div>
 				</>
 			) : (
-				<Empty description="No psychologists found" />
+				<Empty />
 			)}
 		</div>
 	);

@@ -1,5 +1,4 @@
 import { ColumnsType } from 'antd/es/table';
-
 import 'dayjs/locale/ru';
 import styles from '../ClientsTable/ClientsTable.module.scss';
 import { useGetRecordsActualPsychologists } from '../../../../features/queryHooks/queryHooks';
