@@ -2,45 +2,26 @@
 	.active {
 		display: flex !important;
 	}
+
 	.form {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 10px;
+
 		@media (max-width: 800px) {
 			display: none;
 			flex-direction: column;
 			margin-bottom: -80px;
+		}
 
-			:where(.css-dev-only-do-not-override-14y1bzh).ant-form:not(
-					.ant-form-inline
-				)
-				.ant-form-item {
-				margin-bottom: 10px !important;
-			}
-		}
-		:where(.css-dev-only-do-not-override-14y1bzh).ant-select .ant-select-arrow {
-			top: 26px !important;
-		}
-		.ant-select-dropdown {
-			display: none;
-			width: 200px !important;
-		}
-		.ant-select-show-search:where(
-				.css-dev-only-do-not-override-14y1bzh
-			).ant-select:not(.ant-select-customize-input)
-			.ant-select-selector {
+		.ant-select-selector {
 			cursor: text;
-		}
-		:where(.css-dev-only-do-not-override-14y1bzh).ant-select:not(
-				.ant-select-customize-input
-			)
-			.ant-select-selector {
 			font-family: Montserrat;
 			display: flex;
 			align-items: center;
 			font-size: 13px;
 			height: 50px !important;
-			border-radius: 20px;
+			border-radius: 20px !important;
 			padding: 5px 18px !important;
 			position: relative;
 			background-color: #ffffff;
@@ -49,10 +30,26 @@
 			overflow: scroll;
 			transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 		}
-		:where(.css-dev-only-do-not-override-14y1bzh).ant-select .ant-select-clear {
+
+		.ant-form:not(.ant-form-inline) .ant-form-item {
+			margin-bottom: 10px !important;
+		}
+
+		.ant-select .ant-select-arrow {
 			top: 26px !important;
 		}
+
+		.ant-select-dropdown {
+			display: none;
+			width: 200px !important;
+		}
+
+		.ant-select .ant-select-clear {
+			top: 26px !important;
+		}
+
 		.ant-select-selection-search {
+			cursor: pointer;
 			display: none;
 		}
 
@@ -63,16 +60,18 @@
 			align-items: center;
 			width: 300px !important;
 			height: 50px !important;
-			border-radius: 20px;
+			border-radius: 20px !important;
 			padding: 8px 10px !important;
 			background-color: #ffffff;
 			font-size: 14px !important;
-			font-family: Montserrat, sans-serif !important ;
+			font-family: Montserrat, sans-serif !important;
 			color: #4a4a4a;
+
 			@media (max-width: 800px) {
 				width: 100% !important;
 			}
 		}
+
 		.ant-form-item-control-input {
 			top: 13px !important;
 		}
@@ -85,11 +84,13 @@
 			color: #fff;
 			padding: 0 50px;
 			background-color: #9f67fd;
+
 			@media (max-width: 800px) {
 				width: 100%;
 			}
 		}
 	}
+
 	.reset {
 		font-family: Montserrat;
 		border-radius: 20px;
@@ -98,13 +99,16 @@
 		border: none !important;
 		padding: 0 50px;
 		background-color: #ededed;
+
 		&:hover {
 			color: #9f9f9f !important;
 		}
+
 		@media (max-width: 800px) {
 			display: none;
 		}
 	}
+
 	.mobile-reset {
 		font-family: Montserrat;
 		border-radius: 20px;
@@ -113,6 +117,7 @@
 		border: none !important;
 		padding: 0 50px;
 		background-color: #ededed;
+
 		&:hover {
 			color: #9f9f9f !important;
 		}
@@ -123,9 +128,11 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 10px;
+
 		@media (min-width: 800px) {
 			display: none;
 		}
+
 		.select_mobile {
 			max-width: 360px !important;
 		}
