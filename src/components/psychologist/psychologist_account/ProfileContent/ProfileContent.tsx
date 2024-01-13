@@ -1,23 +1,22 @@
-import { Button, Typography, Tag, Row, Col, UploadFile } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Col, Image, Row, Tag, Typography, UploadFile } from 'antd';
+import { useState } from 'react';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
-import './ProfileContent.scss';
-import { useState } from 'react';
-import { ITechnique } from '../../../../interfaces/ITechnique';
-import { ISymptom } from '../../../../interfaces/ISymptom';
-import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Image } from 'antd';
+import axiosInstance from '../../../../api/axiosInstance.ts';
 import { IPsychologist } from '../../../../interfaces/IPsychologist';
 import { ICity } from '../../../../interfaces/IPsychologistForm';
+import { ISymptom } from '../../../../interfaces/ISymptom';
+import { ITechnique } from '../../../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
+import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
+import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
 import {
 	EditProfileModal,
 	ModalFormState,
 } from '../EditProfileModal/EditProfileModal';
-import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
-import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
-import axiosInstance from '../../../../api/axiosInstance.ts';
+import './ProfileContent.scss';
 
 export interface photoCreate {
 	photos: {
@@ -279,22 +278,7 @@ const Profile = () => {
 					<Typography.Paragraph className="paragraph">
 						<strong>Самотерапия:</strong> {psychologist.selfTherapy}
 					</Typography.Paragraph>
-					{psychologist.therapyMethod &&
-						psychologist.therapyMethod.length > 0 && (
-							<>
-								<Typography.Title level={5}>Методы</Typography.Title>
-								{psychologist.therapyMethod.map(
-									(therapyMethods: ITherapyMethod) => (
-										<Typography.Paragraph
-											key={therapyMethods.id}
-											className="therapyMethod"
-										>
-											{therapyMethods.name}
-										</Typography.Paragraph>
-									)
-								)}
-							</>
-						)}
+
 					{psychologist.techniques && psychologist.techniques.length > 0 && (
 						<>
 							<Typography.Title level={5}>

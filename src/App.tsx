@@ -35,10 +35,13 @@ import ResetPassword from './containers/auth/resetPassword/ResetPassword.tsx';
 import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
 import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
 import { HomePage } from './containers/homePage/HomePage.tsx';
+import { ConsultationTypePsychologists } from './containers/psychologists/catalog/ConsultationTypePsychologists.tsx';
 import HistoryClients from './components/psychologist/psychologist_account/HistoryClients/HistoryClients.tsx';
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
 import { Method } from './components/admin/method/Method.tsx';
+import { Feelings } from './components/feelings/Feelings.tsx';
+import { SingleFeelingsPage } from './containers/feelingsPage/singlePosts/SingleFeelingsPage.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -87,11 +90,36 @@ const App = () => {
 								element={<PsychologistsListContainer />}
 							/>
 							<Route
+								path="/psychologists/family"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'duo' }}
+									/>
+								}
+							/>
+							<Route
+								path="/psychologists/children"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'children' }}
+									/>
+								}
+							/>
+							<Route
+								path="/psychologists/group-therapy"
+								element={
+									<ConsultationTypePsychologists
+										filterValue={{ consultationType: 'group' }}
+									/>
+								}
+							/>
+							<Route
 								path="/psychologists/:id"
 								element={<PsychologistDetailedProfileContainer />}
 							/>
-
 							<Route path="/business" element={<BusinessPage />} />
+							<Route path="/feelings" element={<Feelings />} />
+							<Route path="/feelings/:id" element={<SingleFeelingsPage />} />
 							<Route path="/articles" element={<ArticlePageContainer />} />
 							<Route
 								path="/articles/:id"
