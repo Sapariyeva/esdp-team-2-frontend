@@ -248,7 +248,7 @@ export const useGetUpcomingRecordings = (psychologistId: number) => {
 		queryKey: ['getAppointmentsDay'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
-				`appointments/nearest/${psychologistId}`
+				`/appointments/nearest/${psychologistId}`
 			);
 			return response.data;
 		},

@@ -23,7 +23,7 @@ import { UploadOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
 
 export const AdminPost = () => {
-	const { data: posts = [], isPending, refetch } = useGetAllPosts();
+	const { data: posts = [], isLoading, refetch } = useGetAllPosts();
 	const { mutate: editText } = usePostEditText();
 	const { mutate: editPhoto } = usePostEditPhoto();
 	const { mutate: postPosts } = usePostOnePosts();
@@ -302,20 +302,17 @@ export const AdminPost = () => {
 		},
 	];
 
+	if (isLoading) {
+		return <Spin className={'spinner'} size="large" />;
+	}
 	return (
 		<div key={renderKey}>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Tabs
-						activeKey={activeTabKey}
-						defaultActiveKey="1"
-						items={items}
-						onChange={(key) => setActiveTabKey(key)}
-					/>
-				</>
-			)}
+			<Tabs
+				activeKey={activeTabKey}
+				defaultActiveKey="1"
+				items={items}
+				onChange={(key) => setActiveTabKey(key)}
+			/>
 		</div>
 	);
 };

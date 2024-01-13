@@ -1,6 +1,6 @@
 import { PsychologistsList } from '../../../components/psychologists/psychologistList/PsychologistsList';
 import { useState } from 'react';
-import { Alert } from 'antd';
+import { Alert, Spin } from 'antd';
 import { AxiosError } from 'axios';
 import { useAppSelector } from '../../../store/hooks';
 import {
@@ -56,9 +56,18 @@ export const PsychologistsListContainer = () => {
 	) => {
 		setFilterValues(values);
 	};
-
 	if (isLoading) {
-		return <div>LOADING...</div>;
+		return (
+			<Spin
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					height: '83svh',
+				}}
+				size="large"
+			/>
+		);
 	}
 
 	return (

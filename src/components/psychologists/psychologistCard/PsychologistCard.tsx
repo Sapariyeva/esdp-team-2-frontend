@@ -151,7 +151,9 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 									? `${psychologist.description.slice(0, 80)}...`
 									: psychologist.description}
 							</p>
-							<p className={styles.cost}>{`${psychologist.cost} тг`}</p>
+							<p
+								className={styles.cost}
+							>{`${psychologist.cost.toLocaleString()} тг`}</p>
 						</>
 					}
 				/>
