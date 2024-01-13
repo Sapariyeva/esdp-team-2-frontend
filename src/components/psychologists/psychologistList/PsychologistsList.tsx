@@ -1,4 +1,4 @@
-import { Empty, Space, Typography } from 'antd';
+import { Empty, Typography } from 'antd';
 import styles from './PsychologistsList.module.scss';
 import { PsychologistCard } from '../psychologistCard/PsychologistCard';
 import { IPsychologistWithLikes } from '../../../interfaces/IPsychologist';
@@ -39,8 +39,10 @@ export const PsychologistsList = ({
 			/>
 			{psychologists.length > 0 ? (
 				<>
-					<Typography>Найдено {psychologists.length} психологов</Typography>
-					<Space className={styles.list}>
+					<Typography className={styles.count}>
+						{psychologists.length} психологов
+					</Typography>
+					<div className={styles.list}>
 						{psychologists.map((psychologist) => (
 							<PsychologistCard
 								psychologist={psychologist}
@@ -48,7 +50,7 @@ export const PsychologistsList = ({
 								key={psychologist.id}
 							/>
 						))}
-					</Space>
+					</div>
 				</>
 			) : (
 				<Empty description="No psychologists found" />
