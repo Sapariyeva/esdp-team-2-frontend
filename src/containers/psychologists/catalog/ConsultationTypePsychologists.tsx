@@ -18,12 +18,11 @@ export const ConsultationTypePsychologists = ({ filterValue }: Props) => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
 
 	const {
-		data: psychologists,
+		data: psychologistsList = [],
 		error,
 		isLoading,
 	} = useGetPsychologists(filterValue);
 
-	const psychologistsList = psychologists ?? [];
 	const { mutate: switchFavoriteQuery } = useSwitchFavourite();
 
 	const switchFavorite = (id: number): boolean => {
