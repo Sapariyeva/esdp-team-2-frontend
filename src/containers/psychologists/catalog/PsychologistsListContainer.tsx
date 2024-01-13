@@ -63,7 +63,7 @@ export const PsychologistsListContainer = () => {
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
-					height: '60svh',
+					height: '83svh',
 				}}
 				size="large"
 			/>
