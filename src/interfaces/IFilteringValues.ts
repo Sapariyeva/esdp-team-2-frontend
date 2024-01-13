@@ -1,10 +1,10 @@
-interface IFilteringValues {
+export interface IFilteringValues {
 	gender?: 'male' | 'female';
 	age?: number | number[];
 	languages?: 'kazakh' | 'russian' | 'english';
 	format?: 'online' | 'offline';
 	cost?: number[];
-	consultationType?: 'solo' | 'duo';
+	consultationType?: IFilteringConsultationType;
 	lgbt?: boolean;
 	cityId?: number;
 	symptomIds?: number[];
@@ -12,4 +12,8 @@ interface IFilteringValues {
 	techniqueIds?: number[];
 }
 
-export default IFilteringValues;
+export type IFilteringConsultationType = 'solo' | 'duo' | 'children' | 'group';
+
+export interface IConsultationTypeValue {
+	consultationType?: IFilteringConsultationType;
+}

@@ -12,32 +12,12 @@ import Empty from '../../ui/Empty/Empty.tsx';
 
 type Props = {
 	psychologists: IPsychologistWithLikes[];
-	filterHandler: (values: IFilteringValues) => void;
-	cities: ICity[];
-	symptoms: ISymptom[];
-	techniques: ITechnique[];
-	therapyMethod: ITherapyMethod[];
 	switchFavorite: (id: number) => boolean;
 };
 
-export const PsychologistsList = ({
-	psychologists,
-	filterHandler,
-	cities,
-	symptoms,
-	techniques,
-	therapyMethod,
-	switchFavorite,
-}: Props) => {
+export const PsychologistsList = ({ psychologists, switchFavorite }: Props) => {
 	return (
 		<div className={styles.container}>
-			<PsychologistFilterForm
-				onFilter={filterHandler}
-				cities={cities}
-				symptoms={symptoms}
-				techniques={techniques}
-				therapyMethods={therapyMethod}
-			/>
 			{psychologists.length > 0 ? (
 				<>
 					<Typography className={styles.count}>

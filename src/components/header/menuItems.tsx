@@ -281,11 +281,6 @@ export const commonItems: MenuProps['items'] = [
 				key: '/psychologists/group-therapy',
 				isLink: true,
 			}),
-			getItem({
-				label: 'Коучи',
-				key: '/psychologists/coaches',
-				isLink: true,
-			}),
 		],
 	}),
 	getItem({
@@ -300,7 +295,7 @@ export const commonItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'чувства',
-		key: '/psychologist/form',
+		key: '/feelings',
 		isLink: true,
 	}),
 	getItem({

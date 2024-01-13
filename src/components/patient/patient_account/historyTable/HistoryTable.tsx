@@ -1,13 +1,20 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { Space, Spin, Table } from 'antd';
+import { Space, Spin, Table, Typography } from 'antd';
 import styles from '../records/Record.module.scss';
 import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
-
 import { CiCircleInfo } from 'react-icons/ci';
+
+interface ScrollableTextProps {
+	text: string;
+}
+
+const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
+	<div className={styles.scrollableText}>{text}</div>
+);
 
 const HistoryTable = () => {
 	const { data: history = [], isLoading = [] } = useGetRecordsHistoryPatient();
@@ -25,8 +32,10 @@ const HistoryTable = () => {
 			dataIndex: 'psychologistName',
 			width: 90,
 			className: `${styles.colum}`,
+			align: 'center',
 			render: (text, history) => (
 				<Link
+					style={{ textAlign: 'center' }}
 					className={styles.colum}
 					to={`/psychologists/${history.psychologistId}`}
 				>
@@ -38,7 +47,10 @@ const HistoryTable = () => {
 			title: 'Цена',
 			dataIndex: 'cost',
 			className: `${styles.colum}`,
-			render: (text) => <>{text.toLocaleString()} ₸</>,
+			align: 'center',
+			render: (text) => (
+				<div style={{ textAlign: 'center' }}>{text.toLocaleString()} ₸</div>
+			),
 		},
 		{
 			title: 'Адрес ссессии',
@@ -60,12 +72,14 @@ const HistoryTable = () => {
 			title: 'Дата',
 			dataIndex: 'datetime',
 			className: `${styles.colum}`,
+			align: 'center',
 			render: (text) => <>{dayjs(text).format('YYYY-MM-DD')}</>,
 		},
 		{
 			title: 'Время',
 			dataIndex: 'datetime',
 			className: `${styles.colum}`,
+			align: 'center',
 			render: (text) => (
 				<>
 					<Space className={styles.info_container}>
@@ -82,9 +96,22 @@ const HistoryTable = () => {
 			),
 		},
 		{
+			title: 'Комментарий',
+			dataIndex: 'commentPsychologist',
+			className: `${styles.colum}`,
+			align: 'center',
+			ellipsis: true,
+			render: (text) => (
+				<Typography.Text ellipsis>
+					<ScrollableText text={text} />
+				</Typography.Text>
+			),
+		},
+		{
 			title: 'Статус',
 			dataIndex: 'status',
 			className: `${styles.colum}`,
+			align: 'center',
 			render: (text) => {
 				let statusLabel = '';
 				switch (text) {

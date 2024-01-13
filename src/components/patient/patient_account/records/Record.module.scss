@@ -3,6 +3,7 @@
 	color: #2e2e2e;
 	font-size: 14px;
 	min-width: 120px;
+	vertical-align: middle; 
 
 	:nth-last-child(2) {
 		width: 16px !important;
@@ -10,6 +11,25 @@
 }
 .colum::before {
 	visibility: hidden;
+}
+
+.scrollableText {
+	max-height: 70px;
+	max-width: 100px;
+	overflow: auto;
+	white-space: pre-line;
+
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: #4caf50;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: #eaeaea;
+	}
 }
 
 .svg {
