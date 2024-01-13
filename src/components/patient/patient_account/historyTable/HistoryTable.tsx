@@ -17,7 +17,7 @@ const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
 );
 
 const HistoryTable = () => {
-	const { data: history = [], isPending = [] } = useGetRecordsHistoryPatient();
+	const { data: history = [], isLoading = [] } = useGetRecordsHistoryPatient();
 
 	const dataSourceWithKeysFalse = history.map((item) => {
 		return {
@@ -37,7 +37,7 @@ const HistoryTable = () => {
 				<Link
 					style={{ textAlign: 'center' }}
 					className={styles.colum}
-					to={`/some-link/${history.psychologistName}`}
+					to={`/psychologists/${history.psychologistId}`}
 				>
 					{text}
 				</Link>
@@ -53,18 +53,17 @@ const HistoryTable = () => {
 			),
 		},
 		{
-			title: 'Встреча',
+			title: 'Адрес ссессии',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
-			align: 'center',
-			render: (text, history) => (
+			render: (text: string | null | undefined, record) => (
 				<>
-					{text ? (
+					{text !== null && text !== undefined ? (
 						<span>{text}</span>
 					) : (
-						<Link className={styles.colum} to={`/some-link/${history.address}`}>
+						<a href={record.broadcast} className={styles.colum}>
 							Ссылка
-						</Link>
+						</a>
 					)}
 				</>
 			),
@@ -136,22 +135,20 @@ const HistoryTable = () => {
 	const emptyText =
 		'В настоящее время у вас нет истории записей о предыдущих консультациях с нашими специалистами. ';
 
+	if (isLoading) {
+		return <Spin className={styles.spinner} size="large" />;
+	}
+
 	return (
 		<>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Table
-						rowClassName={styles.row}
-						columns={columns}
-						dataSource={dataSourceWithKeysFalse}
-						locale={{ emptyText }}
-						virtual={false}
-						pagination={{ position: ['none'] }}
-					/>
-				</>
-			)}
+			<Table
+				rowClassName={styles.row}
+				columns={columns}
+				dataSource={dataSourceWithKeysFalse}
+				locale={{ emptyText }}
+				virtual={false}
+				pagination={{ position: ['none'] }}
+			/>
 		</>
 	);
 };

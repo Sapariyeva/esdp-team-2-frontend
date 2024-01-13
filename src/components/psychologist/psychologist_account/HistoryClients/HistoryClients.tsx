@@ -1,30 +1,25 @@
 import { ColumnsType } from 'antd/es/table';
-import { Link } from 'react-router-dom';
-
 import 'dayjs/locale/ru';
 import styles from '../ClientsTable/ClientsTable.module.scss';
 import { useGetRecordsActualPsychologists } from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
-import { Space, Table, Typography } from 'antd';
+import { Space, Spin, Table } from 'antd';
 import { CiCircleInfo } from 'react-icons/ci';
 import DatePicker from '../../../datePicker/DatePicker.tsx';
 import { useState } from 'react';
-interface ScrollableTextProps {
-	text: string;
-}
 
-const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
-	<div className={styles.scrollableText}>{text}</div>
-);
 const HistoryClients = () => {
 	const currentDate = dayjs().format('YYYY-MM-DD');
 	const [selectDate, setSelectDate] = useState<string>(currentDate);
-	const { data: history = [] } = useGetRecordsActualPsychologists(
+	const { data: history = [], isLoading } = useGetRecordsActualPsychologists(
 		selectDate,
 		false
 	);
+	if (isLoading) {
+		return <Spin className={styles.spinner} size="large" />;
+	}
 
 	const dataSourceWithKeysFalse = history.map((item) => {
 		return {
@@ -39,11 +34,6 @@ const HistoryClients = () => {
 			dataIndex: 'patientName',
 			width: 90,
 			className: `${styles.colum}`,
-			render: (text, history) => (
-				<Link className={styles.colum} to={`/some-link/${history.patientName}`}>
-					{text}
-				</Link>
-			),
 		},
 		{
 			title: 'Цена',
@@ -55,14 +45,14 @@ const HistoryClients = () => {
 			title: 'Адрес ссессии',
 			dataIndex: 'address',
 			className: `${styles.colum}`,
-			render: (text, history) => (
+			render: (text: string | null | undefined, record) => (
 				<>
-					{text ? (
+					{text !== null && text !== undefined ? (
 						<span>{text}</span>
 					) : (
-						<Link className={styles.colum} to={`/some-link/${history.address}`}>
+						<a href={record.broadcast} className={styles.colum}>
 							Ссылка
-						</Link>
+						</a>
 					)}
 				</>
 			),
@@ -90,16 +80,6 @@ const HistoryClients = () => {
 						</Alert>
 					</Space>
 				</>
-			),
-		},
-		{
-			title: 'Комментарий',
-			dataIndex: 'commentPatient',
-			className: `${styles.colum}`,
-			render: (text) => (
-				<Typography.Text ellipsis>
-					<ScrollableText text={text} />
-				</Typography.Text>
 			),
 		},
 		{
@@ -144,3 +124,4 @@ const HistoryClients = () => {
 	);
 };
 export default HistoryClients;
+
