@@ -17,8 +17,8 @@ import HistoryTable from './components/patient/patient_account/historyTable/Hist
 import Favorites from './components/patient/patient_account/favorites/Favorites.tsx';
 import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
-import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation.tsx';
-import { ActivePage } from './containers/auth/activeMailPage/ActivePage.tsx';
+import { ActivePage } from './containers/auth/activeMailPage/ActivePage/ActivePage.tsx';
+import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation/MailConfirmation.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
