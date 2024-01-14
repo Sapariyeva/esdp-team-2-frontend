@@ -1,60 +1,49 @@
-.post-list {
+.feelings-page {
+	padding: 0 30px;
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin-right: 88px;
+	flex-direction: column;
+	gap: 35px;
+}
+.post-list {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	row-gap: 40px;
+	column-gap: 20px;
 }
 
 .feelings-page__pagination {
-	text-align: right;
-	margin: 0 16% 100px 0;
+	padding: 40px 5px;
+	text-align: center;
 }
 
-.post-list__item {
-	display: flex;
-}
-
-@media screen and (max-width: 1290px) {
-	.feelings-page__pagination {
-		margin: 0 8% 100px 0;
-	}
-}
-
-@media screen and (max-width: 1135px) {
-	.feelings-page__pagination {
-		margin: 0 2% 100px 0;
-	}
-}
-
-@media screen and (max-width: 1111px) {
-	.feelings-page__pagination {
-		margin: 38px 0 100px 0;
-		text-align: center;
-	}
-}
-
-@media screen and (max-width: 798px) {
+@media screen and (max-width: 1400px) {
 	.post-list {
-		margin-right: 75px;
-	}
-	.feelings-page__pagination {
-		margin: 38px 0 100px 0;
-		text-align: center;
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media screen and (max-width: 500px) {
-	.post-list {
-		margin-right: 60px;
-	}
-	.feelings-page__pagination {
-		margin: 38px 0 100px 0;
-		text-align: center;
+@media screen and (min-width: 801px) {
+	.post-list__item {
+		&:nth-child(3),
+		&:nth-child(4) {
+			grid-column: span 2;
+		}
+
+		&:nth-child(3)img,
+		&:nth-child(4)img {
+			height: 420px;
+		}
 	}
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 800px) {
 	.post-list {
-		margin-right: 60px;
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.feelings-page {
+		padding: 0;
 	}
 }

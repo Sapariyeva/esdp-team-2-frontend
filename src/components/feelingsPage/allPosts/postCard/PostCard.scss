@@ -1,34 +1,34 @@
 .post-card {
-	margin: 0 15px 0 78px;
 	box-sizing: border-box;
 	text-align: center;
-	margin-bottom: 40px;
-	cursor: pointer;
 	&__inner {
 		text-align: left;
 	}
 
 	&__image {
-		width: 425px;
-		height: 400px;
+		width: 100%;
 		border-radius: 20px;
+		object-fit: cover;
+		height: 239px;
 	}
+
 	&__title {
-		font-size: 26px;
+		font-size: 22px;
+		font-weight: 700;
 		color: #4a4a4a;
 		margin-top: 30px;
 		word-wrap: break-word;
-		width: 320px;
 		line-height: 30px;
 	}
+
 	&__date {
 		margin-top: 20px;
 		color: #9f9f9f;
 	}
+
 	&__description {
 		color: #4a4a4a;
 		margin-top: 20px;
-		width: 424px;
 		overflow: hidden;
 		-webkit-line-clamp: 3;
 		display: -webkit-box;
@@ -36,46 +36,26 @@
 	}
 }
 
-@media screen and (max-width: 798px) {
-	.post-card {
-		&__image {
-			width: 325px;
-			height: 300px;
-		}
-		&__description {
-			width: 293px;
-		}
-		&__title {
-			font-size: 19px;
-			margin-top: 30px;
-			width: 275px;
-			line-height: 25px;
-		}
+@media screen and (max-width: 1400px) {
+	.post-card__image {
+		height: 360px;
 	}
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 798px) {
 	.post-card {
-		&__image {
-			width: 300px;
-			height: 275px;
+		&__title {
+			font-size: 19px;
+			line-height: 25px;
 		}
 	}
 }
 
 @media screen and (max-width: 360px) {
 	.post-card {
-		&__image {
-			width: 270px;
-			height: 245px;
-		}
-		&__description {
-			width: 238px;
-		}
 		&__title {
 			font-size: 18px;
 			margin-top: 12px;
-			width: 240px;
 			line-height: 21px;
 		}
 	}

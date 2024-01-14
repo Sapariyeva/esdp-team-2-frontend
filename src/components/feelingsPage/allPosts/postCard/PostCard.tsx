@@ -2,13 +2,12 @@ import './PostCard.scss';
 import { Link } from 'react-router-dom';
 import { IPost } from '../../../../interfaces/IPost';
 import { FC } from 'react';
-import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 
-interface State {
+interface IProps {
 	post: IPost;
 }
 
-const PostCard: FC<State> = ({ post }) => {
+const PostCard: FC<IProps> = ({ post }) => {
 	const imageRootUrl: string = import.meta.env.VITE_API_URL;
 
 	return (
@@ -19,13 +18,11 @@ const PostCard: FC<State> = ({ post }) => {
 					alt={post.title}
 					className="post-card__image"
 				/>
-				<p className="post-card__title">{post.title}</p>
+				<h3 className="post-card__title">{post.title}</h3>
 				<p className="post-card__date">9 января 2024 года</p>
-				<div className="post-card__description">
-					<FroalaEditorView
-						model={post.description ? post.description : 'No description'}
-					/>
-				</div>
+				<p className="post-card__description">
+					{post.description.replace(/<[^>]*>|&nbsp;/g, '')}
+				</p>
 			</div>
 		</Link>
 	);
