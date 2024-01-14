@@ -86,13 +86,12 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 					<div className={styles.cover}>
 						<img
 							alt={psychologist.fullName}
-							src={
-								psychologist.photos && psychologist.photos.length > 0
-									? `${import.meta.env.VITE_API_URL}/uploads/${psychologist.photos[0].photo}`
-									: ''
-							}
+							src={`${import.meta.env.VITE_API_URL}/uploads/${
+								psychologist.photos[0].photo
+							}`}
 							className={styles.card_img}
 						/>
+
 						<div
 							className={styles.experienceYears}
 						>{`Опыт ${psychologist.experienceYears} лет`}</div>
