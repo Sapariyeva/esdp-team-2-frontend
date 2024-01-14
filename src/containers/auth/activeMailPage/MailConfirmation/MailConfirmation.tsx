@@ -1,7 +1,7 @@
 import { Typography } from 'antd';
 import styles from './ActiveMailPage.module.scss';
-import { useAppSelector } from '../../../store/hooks.ts';
-import { RootState } from '../../../store';
+import { useAppSelector } from '../../../../store/hooks.ts';
+import { RootState } from '../../../../store/index.ts';
 
 const { Title, Paragraph } = Typography;
 
