@@ -1,0 +1,46 @@
+.feelings-block {
+	display: flex;
+
+	justify-content: space-between;
+	margin-bottom: 100px;
+	&__text {
+		width: 50%;
+		.title {
+			color: #7ed957;
+			font-family: Montserrat;
+			font-size: 3vw;
+			font-weight: bold;
+			margin-bottom: 3%;
+		}
+		.text {
+			font-family: Montserrat;
+			color: #4a4a4a;
+			font-size: 1vw;
+		}
+	}
+	.feelings {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 50%;
+
+		&__row {
+			margin-bottom: 2px;
+		}
+		&__item {
+			padding: 15px 20px !important;
+			margin: 2px;
+			cursor: default;
+			border-radius: 60px;
+			border: 1.5px solid rgba(159, 103, 253, 0.5);
+			color: transparent;
+			font-family: Montserrat;
+			font-size: 18px;
+
+			&:hover {
+				background-color: rgb(158, 103, 253);
+				color: white;
+			}
+		}
+	}
+}
