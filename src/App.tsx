@@ -40,8 +40,8 @@ import HistoryClients from './components/psychologist/psychologist_account/Histo
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
 import { Method } from './components/admin/method/Method.tsx';
-import { Feelings } from './components/feelings/Feelings.tsx';
-import { SingleFeelingsPage } from './containers/feelingsPage/singlePosts/SingleFeelingsPage.tsx';
+import { SingleFeelingsPage } from './components/feelingsPage/singlePosts/SingleFeelingsPage.tsx';
+import { Feelings } from './containers/feelings/Feelings.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');

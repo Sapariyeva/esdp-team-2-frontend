@@ -332,7 +332,7 @@ export const useGetAllPosts = () => {
 	return useQuery({
 		queryKey: ['useGetAllPosts'],
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/posts`);
+			const response = await axiosInstance.get<IPost[]>(`/posts`);
 			return response.data;
 		},
 	});
@@ -342,7 +342,7 @@ export const usePostOnePosts = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			const response = await axiosInstance.post('posts/create', data);
+			const response = await axiosInstance.post<IPost>('posts/create', data);
 			return response.data;
 		},
 		onSuccess: async () => {
@@ -374,7 +374,7 @@ export const usePostEditText = () => {
 export const usePostEditPhoto = () => {
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			return await axiosInstance.put(
+			return await axiosInstance.put<IPost>(
 				`posts/${data.get('id')}/change-image`,
 				data
 			);

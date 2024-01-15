@@ -16,7 +16,7 @@ import {
 	usePostOnePosts,
 	usePublishPost,
 } from '../../features/queryHooks/queryHooks';
-import { IPost } from '../../interfaces/IPost';
+import { IPost, IPostCreation } from '../../interfaces/IPost';
 import './AdminPosts.scss';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -53,7 +53,7 @@ export const AdminPost = () => {
 		await refetch();
 	};
 
-	const handleUpload = async (values: IPost) => {
+	const handleUpload = async (values: IPostCreation) => {
 		const formData = new FormData();
 		formData.append('title', values.title);
 		formData.append('description', descriptionInput);
