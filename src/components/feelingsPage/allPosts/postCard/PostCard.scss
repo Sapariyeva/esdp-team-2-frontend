@@ -13,12 +13,13 @@
 	}
 
 	&__title {
-		font-size: 22px;
+		font-size: 24px;
 		font-weight: 700;
 		color: #4a4a4a;
 		margin-top: 30px;
 		word-wrap: break-word;
 		line-height: 30px;
+		text-transform: lowercase;
 	}
 
 	&__date {

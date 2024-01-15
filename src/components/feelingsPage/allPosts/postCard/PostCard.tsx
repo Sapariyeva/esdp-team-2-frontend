@@ -5,13 +5,14 @@ import { FC } from 'react';
 
 interface IProps {
 	post: IPost;
+	linkPath: string;
 }
 
-const PostCard: FC<IProps> = ({ post }) => {
+const PostCard: FC<IProps> = ({ post, linkPath }) => {
 	const imageRootUrl: string = import.meta.env.VITE_API_URL;
 
 	return (
-		<Link to={`/feelings/${post.id}`} className="post-card">
+		<Link to={linkPath} className="post-card">
 			<div className="post-card__inner">
 				<img
 					src={`${imageRootUrl}/uploads/${post.image}`}
