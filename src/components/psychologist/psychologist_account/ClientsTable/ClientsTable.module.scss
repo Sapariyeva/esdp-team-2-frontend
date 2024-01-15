@@ -12,6 +12,13 @@
 	visibility: hidden;
 }
 
+.infoComment {
+	position: absolute;
+	left: 0;
+	top: 34px;
+	font-size: 17px;
+}
+
 .scrollableText {
 	max-height: 70px;
 	max-width: 100px;

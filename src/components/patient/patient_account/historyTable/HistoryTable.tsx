@@ -10,7 +10,7 @@ import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
 import { CiCircleInfo } from 'react-icons/ci';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const ScrollableText: React.FC<{
 	text: string;
@@ -19,31 +19,47 @@ const ScrollableText: React.FC<{
 	const [comment, setComment] = useState(text);
 	const inputRef = useRef(null);
 	const { mutate: postComment } = usePostCommentPatient();
-	console.log(text);
+	const [isFocused, setIsFocused] = useState(false);
 
 	const handleBlur = () => {
-		// Call the mutation function to submit the comment
 		postComment({ comment: comment, id: record.id });
 	};
 
-	useEffect(() => {
-		setComment(text);
-	}, [text]);
-
 	return (
-		<Input
-			ref={inputRef}
-			value={comment}
-			onChange={(e) => setComment(e.target.value)}
-			onBlur={handleBlur}
-			onPressEnter={handleBlur} // You can also submit on Enter key press
+		<div
 			style={{
-				maxHeight: '50px',
-				overflowY: 'auto',
-				width: '100%',
-				boxSizing: 'border-box',
+				display: 'flex',
+				justifyContent: 'center',
+				alignContent: 'center',
+				verticalAlign: 'center',
 			}}
-		/>
+		>
+			<Alert title={'Полный комментарий'} message={text}>
+				<CiCircleInfo className={styles.infoComment} />
+			</Alert>
+			<Input.TextArea
+				ref={inputRef}
+				value={comment}
+				onChange={(e) => setComment(e.target.value)}
+				onBlur={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				onFocus={() => setIsFocused(true)}
+				onPressEnter={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				style={{
+					resize: 'none',
+					height: isFocused ? '100px' : 'auto',
+					overflowY: 'auto',
+					width: '100%',
+					boxSizing: 'border-box',
+					wordWrap: 'break-word',
+				}}
+			/>
+		</div>
 	);
 };
 
@@ -132,9 +148,9 @@ const HistoryTable = () => {
 			className: `${styles.colum}`,
 			align: 'center',
 			ellipsis: true,
-			render: (text) => (
+			render: (text, record) => (
 				<Typography.Text ellipsis>
-					<ScrollableText text={text} record={text} />
+					<ScrollableText text={text} record={record} />
 				</Typography.Text>
 			),
 		},
