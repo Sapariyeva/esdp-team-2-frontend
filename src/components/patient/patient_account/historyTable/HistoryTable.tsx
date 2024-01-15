@@ -1,20 +1,51 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { Space, Spin, Table, Typography } from 'antd';
+import { Input, Space, Spin, Table, Typography } from 'antd';
 import styles from '../records/Record.module.scss';
-import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
+import {
+	useGetRecordsHistoryPatient,
+	usePostCommentPatient,
+} from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
 import { CiCircleInfo } from 'react-icons/ci';
+import { useEffect, useRef, useState } from 'react';
 
-interface ScrollableTextProps {
+const ScrollableText: React.FC<{
 	text: string;
-}
+	record: IRecord;
+}> = ({ text, record }) => {
+	const [comment, setComment] = useState(text);
+	const inputRef = useRef(null);
+	const { mutate: postComment } = usePostCommentPatient();
+	console.log(text);
 
-const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
-	<div className={styles.scrollableText}>{text}</div>
-);
+	const handleBlur = () => {
+		// Call the mutation function to submit the comment
+		postComment({ comment: comment, id: record.id });
+	};
+
+	useEffect(() => {
+		setComment(text);
+	}, [text]);
+
+	return (
+		<Input
+			ref={inputRef}
+			value={comment}
+			onChange={(e) => setComment(e.target.value)}
+			onBlur={handleBlur}
+			onPressEnter={handleBlur} // You can also submit on Enter key press
+			style={{
+				maxHeight: '50px',
+				overflowY: 'auto',
+				width: '100%',
+				boxSizing: 'border-box',
+			}}
+		/>
+	);
+};
 
 const HistoryTable = () => {
 	const { data: history = [], isLoading = [] } = useGetRecordsHistoryPatient();
@@ -97,13 +128,13 @@ const HistoryTable = () => {
 		},
 		{
 			title: 'Комментарий',
-			dataIndex: 'commentPsychologist',
+			dataIndex: 'commentPatient',
 			className: `${styles.colum}`,
 			align: 'center',
 			ellipsis: true,
 			render: (text) => (
 				<Typography.Text ellipsis>
-					<ScrollableText text={text} />
+					<ScrollableText text={text} record={text} />
 				</Typography.Text>
 			),
 		},

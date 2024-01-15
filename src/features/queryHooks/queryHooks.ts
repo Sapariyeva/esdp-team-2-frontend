@@ -692,3 +692,17 @@ export const useGetOneFeeling = (id: number) => {
 		queryKey: ['useGetOneFeeling', id],
 	});
 };
+
+export const usePostCommentPatient = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: ({ comment, id }: { comment: string; id: number }) => {
+			return axiosInstance.post(`/comment/patient/${id}`, { comment });
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetRecordsHistoryPatient'],
+			});
+		},
+	});
+};
