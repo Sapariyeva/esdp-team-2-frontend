@@ -13,22 +13,28 @@ export const SingleFeelingsPage: FC<Props> = ({ post }) => {
 
 	if (!post) return <Empty />;
 
+	const postText: string = post.description.replace(/<[^>]*>|&nbsp;/g, '');
+	const timeForRead: number = Math.ceil(postText.length / 1500);
+
 	return (
 		<>
-			<div className="singlePage-block-item-text">
-				<div className="singlePage-block-item-text-block">
-					<p className="singlePage-block-item-text-title">{post.title}</p>
-					<p className="feelingPage-block-item-text-date">9 января 2024 года</p>
-					<div className="singlePage-block-item-text-description">
-						<FroalaEditorView model={post.description} />
+			<div className="single-post-page">
+				<div className="single-post-page__header">
+					<h1 className="single-post-page__title">{post.title}</h1>
+					<div className="single-post-page__meta">
+						<p className="single-post-page__date">9 января 2024 года</p>
+						<p className="single-post-page__time-for-read">{`${timeForRead} мин`}</p>
 					</div>
 				</div>
-				<div>
+				<div className="single-post-page__body">
 					<img
 						src={`${imageRootUrl}/uploads/${post.image}`}
 						alt={post.title}
-						className="feelingPage-block-item-text-image singlePage-block-item-text"
+						className="single-post-page__image"
 					/>
+					<div className="single-post-page__text">
+						<FroalaEditorView model={post.description} />
+					</div>
 				</div>
 			</div>
 		</>
