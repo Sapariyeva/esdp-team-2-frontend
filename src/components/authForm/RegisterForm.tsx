@@ -179,9 +179,15 @@ const RegisterForm = ({ submit, role, errors }: Props) => {
 								id="rememberCheckbox"
 							/>
 							<label htmlFor="rememberCheckbox" />
-							<div className={styles.checkbox}>
+							<NavLink
+								className={styles.checkbox}
+								to={{
+									pathname: '/Confidentiality_policy.pdf',
+								}}
+								target="_blank"
+							>
 								Я согласен с политикой конфиденциальности
-							</div>
+							</NavLink>
 						</div>
 						<div>
 							<NavLink
