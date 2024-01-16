@@ -19,7 +19,7 @@ export const CustomLayout: FC = () => {
 			<Content className={styles.main}>
 				<Outlet />
 			</Content>
-			<Footer>
+			<Footer className={styles.layout_footer}>
 				<FooterMenu />
 			</Footer>
 		</Layout>
