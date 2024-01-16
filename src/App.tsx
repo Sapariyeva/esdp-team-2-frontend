@@ -40,8 +40,8 @@ import HistoryClients from './components/psychologist/psychologist_account/Histo
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
 import { Method } from './components/admin/method/Method.tsx';
-import { SingleFeelingsPage } from './components/feelingsPage/singlePosts/SingleFeelingsPage.tsx';
 import { Feelings } from './containers/feelings/Feelings.tsx';
+import FullPostInformation from './containers/feelings/FullPostInformation.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -119,7 +119,7 @@ const App = () => {
 							/>
 							<Route path="/business" element={<BusinessPage />} />
 							<Route path="/feelings" element={<Feelings />} />
-							<Route path="/feelings/:id" element={<SingleFeelingsPage />} />
+							<Route path="/feelings/:id" element={<FullPostInformation />} />
 							<Route path="/articles" element={<ArticlePageContainer />} />
 							<Route
 								path="/articles/:id"
