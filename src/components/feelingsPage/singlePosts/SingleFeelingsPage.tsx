@@ -15,7 +15,7 @@ export const SingleFeelingsPage: FC<Props> = ({ post }) => {
 	if (!post) return <Empty />;
 
 	const postText: string = post.description.replace(/<[^>]*>|&nbsp;/g, '');
-	const timeForRead: number = Math.ceil(postText.length / 1500);
+	const timeForRead: number = Math.ceil(postText.length / 1200);
 	const publicationDate: string = post.publicationDate
 		? convertDate(post.publicationDate)
 		: 'Пост не опубликован';

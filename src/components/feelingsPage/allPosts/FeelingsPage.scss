@@ -29,18 +29,18 @@
 	flex-direction: column;
 	gap: 35px;
 	font-size: 16px;
-}
 
-.posts__list {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	row-gap: 40px;
-	column-gap: 20px;
-}
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		row-gap: 40px;
+		column-gap: 20px;
+	}
 
-.posts__pagination {
-	padding: 40px 5px;
-	text-align: center;
+	&__pagination {
+		padding: 40px 5px;
+		text-align: center;
+	}
 }
 
 @media screen and (max-width: 1400px) {
