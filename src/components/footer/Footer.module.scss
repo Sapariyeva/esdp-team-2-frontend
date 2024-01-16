@@ -20,6 +20,10 @@
 		font-size: 13px;
 		font-weight: 400;
 		line-height: 140%;
+
+		@media (max-width: 1260px) {
+			max-width: 1200px;
+		}
 	}
 
 	.footer_container_item_link {
@@ -120,7 +124,7 @@
 	}
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1260px) {
 	.footer_container_item_link {
 		margin-top: 20px;
 	}
