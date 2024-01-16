@@ -82,6 +82,30 @@ export const usePostPsychologist = (
 	});
 };
 
+export const useEditPsychologist = (navigate: NavigateFunction, id: number) => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (data: FormData) => {
+			return axiosInstance.put('/psychologists/edit', data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetOnePsychologist', id],
+			});
+			await message.success('Вы успешно изменили данные');
+			await navigate('/psychologist/profile');
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				const serverMessage = error.response.data.message;
+				message.error(serverMessage || 'Произошла ошибка при отправке анкеты.');
+			} else {
+				message.error('Произошла неизвестная ошибка.');
+			}
+		},
+	});
+};
+
 export const useViewedPsychologists = (user: IUser | null) => {
 	return useQuery({
 		queryKey: ['GetViewedPsychologists'],
@@ -91,10 +115,23 @@ export const useViewedPsychologists = (user: IUser | null) => {
 
 export const useGetPsychologist = (id: string) => {
 	return useQuery({
+		queryKey: ['GetPsychologist'],
 		queryFn: () => {
 			return axiosInstance.get<IPsychologist>(`/psychologists/${id}`);
 		},
-		queryKey: ['GetPsychologist'],
+	});
+};
+
+export const useGetOnePsychologist = (id: number) => {
+	return useQuery({
+		queryKey: ['useGetOnePsychologist', id],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPsychologist>(
+				`/psychologists/${id}`
+			);
+
+			return response.data;
+		},
 	});
 };
 

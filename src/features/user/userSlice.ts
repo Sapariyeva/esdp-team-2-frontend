@@ -5,6 +5,7 @@ import { AxiosError, isAxiosError } from 'axios';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
+import { IPsychologistRegisterData } from '../../interfaces/IPsychologist.ts';
 
 interface AuthUserData {
 	email: string;
@@ -86,6 +87,14 @@ export const updateUser = createAsyncThunk(
 	}
 );
 
+export const editUser = createAsyncThunk(
+	'psychologists/edit',
+	async (data: IPsychologistRegisterData) => {
+		const response = await axiosInstance.put(`psychologists/edit`, data);
+		return response.data;
+	}
+);
+
 interface ActivateEmailArgs {
 	id: string | undefined;
 	role: string | null;
@@ -97,7 +106,6 @@ export const activateEmail = createAsyncThunk<
 	{ rejectValue: ServerFormValidationResponse }
 >('auth/activate', async ({ id, role }, { rejectWithValue }) => {
 	try {
-		console.log(role, id);
 		const response = await axiosInstance.get<IUser>(
 			`/auth/activate/${id}?role=${role}`
 		);
@@ -237,6 +245,9 @@ const userSlice = createSlice({
 				return initialState;
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
+				state.userInfo = payload;
+			})
+			.addCase(editUser.fulfilled, (state, { payload }) => {
 				state.userInfo = payload;
 			})
 			.addCase(activateEmail.pending, (state) => {

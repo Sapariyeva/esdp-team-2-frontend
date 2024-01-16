@@ -3,10 +3,13 @@ import { IPsychologistRegisterData } from '../interfaces/IPsychologist.ts';
 export const appendArrayToFormData = <T>(
 	formData: FormData,
 	key: string,
-	values: T[]
+	values: T[] | undefined | null
 ) => {
-	values.forEach((value) => formData.append(key, String(value)));
+	if (values && values.length > 0) {
+		values.forEach((value) => formData.append(key, String(value)));
+	}
 };
+
 export const appendDateToFormData = (
 	formData: FormData,
 	key: string,

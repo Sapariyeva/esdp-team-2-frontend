@@ -116,6 +116,9 @@ export interface IPsychologistRegisterData {
 	selfTherapy: number;
 	lgbt: boolean;
 	cityId: number;
+	city: {
+		name: string;
+	};
 	techniqueIds: number[];
 	therapyMethodIds: number[];
 	symptomIds: number[];
