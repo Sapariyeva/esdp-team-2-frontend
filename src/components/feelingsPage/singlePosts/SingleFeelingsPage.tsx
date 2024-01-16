@@ -3,6 +3,7 @@ import './SingleFeelingsPage.scss';
 import { IPost } from '../../../interfaces/IPost';
 import { FC } from 'react';
 import Empty from '../../ui/Empty/Empty';
+import convertDate from '../../../helpers/convertDate';
 
 interface Props {
 	post: IPost | undefined;
@@ -15,6 +16,9 @@ export const SingleFeelingsPage: FC<Props> = ({ post }) => {
 
 	const postText: string = post.description.replace(/<[^>]*>|&nbsp;/g, '');
 	const timeForRead: number = Math.ceil(postText.length / 1500);
+	const publicationDate: string = post.publicationDate
+		? convertDate(post.publicationDate)
+		: 'Пост не опубликован';
 
 	return (
 		<>
@@ -22,7 +26,7 @@ export const SingleFeelingsPage: FC<Props> = ({ post }) => {
 				<div className="single-post-page__header">
 					<h1 className="single-post-page__title">{post.title}</h1>
 					<div className="single-post-page__meta">
-						<p className="single-post-page__date">9 января 2024 года</p>
+						<p className="single-post-page__date">{publicationDate}</p>
 						<p className="single-post-page__time-for-read">{`${timeForRead} мин`}</p>
 					</div>
 				</div>
