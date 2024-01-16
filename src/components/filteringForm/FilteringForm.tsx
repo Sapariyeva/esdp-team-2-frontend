@@ -69,9 +69,7 @@ const PsychologistFilterForm = ({
 		const savedFormValues = localStorage.getItem('psychologistFilterForm');
 		try {
 			if (savedFormValues) {
-				console.log(savedFormValues);
 				const parsedFormValues = JSON.parse(savedFormValues);
-				console.log(parsedFormValues);
 				parsedFormValues.cost && setCost(parsedFormValues.cost);
 				form.setFieldsValue(parsedFormValues);
 			}
