@@ -6,9 +6,10 @@ export interface IPost {
 	description: string;
 	image: string;
 	isPublish: boolean;
+	publicationDate: string | null;
 }
 
-export interface IPostCreation extends Omit<IPost, 'image'> {
+export interface IPostCreation extends Pick<IPost, 'title' | 'description'> {
 	image: {
 		fileList: UploadFile[];
 	};

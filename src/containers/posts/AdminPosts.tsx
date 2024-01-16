@@ -37,10 +37,8 @@ export const AdminPost = () => {
 	const [form] = Form.useForm();
 	const [activeTabKey, setActiveTabKey] = useState('1');
 
-	const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
-
-	const activePosts = sortedPosts.filter((post: IPost) => post.isPublish);
-	const inProgressPosts = sortedPosts.filter((post: IPost) => !post.isPublish);
+	const activePosts = posts.filter((post: IPost) => post.isPublish);
+	const inProgressPosts = posts.filter((post: IPost) => !post.isPublish);
 
 	const [renderKey, setRenderKey] = useState(0);
 

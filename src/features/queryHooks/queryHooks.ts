@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { message } from 'antd';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NavigateFunction } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
@@ -26,6 +26,7 @@ import {
 	IFilteringConsultationType,
 	IFilteringValues,
 } from '../../interfaces/IFilteringValues.ts';
+import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -684,7 +685,7 @@ export const useGetAllFeelings = () => {
 };
 
 export const useGetOneFeeling = (id: number) => {
-	return useQuery({
+	return useQuery<IPost, AxiosError<ServerFormValidationResponse>>({
 		queryFn: async () => {
 			const response = await axiosInstance.get<IPost>(`/posts/${id}`);
 			return response.data;
