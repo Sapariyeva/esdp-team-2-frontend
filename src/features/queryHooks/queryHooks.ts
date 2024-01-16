@@ -90,7 +90,7 @@ export const useEditPsychologist = (navigate: NavigateFunction, id: number) => {
 		},
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
-				queryKey: ['useGetOnePsychologist', id],
+				queryKey: ['getOnePsychologist', id],
 			});
 			await message.success('Вы успешно изменили данные');
 			await navigate('/psychologist/profile');
@@ -124,7 +124,7 @@ export const useGetPsychologist = (id: string) => {
 
 export const useGetOnePsychologist = (id: number) => {
 	return useQuery({
-		queryKey: ['useGetOnePsychologist', id],
+		queryKey: ['getOnePsychologist'],
 		queryFn: async () => {
 			const response = await axiosInstance.get<IPsychologist>(
 				`/psychologists/${id}`
