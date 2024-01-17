@@ -133,12 +133,6 @@ const App = () => {
 								<Route path="favorites" element={<Favorites />} />
 							</Route>
 
-							<Route path="/patient" element={<PatientAccountPage />}>
-								<Route path="records" element={<Records />} />
-								<Route path="history" element={<HistoryTable />} />
-								<Route path="favorites" element={<Favorites />} />
-							</Route>
-
 							<Route path="/psychologist" element={<PsychologistAccountPage />}>
 								<Route path="profile" element={<Profile />} />
 								<Route path="records" element={<ClientsTable />} />
