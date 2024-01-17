@@ -159,23 +159,6 @@ const HistoryTable = () => {
 			dataIndex: 'status',
 			className: `${styles.colum}`,
 			align: 'center',
-			render: (text) => {
-				let statusLabel = '';
-				switch (text) {
-					case 'active':
-						statusLabel = 'Активный';
-						break;
-					case 'canceled':
-						statusLabel = 'Отменен';
-						break;
-					case 'inactive':
-						statusLabel = 'Неактивный';
-						break;
-					default:
-						statusLabel = 'Неизвестный статус';
-				}
-				return <>{statusLabel}</>;
-			},
 		},
 	];
 

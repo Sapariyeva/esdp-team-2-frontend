@@ -152,23 +152,6 @@ const HistoryClients = () => {
 			title: 'Статус',
 			dataIndex: 'status',
 			className: `${styles.colum}`,
-			render: (text) => {
-				let statusLabel;
-				switch (text) {
-					case 'active':
-						statusLabel = 'Активый';
-						break;
-					case 'canceled':
-						statusLabel = 'Отменен';
-						break;
-					case 'inactive':
-						statusLabel = 'Неактивный';
-						break;
-					default:
-						statusLabel = 'Неизвестный статус';
-				}
-				return <span>{statusLabel}</span>;
-			},
 		},
 	];
 
