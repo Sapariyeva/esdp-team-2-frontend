@@ -93,7 +93,7 @@ function PatientProfile() {
 
 	useEffect(() => {
 		setEmailChanged(
-			emailValue !== initialValues.email || currentPasswordEntered
+			emailValue !== initialValues.email && currentPasswordEntered
 		);
 	}, [emailValue, initialValues.email, currentPasswordEntered]);
 
@@ -219,7 +219,7 @@ function PatientProfile() {
 							</Form.Item>
 						</Col>
 						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
-							<label className="label">ФИО</label>
+							<label className="label">Имя</label>
 							<Form.Item
 								name="name"
 								rules={[

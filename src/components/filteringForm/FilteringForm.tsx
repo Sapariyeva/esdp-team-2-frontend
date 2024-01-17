@@ -69,9 +69,7 @@ const PsychologistFilterForm = ({
 		const savedFormValues = localStorage.getItem('psychologistFilterForm');
 		try {
 			if (savedFormValues) {
-				const parsedFormValues = JSON.parse(
-					savedFormValues
-				) as IFilteringValues;
+				const parsedFormValues = JSON.parse(savedFormValues);
 				parsedFormValues.cost && setCost(parsedFormValues.cost);
 				form.setFieldsValue(parsedFormValues);
 			}
@@ -248,7 +246,6 @@ const PsychologistFilterForm = ({
 							range
 							max={50000}
 							onChange={(value) => {
-								onValuesChange('', { cost: value });
 								form.setFieldsValue({ cost: value });
 								setCost(value);
 							}}

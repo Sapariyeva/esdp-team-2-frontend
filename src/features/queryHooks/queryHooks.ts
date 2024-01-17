@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { message } from 'antd';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NavigateFunction } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
@@ -26,6 +26,7 @@ import {
 	IFilteringConsultationType,
 	IFilteringValues,
 } from '../../interfaces/IFilteringValues.ts';
+import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -332,7 +333,7 @@ export const useGetAllPosts = () => {
 	return useQuery({
 		queryKey: ['useGetAllPosts'],
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/posts`);
+			const response = await axiosInstance.get<IPost[]>(`/posts`);
 			return response.data;
 		},
 	});
@@ -342,7 +343,7 @@ export const usePostOnePosts = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			const response = await axiosInstance.post('posts/create', data);
+			const response = await axiosInstance.post<IPost>('posts/create', data);
 			return response.data;
 		},
 		onSuccess: async () => {
@@ -374,7 +375,7 @@ export const usePostEditText = () => {
 export const usePostEditPhoto = () => {
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			return await axiosInstance.put(
+			return await axiosInstance.put<IPost>(
 				`posts/${data.get('id')}/change-image`,
 				data
 			);
@@ -684,11 +685,41 @@ export const useGetAllFeelings = () => {
 };
 
 export const useGetOneFeeling = (id: number) => {
-	return useQuery({
+	return useQuery<IPost, AxiosError<ServerFormValidationResponse>>({
 		queryFn: async () => {
 			const response = await axiosInstance.get<IPost>(`/posts/${id}`);
 			return response.data;
 		},
 		queryKey: ['useGetOneFeeling', id],
+	});
+};
+
+export const usePostCommentPatient = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: ({ comment, id }: { comment: string; id: number }) => {
+			return axiosInstance.post(`records/comment/patient/${id}`, { comment });
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetRecordsHistoryPatient'],
+			});
+		},
+	});
+};
+
+export const usePostCommentPsychologist = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: ({ comment, id }: { comment: string; id: number }) => {
+			return axiosInstance.post(`records/comment/psychologist/${id}`, {
+				comment,
+			});
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetRecordsActualPsychologists'],
+			});
+		},
 	});
 };

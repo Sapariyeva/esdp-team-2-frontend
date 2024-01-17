@@ -1,20 +1,67 @@
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { Space, Spin, Table, Typography } from 'antd';
+import { Input, Space, Spin, Table, Typography } from 'antd';
 import styles from '../records/Record.module.scss';
-import { useGetRecordsHistoryPatient } from '../../../../features/queryHooks/queryHooks';
+import {
+	useGetRecordsHistoryPatient,
+	usePostCommentPatient,
+} from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
 import { CiCircleInfo } from 'react-icons/ci';
+import { useRef, useState } from 'react';
 
-interface ScrollableTextProps {
+const ScrollableText: React.FC<{
 	text: string;
-}
+	record: IRecord;
+}> = ({ text, record }) => {
+	const [comment, setComment] = useState(text);
+	const inputRef = useRef(null);
+	const { mutate: postComment } = usePostCommentPatient();
+	const [isFocused, setIsFocused] = useState(false);
 
-const ScrollableText: React.FC<ScrollableTextProps> = ({ text }) => (
-	<div className={styles.scrollableText}>{text}</div>
-);
+	const handleBlur = () => {
+		postComment({ comment: comment, id: record.id });
+	};
+
+	return (
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignContent: 'center',
+				verticalAlign: 'center',
+			}}
+		>
+			<Alert title={'Полный комментарий'} message={text}>
+				<CiCircleInfo className={styles.infoComment} />
+			</Alert>
+			<Input.TextArea
+				ref={inputRef}
+				value={comment}
+				onChange={(e) => setComment(e.target.value)}
+				onBlur={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				onFocus={() => setIsFocused(true)}
+				onPressEnter={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				style={{
+					resize: 'none',
+					height: isFocused ? '100px' : 'auto',
+					overflowY: 'auto',
+					width: '100%',
+					boxSizing: 'border-box',
+					wordWrap: 'break-word',
+				}}
+			/>
+		</div>
+	);
+};
 
 const HistoryTable = () => {
 	const { data: history = [], isLoading = [] } = useGetRecordsHistoryPatient();
@@ -97,13 +144,13 @@ const HistoryTable = () => {
 		},
 		{
 			title: 'Комментарий',
-			dataIndex: 'commentPsychologist',
+			dataIndex: 'commentPatient',
 			className: `${styles.colum}`,
 			align: 'center',
 			ellipsis: true,
-			render: (text) => (
+			render: (text, record) => (
 				<Typography.Text ellipsis>
-					<ScrollableText text={text} />
+					<ScrollableText text={text} record={record} />
 				</Typography.Text>
 			),
 		},
@@ -112,23 +159,6 @@ const HistoryTable = () => {
 			dataIndex: 'status',
 			className: `${styles.colum}`,
 			align: 'center',
-			render: (text) => {
-				let statusLabel = '';
-				switch (text) {
-					case 'active':
-						statusLabel = 'Активный';
-						break;
-					case 'canceled':
-						statusLabel = 'Отменен';
-						break;
-					case 'inactive':
-						statusLabel = 'Неактивный';
-						break;
-					default:
-						statusLabel = 'Неизвестный статус';
-				}
-				return <>{statusLabel}</>;
-			},
 		},
 	];
 

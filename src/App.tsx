@@ -17,8 +17,8 @@ import HistoryTable from './components/patient/patient_account/historyTable/Hist
 import Favorites from './components/patient/patient_account/favorites/Favorites.tsx';
 import { useAppSelector } from './store/hooks.ts';
 import { RootState } from './store/index.ts';
-import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation.tsx';
-import { ActivePage } from './containers/auth/activeMailPage/ActivePage.tsx';
+import { ActivePage } from './containers/auth/activeMailPage/ActivePage/ActivePage.tsx';
+import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation/MailConfirmation.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import ClientsTable from './components/psychologist/psychologist_account/ClientsTable/ClientsTable.tsx';
@@ -40,8 +40,8 @@ import HistoryClients from './components/psychologist/psychologist_account/Histo
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
 import { Technique } from './components/admin/technique/Technique.tsx';
 import { Method } from './components/admin/method/Method.tsx';
-import { Feelings } from './components/feelings/Feelings.tsx';
-import { SingleFeelingsPage } from './containers/feelingsPage/singlePosts/SingleFeelingsPage.tsx';
+import { Feelings } from './containers/feelings/Feelings.tsx';
+import FullPostInformation from './containers/feelings/FullPostInformation.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -119,7 +119,7 @@ const App = () => {
 							/>
 							<Route path="/business" element={<BusinessPage />} />
 							<Route path="/feelings" element={<Feelings />} />
-							<Route path="/feelings/:id" element={<SingleFeelingsPage />} />
+							<Route path="/feelings/:id" element={<FullPostInformation />} />
 							<Route path="/articles" element={<ArticlePageContainer />} />
 							<Route
 								path="/articles/:id"
@@ -128,12 +128,6 @@ const App = () => {
 
 							<Route path="/patient" element={<PatientAccountPage />}>
 								<Route path="profile" element={<PatientProfile />} />
-								<Route path="records" element={<Records />} />
-								<Route path="history" element={<HistoryTable />} />
-								<Route path="favorites" element={<Favorites />} />
-							</Route>
-
-							<Route path="/patient" element={<PatientAccountPage />}>
 								<Route path="records" element={<Records />} />
 								<Route path="history" element={<HistoryTable />} />
 								<Route path="favorites" element={<Favorites />} />
