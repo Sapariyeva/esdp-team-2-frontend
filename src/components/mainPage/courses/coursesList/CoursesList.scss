@@ -85,6 +85,11 @@
 			font-weight: 500;
 			padding: 1vw 2vw;
 			align-self: flex-end;
+			&:hover {
+				background-color: #7ed957;
+				color: white !important;
+				border: none;
+			}
 			@media (max-width: 500px) {
 				padding: 1vw 1.5vw;
 				font-size: 2vw;

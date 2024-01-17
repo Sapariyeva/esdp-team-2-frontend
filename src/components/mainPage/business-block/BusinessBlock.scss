@@ -1,6 +1,7 @@
-.about-service {
+.business-block {
+	margin: 10vw 0;
 	display: flex;
-	gap: 10%;
+	align-items: center;
 	@media (max-width: 500px) {
 		flex-direction: column;
 		width: 100%;
@@ -10,12 +11,13 @@
 		margin-bottom: 2vw;
 	}
 	&__text {
-		width: 45%;
+		width: 50%;
 		padding-top: 4vw;
 		@media (max-width: 500px) {
 			width: 100%;
 		}
 		.main-title {
+			white-space: nowrap;
 			font-family: Montserrat;
 			color: #4a4a4a;
 			font-size: 3vw;
@@ -31,6 +33,7 @@
 			}
 		}
 		.text {
+			width: 90%;
 			font-family: Montserrat;
 			font-size: 1vw;
 			color: #4a4a4a;
@@ -41,14 +44,36 @@
 			}
 		}
 	}
+	&__button {
+		max-height: 6vw;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #9f67fd;
+		border: none;
+		padding: 6% 10%;
+		border-radius: 50px;
+		color: #fff;
+		font-family: Montserrat;
+		margin-top: 1%;
+		font-size: 1vw;
+		@media (max-width: 500px) {
+			font-size: 7px;
+		}
+		&:hover {
+			background-color: #7ed957;
+			color: white !important;
+		}
+	}
 	&__illustration {
-		width: 55%;
+		margin-top: 5vw;
+		width: 70%;
 		height: 100%;
 		@media (max-width: 500px) {
 			width: 100%;
 			text-align: center;
 		}
-		.service-illustration {
+		.business-illustration {
 			width: 100%;
 			object-fit: contain;
 			object-position: center;

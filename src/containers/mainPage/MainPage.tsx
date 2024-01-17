@@ -1,6 +1,7 @@
 import AboutContent from '../../components/mainPage/aboutContent/AboutContent';
 import AboutService from '../../components/mainPage/aboutService/AboutService';
 import BreathBlock from '../../components/mainPage/breathBlock/BreathBlock';
+import BusinessBlock from '../../components/mainPage/business-block/BusinessBlock';
 import { CoursesList } from '../../components/mainPage/courses/coursesList/CoursesList';
 
 import FeelingsBlock from '../../components/mainPage/feelingsBlock/FeelingsBlock';
@@ -34,6 +35,7 @@ export const MainPage = () => {
 			<AboutService />
 			<CoursesList />
 			<Ticker />
+			<BusinessBlock />
 			<ViewedPsychologists
 				viewedPsychologists={viewedPsychologists}
 				switchFavorite={switchFavorite}
