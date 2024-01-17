@@ -36,7 +36,6 @@ import {
 	useEditPsychologist,
 	useGetOnePsychologist,
 } from '../../../features/queryHooks/queryHooks.ts';
-import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -58,9 +57,7 @@ export const PsychologistForm = ({
 	cities,
 }: Props) => {
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
-	const navigate = useNavigate();
 	const { mutate: editPsychologist } = useEditPsychologist(
-		navigate,
 		Number(user?.psychologist?.id)
 	);
 	const { data: psychologist } = user?.accessToken
@@ -178,7 +175,8 @@ export const PsychologistForm = ({
 
 		appendValuesToFormData(formData, values);
 
-		await editPsychologist(formData);
+		editPsychologist(formData);
+		await window.location.reload();
 	};
 
 	const handleChangeFile: UploadProps['onChange'] = ({

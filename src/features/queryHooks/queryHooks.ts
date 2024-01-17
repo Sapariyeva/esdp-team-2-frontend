@@ -82,7 +82,7 @@ export const usePostPsychologist = (
 	});
 };
 
-export const useEditPsychologist = (navigate: NavigateFunction, id: number) => {
+export const useEditPsychologist = (id: number) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: (data: FormData) => {
@@ -93,7 +93,6 @@ export const useEditPsychologist = (navigate: NavigateFunction, id: number) => {
 				queryKey: ['getOnePsychologist', id],
 			});
 			await message.success('Вы успешно изменили данные');
-			await navigate('/psychologist/profile');
 		},
 		onError: (error) => {
 			if (axios.isAxiosError(error) && error.response) {
