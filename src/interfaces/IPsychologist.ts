@@ -76,7 +76,7 @@ export interface IPsychologistWithLikes {
 	id: number;
 	fullName: string;
 	gender: 'male' | 'female';
-	birthday: Date;
+	birthday: Date | string;
 	address: string;
 	cost: number;
 	description: string;
@@ -84,7 +84,7 @@ export interface IPsychologistWithLikes {
 	experienceYears: number;
 	languages: 'kazakh' | 'russian' | 'english';
 	education: string;
-	format: 'online' | 'offline';
+	format: string[];
 	consultationType: 'solo' | 'duo';
 	selfTherapy: number;
 	lgbt: boolean;

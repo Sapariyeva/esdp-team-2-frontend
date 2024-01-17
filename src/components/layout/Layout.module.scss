@@ -21,11 +21,11 @@
 }
 
 .main {
-	margin-top: 90px;
+	margin-top: 68px;
 	min-height: 90dvh;
 	background-color: #fbf9ff !important;
-	padding: 0 30px;
-	@media screen and (max-width: 950px) {
-		padding: 0 20px;
-	}
+}
+
+.layout_footer{
+	background:  #4A4A4A;
 }

@@ -1,14 +1,68 @@
 import { ColumnsType } from 'antd/es/table';
 import 'dayjs/locale/ru';
 import styles from '../ClientsTable/ClientsTable.module.scss';
-import { useGetRecordsActualPsychologists } from '../../../../features/queryHooks/queryHooks';
+import {
+	useGetRecordsActualPsychologists,
+	usePostCommentPsychologist,
+} from '../../../../features/queryHooks/queryHooks';
 import { IRecord } from '../../../../interfaces/IRecord';
 import dayjs from 'dayjs';
 import Alert from '../../../ui/Alert/Alert.tsx';
-import { Space, Spin, Table } from 'antd';
+import { Input, Space, Spin, Table, Typography } from 'antd';
 import { CiCircleInfo } from 'react-icons/ci';
 import DatePicker from '../../../datePicker/DatePicker.tsx';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+
+const ScrollableText: React.FC<{
+	text: string;
+	record: IRecord;
+}> = ({ text, record }) => {
+	const [comment, setComment] = useState(text);
+	const inputRef = useRef(null);
+	const { mutate: postComment } = usePostCommentPsychologist();
+	const [isFocused, setIsFocused] = useState(false);
+
+	const handleBlur = () => {
+		postComment({ comment: comment, id: record.id });
+	};
+
+	return (
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignContent: 'center',
+				verticalAlign: 'center',
+			}}
+		>
+			<Alert title={'Полный комментарий'} message={text}>
+				<CiCircleInfo className={styles.infoComment} />
+			</Alert>
+			<Input.TextArea
+				ref={inputRef}
+				value={comment}
+				onChange={(e) => setComment(e.target.value)}
+				onBlur={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				onFocus={() => setIsFocused(true)}
+				onPressEnter={() => {
+					setIsFocused(false);
+					handleBlur();
+				}}
+				style={{
+					resize: 'none',
+					height: isFocused ? '100px' : 'auto',
+					overflowY: 'auto',
+					width: '100%',
+					boxSizing: 'border-box',
+					wordWrap: 'break-word',
+				}}
+			/>
+		</div>
+	);
+};
 
 const HistoryClients = () => {
 	const currentDate = dayjs().format('YYYY-MM-DD');
@@ -83,26 +137,21 @@ const HistoryClients = () => {
 			),
 		},
 		{
+			title: 'Комментарий',
+			dataIndex: 'commentPsychologist',
+			className: `${styles.colum}`,
+			align: 'center',
+			ellipsis: true,
+			render: (text, record) => (
+				<Typography.Text ellipsis>
+					<ScrollableText text={text} record={record} />
+				</Typography.Text>
+			),
+		},
+		{
 			title: 'Статус',
 			dataIndex: 'status',
 			className: `${styles.colum}`,
-			render: (text) => {
-				let statusLabel;
-				switch (text) {
-					case 'active':
-						statusLabel = 'Активый';
-						break;
-					case 'canceled':
-						statusLabel = 'Отменен';
-						break;
-					case 'inactive':
-						statusLabel = 'Неактивный';
-						break;
-					default:
-						statusLabel = 'Неизвестный статус';
-				}
-				return <span>{statusLabel}</span>;
-			},
 		},
 	];
 
@@ -124,4 +173,3 @@ const HistoryClients = () => {
 	);
 };
 export default HistoryClients;
-

@@ -53,7 +53,7 @@ const LoginForm = ({ submit, role, errors }: Props) => {
 				layout="vertical"
 			>
 				<Title level={3} className={styles.title}>
-					Вход
+					{role === 'psychologist' ? 'Вход для психолога ' : 'Вход'}
 				</Title>
 				{loginErrors && (
 					<Alert
