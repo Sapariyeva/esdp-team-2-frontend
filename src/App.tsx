@@ -34,7 +34,7 @@ import LoginAdminBuilder from './containers/auth/admin/LoginAdminBuilder.tsx';
 import ResetPassword from './containers/auth/resetPassword/ResetPassword.tsx';
 import ResetForgot from './containers/auth/resetForgot/ResetForgot.tsx';
 import { PageNotFound } from './containers/pageNotFound/PageNotFound.tsx';
-import { HomePage } from './containers/homePage/HomePage.tsx';
+import { MainPage } from './containers/mainPage/MainPage.tsx';
 import { ConsultationTypePsychologists } from './containers/psychologists/catalog/ConsultationTypePsychologists.tsx';
 import HistoryClients from './components/psychologist/psychologist_account/HistoryClients/HistoryClients.tsx';
 import { Symptoms } from './components/admin/symptoms/Symptoms.tsx';
@@ -67,7 +67,7 @@ const App = () => {
 								/>
 							}
 						>
-							<Route path="/" element={<HomePage />} />
+							<Route path="/" element={<MainPage />} />
 							<Route
 								path="auth/login/psychologist"
 								element={<Login role="psychologist" />}
