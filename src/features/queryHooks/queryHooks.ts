@@ -92,7 +92,7 @@ export const useEditPsychologist = (id: number) => {
 			await queryClient.invalidateQueries({
 				queryKey: ['getOnePsychologist', id],
 			});
-			await message.success('Вы успешно изменили данные');
+			window.location.reload();
 		},
 		onError: (error) => {
 			if (axios.isAxiosError(error) && error.response) {
@@ -699,6 +699,14 @@ export const useDeleteMethod = () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetAllMethod'],
 			});
+		},
+	});
+};
+
+export const usePostPhotoPsychologist = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.post(`photos/create`, data);
 		},
 	});
 };

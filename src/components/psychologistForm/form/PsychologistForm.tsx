@@ -35,6 +35,7 @@ import { RootState } from '../../../store/index.ts';
 import {
 	useEditPsychologist,
 	useGetOnePsychologist,
+	usePostPhotoPsychologist,
 } from '../../../features/queryHooks/queryHooks.ts';
 const { Title } = Typography;
 const { Option } = Select;
@@ -60,6 +61,9 @@ export const PsychologistForm = ({
 	const { mutate: editPsychologist } = useEditPsychologist(
 		Number(user?.psychologist?.id)
 	);
+
+	const { mutate: postPhotoPsychologist } = usePostPhotoPsychologist();
+
 	const { data: psychologist } = user?.accessToken
 		? // eslint-disable-next-line react-hooks/rules-of-hooks, no-mixed-spaces-and-tabs
 		  useGetOnePsychologist(Number(user?.psychologist?.id))
@@ -176,7 +180,8 @@ export const PsychologistForm = ({
 		appendValuesToFormData(formData, values);
 
 		editPsychologist(formData);
-		await window.location.reload();
+
+		await postPhotoPsychologist(formData);
 	};
 
 	const handleChangeFile: UploadProps['onChange'] = ({
@@ -892,7 +897,15 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 						<Col span={24} style={{ marginLeft: 10 }}>
-							<label className="label">Фото {fileList.length} из 3</label>
+							<label className="label">
+								{user?.accessToken ? (
+									<span>Фото (не более 3) </span>
+								) : (
+									<>
+										<span>Фото </span> {fileList.length} <span> из 3</span>
+									</>
+								)}
+							</label>
 							<Form.Item
 								className="photo-upload-form"
 								name="photos"
@@ -903,15 +916,51 @@ export const PsychologistForm = ({
 									},
 								]}
 							>
-								<Upload
-									name="photos"
-									listType="picture-card"
-									fileList={fileList}
-									onChange={handleChangeFile}
-									beforeUpload={() => false}
-								>
-									{fileList.length >= 3 ? null : UploadButton}
-								</Upload>
+								{user?.accessToken ? (
+									<>
+										<div style={{ display: 'flex' }}>
+											{psychologist?.photos.map((photo, index) => (
+												<div key={index} style={{ marginRight: 10 }}>
+													{photo && photo.photo ? (
+														<img
+															src={`http://localhost:8000/uploads/${photo.photo}`}
+															alt={`Техника ${index + 1}`}
+															style={{
+																width: '100px',
+																height: '100px',
+															}}
+														/>
+													) : (
+														<Typography.Text>
+															Изображение отсутствует
+														</Typography.Text>
+													)}
+												</div>
+											))}
+											<Upload
+												name="photos"
+												listType="picture-card"
+												fileList={fileList}
+												onChange={handleChangeFile}
+												beforeUpload={() => false}
+											>
+												{fileList.length >= 3 ? null : UploadButton}
+											</Upload>
+										</div>
+									</>
+								) : (
+									<>
+										<Upload
+											name="photos"
+											listType="picture-card"
+											fileList={fileList}
+											onChange={handleChangeFile}
+											beforeUpload={() => false}
+										>
+											{fileList.length >= 3 ? null : UploadButton}
+										</Upload>
+									</>
+								)}
 							</Form.Item>
 						</Col>
 						<Col span={24}>
