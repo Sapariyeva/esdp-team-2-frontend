@@ -710,3 +710,27 @@ export const usePostPhotoPsychologist = () => {
 		},
 	});
 };
+
+export const useDeletePhotoPsychologist = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			return await axiosInstance.delete(`photos/${id}`);
+		},
+	});
+};
+
+export const usePostCertificatesPsychologist = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.post(`certificates/create`, data);
+		},
+	});
+};
+
+export const useDeleteCertificatesPsychologist = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			return await axiosInstance.delete(`certificates/${id}`);
+		},
+	});
+};

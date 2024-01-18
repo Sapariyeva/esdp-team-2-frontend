@@ -33,8 +33,11 @@ import Alert from '../../ui/Alert/Alert.tsx';
 import { useAppSelector } from '../../../store/hooks.ts';
 import { RootState } from '../../../store/index.ts';
 import {
+	useDeleteCertificatesPsychologist,
+	useDeletePhotoPsychologist,
 	useEditPsychologist,
 	useGetOnePsychologist,
+	usePostCertificatesPsychologist,
 	usePostPhotoPsychologist,
 } from '../../../features/queryHooks/queryHooks.ts';
 const { Title } = Typography;
@@ -63,6 +66,12 @@ export const PsychologistForm = ({
 	);
 
 	const { mutate: postPhotoPsychologist } = usePostPhotoPsychologist();
+	const { mutate: postCertificatePsychologist } =
+		usePostCertificatesPsychologist();
+
+	const { mutate: deletePhotoPsychologist } = useDeletePhotoPsychologist();
+	const { mutate: deleteCertificatesPsychologist } =
+		useDeleteCertificatesPsychologist();
 
 	const { data: psychologist } = user?.accessToken
 		? // eslint-disable-next-line react-hooks/rules-of-hooks, no-mixed-spaces-and-tabs
@@ -125,7 +134,6 @@ export const PsychologistForm = ({
 
 	const handleSubmit = async (values: IPsychologistRegisterData) => {
 		const formData = new FormData();
-
 		values.photos.fileList.forEach((file: UploadFile) => {
 			formData.append('photos', file.originFileObj as Blob);
 		});
@@ -180,14 +188,32 @@ export const PsychologistForm = ({
 		appendValuesToFormData(formData, values);
 
 		editPsychologist(formData);
-
-		await postPhotoPsychologist(formData);
 	};
-
 	const handleChangeFile: UploadProps['onChange'] = ({
 		fileList: newFileList,
 	}) => {
 		setFileList(newFileList);
+	};
+	const handlePostPhotoPsychologist = async (fileList: UploadFile[]) => {
+		const formData = new FormData();
+		if (fileList && fileList.length > 0) {
+			fileList.forEach((file: UploadFile) => {
+				formData.append('photos', file as unknown as Blob);
+			});
+		}
+
+		await postPhotoPsychologist(formData);
+	};
+
+	const handlePostCertificatePsychologist = async (fileList: UploadFile[]) => {
+		const formData = new FormData();
+		if (fileList && fileList.length > 0) {
+			fileList.forEach((file: UploadFile) => {
+				formData.append('certificates', file as unknown as Blob);
+			});
+		}
+
+		await postCertificatePsychologist(formData);
 	};
 
 	return (
@@ -922,14 +948,24 @@ export const PsychologistForm = ({
 											{psychologist?.photos.map((photo, index) => (
 												<div key={index} style={{ marginRight: 10 }}>
 													{photo && photo.photo ? (
-														<img
-															src={`http://localhost:8000/uploads/${photo.photo}`}
-															alt={`Техника ${index + 1}`}
-															style={{
-																width: '100px',
-																height: '100px',
-															}}
-														/>
+														<div className="photo-block">
+															<img
+																src={`http://localhost:8000/uploads/${photo.photo}`}
+																alt={`Техника ${index + 1}`}
+																style={{
+																	width: '100px',
+																	height: '100px',
+																}}
+															/>
+															<Button
+																onClick={() =>
+																	deletePhotoPsychologist(photo.id)
+																}
+																className="photo-block-btn"
+															>
+																X
+															</Button>
+														</div>
 													) : (
 														<Typography.Text>
 															Изображение отсутствует
@@ -937,15 +973,19 @@ export const PsychologistForm = ({
 													)}
 												</div>
 											))}
-											<Upload
-												name="photos"
-												listType="picture-card"
-												fileList={fileList}
-												onChange={handleChangeFile}
-												beforeUpload={() => false}
-											>
-												{fileList.length >= 3 ? null : UploadButton}
-											</Upload>
+											<div>
+												<Upload
+													name="photos"
+													listType="picture-card"
+													fileList={fileList}
+													onChange={handleChangeFile}
+													beforeUpload={(_, fileList) => {
+														handlePostPhotoPsychologist(fileList);
+													}}
+												>
+													{fileList.length >= 3 ? null : UploadButton}
+												</Upload>
+											</div>
 										</div>
 									</>
 								) : (
@@ -981,14 +1021,64 @@ export const PsychologistForm = ({
 									},
 								]}
 							>
-								<UploadInput
-									name="certificates"
-									multiple={true}
-									fileList={certificateFileList}
-									beforeUpload={() => false}
-									onChange={handleCertificateChange}
-									accept=".jpg,.jpeg,.png"
-								/>
+								{user?.accessToken ? (
+									<>
+										<div style={{ display: 'flex' }}>
+											{psychologist?.certificates.map((certificate, index) => (
+												<div key={index} style={{ marginRight: 10 }}>
+													{certificate && certificate.certificate ? (
+														<div className="photo-block">
+															<img
+																src={`http://localhost:8000/uploads/${certificate.certificate}`}
+																alt={`Сертификат ${index + 1}`}
+																style={{
+																	width: '100px',
+																	height: '100px',
+																}}
+															/>
+															<Button
+																onClick={() =>
+																	deleteCertificatesPsychologist(certificate.id)
+																}
+																className="photo-block-btn"
+															>
+																X
+															</Button>
+														</div>
+													) : (
+														<Typography.Text>
+															Изображение отсутствует
+														</Typography.Text>
+													)}
+												</div>
+											))}
+											<Upload
+												name="certificates"
+												multiple={true}
+												listType="picture-card"
+												fileList={certificateFileList}
+												beforeUpload={async (_, fileList) => {
+													await handlePostCertificatePsychologist(fileList);
+												}}
+												onChange={handleCertificateChange}
+												accept=".jpg,.jpeg,.png"
+											>
+												{UploadButton}
+											</Upload>
+										</div>
+									</>
+								) : (
+									<>
+										<UploadInput
+											name="certificates"
+											multiple={true}
+											fileList={certificateFileList}
+											beforeUpload={() => false}
+											onChange={handleCertificateChange}
+											accept=".jpg,.jpeg,.png"
+										/>
+									</>
+								)}
 							</Form.Item>
 						</Col>
 					</Row>

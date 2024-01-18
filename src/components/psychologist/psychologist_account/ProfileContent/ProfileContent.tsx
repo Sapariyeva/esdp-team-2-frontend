@@ -518,7 +518,7 @@ export const Profile = () => {
 												}}
 											>
 												<div style={{ display: 'flex' }}>
-													{user?.psychologist?.certificates.map(
+													{psychologist?.certificates.map(
 														(certificate, index) => (
 															<div key={index} style={{ marginRight: 10 }}>
 																{certificate && certificate.certificate ? (
