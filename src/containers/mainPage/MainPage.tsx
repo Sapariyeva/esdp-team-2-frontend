@@ -1,3 +1,4 @@
+import { MainFeelingPage } from '../../components/feelingsPage/mainPage/MainFeelingPage';
 import AboutContent from '../../components/mainPage/aboutContent/AboutContent';
 import AboutService from '../../components/mainPage/aboutService/AboutService';
 import BreathBlock from '../../components/mainPage/breathBlock/BreathBlock';
@@ -34,6 +35,7 @@ export const MainPage = () => {
 			<ServicesCards />
 			<AboutService />
 			<CoursesList />
+			<MainFeelingPage />
 			<Ticker />
 			<BusinessBlock />
 			<ViewedPsychologists

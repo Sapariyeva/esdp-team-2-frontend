@@ -1,4 +1,4 @@
-import { Space, Spin, Typography } from 'antd';
+import { Spin, Typography } from 'antd';
 import { useGetAllPosts } from '../../../features/queryHooks/queryHooks';
 import './MainFeelingPage.scss';
 import { Link } from 'react-router-dom';
@@ -28,12 +28,12 @@ export const MainFeelingPage = () => {
 							&gt;
 						</Link>
 					</div>
-					<Space>
+					<div className="posts-list">
 						{lastFourPosts.map((post: IPost) => (
 							<Link
 								to={`/feelings/${post.id}`}
 								key={post.id}
-								className="feelingPage-block-item"
+								className="mainPage-block-item"
 							>
 								<div className="mainPage-block-item-text">
 									<img
@@ -55,7 +55,7 @@ export const MainFeelingPage = () => {
 								</div>
 							</Link>
 						))}
-					</Space>
+					</div>
 				</>
 			) : null}
 		</div>
