@@ -35,6 +35,7 @@ import { RootState } from '../../../store/index.ts';
 import {
 	useDeleteCertificatesPsychologist,
 	useDeletePhotoPsychologist,
+	useEditEmail,
 	useEditPsychologist,
 	useGetOnePsychologist,
 	usePostCertificatesPsychologist,
@@ -60,10 +61,14 @@ export const PsychologistForm = ({
 	therapyMethods,
 	cities,
 }: Props) => {
+	const [сurrentPassword, setCurrentPassword] = useState('');
+	const [email, setEmail] = useState('');
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
 	const { mutate: editPsychologist } = useEditPsychologist(
 		Number(user?.psychologist?.id)
 	);
+
+	const { mutate: editEmail } = useEditEmail();
 
 	const { mutate: postPhotoPsychologist } = usePostPhotoPsychologist();
 	const { mutate: postCertificatePsychologist } =
@@ -216,6 +221,25 @@ export const PsychologistForm = ({
 		await postCertificatePsychologist(formData);
 	};
 
+	const handleEditEmail = async () => {
+		const data = {
+			email: email,
+			сurrentPassword: сurrentPassword,
+		};
+
+		editEmail(data);
+	};
+
+	const handleCurrentPasswordChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setCurrentPassword(e.target.value);
+	};
+
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEmail(e.target.value);
+	};
+
 	return (
 		<div>
 			<Layout className="layout">
@@ -227,7 +251,11 @@ export const PsychologistForm = ({
 				>
 					{user?.accessToken ? (
 						<div>
-							<Button className="form-edit-btn" htmlType="submit">
+							<Button
+								className="form-edit-btn"
+								htmlType="submit"
+								onClick={() => handleEditEmail()}
+							>
 								Применить
 							</Button>
 							<Button
@@ -278,6 +306,8 @@ export const PsychologistForm = ({
 										placeholder="example@gmail.com"
 										size="small"
 										defaultValue={user?.email}
+										value={email}
+										onChange={handleEmailChange}
 									/>
 								) : (
 									<Input
@@ -343,6 +373,8 @@ export const PsychologistForm = ({
 									className="input--grey input"
 									autoComplete="on"
 									size="small"
+									value={сurrentPassword}
+									onChange={handleCurrentPasswordChange}
 								/>
 							</Form.Item>
 						</Col>

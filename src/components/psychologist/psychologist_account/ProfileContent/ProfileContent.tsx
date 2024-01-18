@@ -36,7 +36,6 @@ export const Profile = () => {
 	const { data: psychologist } = useGetOnePsychologist(
 		Number(user?.psychologist?.id)
 	);
-	console.log(psychologist);
 
 	const handleEditClick = () => {
 		setEditing(true);
