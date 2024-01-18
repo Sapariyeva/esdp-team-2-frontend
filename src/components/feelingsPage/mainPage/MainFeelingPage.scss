@@ -1,25 +1,28 @@
 .mainPage-block {
 	display: flex;
-	align-items: baseline;
 	justify-content: space-between;
+	align-items:center;
 	&-title {
 		color: #834eeb;
 		font-weight: 800;
-		font-size: 35px;
-		margin: 50px 0 28px 0;
+		font-size: 3vw;
+		margin: 1vw 0;
+		font-family: Montserrat;
 	}
 	&-btn {
-		background: #fbf9ff;
-		box-shadow: none;
-		border: 1px solid #9f67fd;
-		border-radius: 50px;
-		padding: 9px 32px;
+		height: max-content;
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		color: #9f67fd;
-		font-size: 15px;
-		font-weight: 800;
+		justify-content: center;
+		padding: 1vw 3vw;
+		cursor: pointer;
+		border-radius: 5vw;
+		border: 0.1vw solid rgba(159, 103, 253, 0.5);
+		color: rgba(159, 103, 253, 0.5);
+		@media (max-width: 500px) {
+			padding: 0.2vw 4vw;
+			font-size: 3vw;
+		}
 	}
 	&-btn:hover {
 		color: #9f67fd;
@@ -27,39 +30,52 @@
 }
 
 .mainPage-block-item {
-	margin: 0 15px 0 78px;
-	box-sizing: border-box;
-	text-align: center;
-	margin-bottom: 40px;
+	display: block;
+	width: 25vw;
 	cursor: pointer;
 	&-text {
-		text-align: left;
+		font-family: Montserrat;
+		display: flex;
+		flex-direction: column;
+		gap: 1vw;
+
 		&-image {
-			width: 345px;
-			height: 337px;
-			border-radius: 20px;
+			width: 25vw;
+			height: 20vw;
+			object-fit: cover;
+			border-radius: 2vw;
 		}
 		&-title {
-			font-size: 19px;
+			font-size: 2vw;
 			color: #4a4a4a;
-			margin-top: 15px;
-			word-wrap: break-word;
-			width: 269px;
-			line-height: 30px;
+			font-weight: 600;
+			@media (max-width: 500px) {
+				font-size: 2.5vw;
+			}
 		}
 		&-date {
-			margin-top: 20px;
 			color: #9f9f9f;
+			font-size: 1.5vw;
+			@media (max-width: 500px) {
+				font-size: 2vw;
+			}
 		}
 		&-description {
 			color: #4a4a4a;
-			margin: 20px 0 50px 0;
-			width: 363px;
-			font-size: 17px;
+			font-size: 1.5vw;
 			overflow: hidden;
 			-webkit-line-clamp: 3;
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
+			@media (max-width: 500px) {
+				font-size: 2vw;
+			}
 		}
 	}
+}
+
+.posts-list {
+	display: flex;
+	gap: 1vw;
+	overflow: scroll;
 }
