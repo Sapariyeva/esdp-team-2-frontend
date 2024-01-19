@@ -5,7 +5,11 @@ import { AxiosError, isAxiosError } from 'axios';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
-import { IPsychologistRegisterData } from '../../interfaces/IPsychologist.ts';
+import {
+	IPsychologist,
+	IPsychologistRegisterData,
+} from '../../interfaces/IPsychologist.ts';
+import { IPhoto } from '../../interfaces/IPhoto.ts';
 
 interface AuthUserData {
 	email: string;
@@ -149,6 +153,7 @@ interface UserState {
 	registerError: ServerFormValidationResponse | null;
 	loginError: ServerFormValidationResponse | null;
 	logged: boolean;
+	dataPsychologist: IPsychologist | null;
 }
 
 const initialState: UserState = {
@@ -157,6 +162,7 @@ const initialState: UserState = {
 	loginError: null,
 	loading: false,
 	logged: false,
+	dataPsychologist: null,
 };
 
 const userSlice = createSlice({
@@ -172,6 +178,14 @@ const userSlice = createSlice({
 		},
 		saveUser: (state, { payload }) => {
 			state.userInfo = payload;
+		},
+		setPhotoPsychologist: (state, { payload }: { payload: IPhoto[] }) => {
+			if (state.dataPsychologist) {
+				state.dataPsychologist.photos = payload;
+			}
+		},
+		setPsychologist: (state, { payload }: { payload: IPsychologist }) => {
+			state.dataPsychologist = payload;
 		},
 	},
 	extraReducers(builder) {
@@ -271,6 +285,12 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const { resetErrors, resetUser, saveUser } = userSlice.actions;
+export const {
+	resetErrors,
+	resetUser,
+	saveUser,
+	setPhotoPsychologist,
+	setPsychologist,
+} = userSlice.actions;
 
 export default userSlice;

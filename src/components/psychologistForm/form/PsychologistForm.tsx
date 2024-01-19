@@ -11,14 +11,17 @@ import {
 	Col,
 	InputNumber,
 } from 'antd';
-import { IPsychologistRegisterData } from '../../../interfaces/IPsychologist.ts';
+import {
+	IPsychologist,
+	IPsychologistRegisterData,
+} from '../../../interfaces/IPsychologist.ts';
 import InformationText from '../../ui/Text/InformationText.tsx';
 import { ServerFormValidationResponse } from '../../../interfaces/ServerFormValidationResponse.ts';
 import { ITechnique } from '../../../interfaces/ITechnique.ts';
 import { ISymptom } from '../../../interfaces/ISymptom.ts';
 import { ITherapyMethod } from '../../../interfaces/ITherapyMethod.ts';
-import { ICity } from '../../../interfaces/IPsychologistForm.ts';
-import { useState } from 'react';
+import { ICity, IPhoto } from '../../../interfaces/IPsychologistForm.ts';
+import { useEffect, useState } from 'react';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { UploadButton } from '../../ui/Button/UploadButton.tsx';
 import './PsychologistForm.scss';
@@ -30,7 +33,7 @@ import {
 import AboutModerationModal from '../aboutModerationModal/AboutModerationModal.tsx';
 import infoIcon from '../../../assets/icon/info-circle.svg';
 import Alert from '../../ui/Alert/Alert.tsx';
-import { useAppSelector } from '../../../store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks.ts';
 import { RootState } from '../../../store/index.ts';
 import {
 	useDeleteCertificatesPsychologist,
@@ -41,6 +44,10 @@ import {
 	usePostCertificatesPsychologist,
 	usePostPhotoPsychologist,
 } from '../../../features/queryHooks/queryHooks.ts';
+import {
+	setPhotoPsychologist,
+	setPsychologist,
+} from '../../../features/user/userSlice.ts';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -77,11 +84,27 @@ export const PsychologistForm = ({
 	const { mutate: deletePhotoPsychologist } = useDeletePhotoPsychologist();
 	const { mutate: deleteCertificatesPsychologist } =
 		useDeleteCertificatesPsychologist();
-
+	const dispatch = useAppDispatch();
+	const { dataPsychologist } = useAppSelector((store) => store.users);
+	const onDeletePhotoPsychologist = async (id: number) => {
+		await deletePhotoPsychologist(id);
+		if (psychologist?.photos) {
+			const newFilterPsylogoist: IPhoto[] = psychologist?.photos.filter(
+				(item) => item.id !== id
+			);
+			await dispatch(setPhotoPsychologist(newFilterPsylogoist));
+		}
+	};
 	const { data: psychologist } = user?.accessToken
 		? // eslint-disable-next-line react-hooks/rules-of-hooks, no-mixed-spaces-and-tabs
 		  useGetOnePsychologist(Number(user?.psychologist?.id))
 		: { data: undefined };
+	useEffect(() => {
+		if (user?.accessToken) {
+			// eslint-disable-next-line react-hooks/rules-of-hooks
+			dispatch(setPsychologist(psychologist as IPsychologist));
+		}
+	}, []);
 
 	function formatDateString(dateString: Date | string | undefined): string {
 		if (!dateString) return '';
@@ -977,7 +1000,7 @@ export const PsychologistForm = ({
 								{user?.accessToken ? (
 									<>
 										<div style={{ display: 'flex' }}>
-											{psychologist?.photos.map((photo, index) => (
+											{dataPsychologist?.photos.map((photo, index) => (
 												<div key={index} style={{ marginRight: 10 }}>
 													{photo && photo.photo ? (
 														<div className="photo-block">
@@ -991,7 +1014,7 @@ export const PsychologistForm = ({
 															/>
 															<Button
 																onClick={() =>
-																	deletePhotoPsychologist(photo.id)
+																	onDeletePhotoPsychologist(photo.id)
 																}
 																className="photo-block-btn"
 															>
@@ -1013,6 +1036,9 @@ export const PsychologistForm = ({
 													onChange={handleChangeFile}
 													beforeUpload={(_, fileList) => {
 														handlePostPhotoPsychologist(fileList);
+													}}
+													onRemove={() => {
+														return false;
 													}}
 												>
 													{fileList.length >= 3 ? null : UploadButton}
