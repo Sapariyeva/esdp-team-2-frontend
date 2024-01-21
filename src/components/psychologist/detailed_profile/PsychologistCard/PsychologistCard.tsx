@@ -8,6 +8,7 @@ import { userSelect } from '../../../../features/user/userSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import Record from '../../../../containers/record/Record.tsx';
 import { EnvironmentOutlined, WifiOutlined } from '@ant-design/icons';
+import { translateLanguage } from '../../../../helpers/translateLanguageю.ts';
 
 type PsychologistCardProps = {
 	psychologist: IPsychologist;
@@ -57,8 +58,10 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 
 				<div className={styles.card_content}>
 					<p className={styles.card_cost}>
-						<strong className={styles.cost}>{psychologist.cost}тг</strong> /
-						сессия
+						<strong className={styles.cost}>
+							{psychologist.cost.toLocaleString()}тг
+						</strong>
+						/ сессия
 					</p>
 
 					{Array.isArray(psychologist.format) ? (
@@ -119,7 +122,7 @@ const PsychologistCard = ({ psychologist }: PsychologistCardProps) => {
 						<ul className={styles.card_languages}>
 							{psychologist.languages.map((item) => (
 								<li className={styles.languages} key={item}>
-									{item}
+									{translateLanguage(item)}
 								</li>
 							))}
 						</ul>

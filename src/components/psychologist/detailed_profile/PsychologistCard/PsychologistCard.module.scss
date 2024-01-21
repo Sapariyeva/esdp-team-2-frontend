@@ -7,7 +7,7 @@
 }
 .psychologist_profile_card {
 	height: max-content;
-	width: 300px;
+	width: 370px;
 
 	.psychologist_photo_experienceYears {
 		margin: 0 0 20px 0;
@@ -41,7 +41,6 @@
 
 		.card_cost {
 			display: flex;
-			width: 290px;
 			justify-content: center;
 			align-items: baseline;
 			gap: 10px;
@@ -55,7 +54,7 @@
 			.cost {
 				color: #7ed957;
 				font-family: Montserrat;
-				font-size: 28px;
+				font-size: 22px;
 				font-style: normal;
 				font-weight: 600;
 				line-height: normal;
@@ -108,7 +107,9 @@
 				width: 16px;
 			}
 		}
-
+		.img_photo {
+			border-radius: 10px !important;
+		}
 		.city {
 			display: flex;
 			align-items: center;
@@ -123,11 +124,10 @@
 			border-radius: 50px;
 			background: #f5f5f5;
 			margin: 0 10px 10px 0;
-			.city_icon{
-				color: #9F9F9F;
+			.city_icon {
+				color: #9f9f9f;
 			}
 		}
-		
 
 		.lgbt {
 			max-width: 200px;
@@ -145,7 +145,8 @@
 
 		.card_button {
 			display: flex;
-			width: 270px;
+			margin-top: 10px;
+			width: 100%;
 			padding: 20px 10px;
 			justify-content: center;
 			align-items: center;

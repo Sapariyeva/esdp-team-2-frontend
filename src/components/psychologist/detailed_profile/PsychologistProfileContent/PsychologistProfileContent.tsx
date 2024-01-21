@@ -128,7 +128,9 @@ const PsychologistProfileContent = ({
 							<Image
 								key={id}
 								alt={psychologist.fullName}
-								src={`${import.meta.env.VITE_API_URL}/uploads/${certificate.certificate}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${
+									certificate.certificate
+								}`}
 								className={styles.img_certificate}
 							/>
 						))}
