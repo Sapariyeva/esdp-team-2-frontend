@@ -16,7 +16,7 @@ export const CustomLayout: FC = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 
-		const hash = window.location.hash.substring(1);
+		const hash = location.hash.substring(1);
 		if (hash) {
 			const targetElement = document.getElementById(hash);
 			if (targetElement) {
@@ -25,7 +25,7 @@ export const CustomLayout: FC = () => {
 				}, 100);
 			}
 		}
-	}, [location.pathname]);
+	}, [location]);
 	return (
 		<Layout className={'container'}>
 			<AntLayout.Header className={'layout_header'}>
