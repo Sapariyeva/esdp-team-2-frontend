@@ -2,7 +2,6 @@
 	text-align: center !important;
 	color: #2e2e2e;
 	font-size: 14px;
-	min-width: 110px;
 	vertical-align: middle;
 	:nth-last-child(2) {
 		width: 16px !important;
@@ -10,13 +9,6 @@
 }
 .colum::before {
 	visibility: hidden;
-}
-
-.infoComment {
-	position: absolute;
-	left: 0;
-	top: 34px;
-	font-size: 17px;
 }
 
 .scrollableText {
@@ -127,7 +119,6 @@
 }
 .row {
 	background-color: #fff !important;
-	overflow: scroll;
 }
 .spinner {
 	display: flex;
