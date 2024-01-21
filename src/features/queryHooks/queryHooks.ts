@@ -303,7 +303,7 @@ export const useGetRecordsActualPsychologists = (
 	status: boolean
 ) => {
 	return useQuery<IRecord[]>({
-		queryKey: ['useGetRecordsActualPsychologists', date],
+		queryKey: ['useGetRecordsActualPsychologists', date, status],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
 				`/psychologists/records/actual`,
