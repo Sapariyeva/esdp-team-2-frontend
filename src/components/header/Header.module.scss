@@ -86,11 +86,14 @@
 	font-weight: 400;
 	line-height: normal;
 	justify-content: flex-end;
+
 	@media (max-width: 1230px) {
 		width: 20px;
 	}
 }
-
+.menuCommon{
+	border: none!important;
+}
 .customIcon {
 	display: flex;
 	width: 25px;
