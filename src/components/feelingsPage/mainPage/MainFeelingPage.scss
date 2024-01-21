@@ -31,16 +31,16 @@
 
 .mainPage-block-item {
 	display: block;
-	width: 100%;
+	width: 25vw;
 	cursor: pointer;
 	&-text {
 		font-family: Montserrat;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 1vw;
 
 		&-image {
-			width: 28vw;
+			width: 25vw;
 			height: 20vw;
 			object-fit: cover;
 			border-radius: 2vw;
