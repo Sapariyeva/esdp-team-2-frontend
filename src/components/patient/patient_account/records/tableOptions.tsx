@@ -105,6 +105,7 @@ const columns: IRecordAllColumn = {
 	},
 	changeRecord: {
 		title: '',
+		responsive: ['md'],
 		dataIndex: 'changeRecord',
 		reactNode: (record) => <ChangeRecord record={record} />,
 	},

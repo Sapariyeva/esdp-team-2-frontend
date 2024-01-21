@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							headerColor: '#9F9F9F',
 							fontFamily: 'Montserrat',
 							fontWeightStrong: 400,
-							borderRadius: 10,
+							borderRadius: 20,
 							colorBgContainer: '#FFF',
 						},
 
