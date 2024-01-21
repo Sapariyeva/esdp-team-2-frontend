@@ -5,7 +5,7 @@ const { Title } = Typography;
 
 const BusinessBlock = () => {
 	return (
-		<div className="business-block">
+		<div id="busines" className="business-block">
 			<div className="business-block__text">
 				<Title className="main-title">корпоративный психолог</Title>
 				<div className="business-block__item">

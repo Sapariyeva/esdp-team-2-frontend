@@ -2,9 +2,13 @@
 ::-webkit-scrollbar {
 	display: none;
 }
+html,
 body {
-	position: relative;
-	font-family: 'Montserrat' !important;
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: 'Montserrat', sans-serif !important;
 }
 
 $color-white: #f5f5f5;
