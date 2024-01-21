@@ -2,7 +2,7 @@ import { ColumnType, ColumnsType } from 'antd/es/table';
 import 'dayjs/locale/ru';
 import styles from './clients.module.scss';
 import { IRecord } from '../../../../interfaces/IRecord';
-import { Button, DescriptionsProps, Table } from 'antd';
+import { DescriptionsProps, Table } from 'antd';
 import { FC, useMemo, useState } from 'react';
 import { IRecordColumn } from './tableOptions';
 import ModalTable from '../../../ui/ModalTable/ModalTable';
@@ -59,13 +59,9 @@ const AdaptiveTable: FC<Props> = ({ records, emptyText, tableOptions }) => {
 				className: `${styles.colum}`,
 				width: 'auto',
 				render: (_, record) => (
-					<Button
-						type="primary"
-						onClick={() => showModal(record.id)}
-						size="small"
-					>
-						Подробнее
-					</Button>
+					<p className={styles.btn} onClick={() => showModal(record.id)}>
+						Посмотреть
+					</p>
 				),
 			};
 

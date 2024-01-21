@@ -71,7 +71,7 @@ export const PsychologistsListContainer = () => {
 	}
 
 	return (
-		<>
+		<div style={{ padding: '20px' }}>
 			{error instanceof AxiosError && (
 				<Alert
 					closable
@@ -91,6 +91,6 @@ export const PsychologistsListContainer = () => {
 				psychologists={psychologistsList}
 				switchFavorite={switchFavorite}
 			/>
-		</>
+		</div>
 	);
 };
