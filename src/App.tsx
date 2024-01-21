@@ -6,7 +6,7 @@ import Register from './containers/auth/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
 import PsychologistDetailedProfileContainer from './containers/psychologist/detailed_profile/PsychologistDetailedProfileContainer.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
-import { BusinessPage } from './containers/businessPage/BusinessPage.tsx';
+import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
