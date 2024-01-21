@@ -31,16 +31,16 @@
 
 .mainPage-block-item {
 	display: block;
-	width: 25vw;
+	width: 100%;
 	cursor: pointer;
 	&-text {
 		font-family: Montserrat;
 		display: flex;
 		flex-direction: column;
-		gap: 1vw;
+		gap: 10px;
 
 		&-image {
-			width: 25vw;
+			width: 28vw;
 			height: 20vw;
 			object-fit: cover;
 			border-radius: 2vw;
@@ -55,7 +55,7 @@
 		}
 		&-date {
 			color: #9f9f9f;
-			font-size: 1.5vw;
+			font-size: 1vw;
 			@media (max-width: 500px) {
 				font-size: 2vw;
 			}

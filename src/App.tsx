@@ -6,7 +6,7 @@ import Register from './containers/auth/register/Register.tsx';
 import PsychologistAccountPage from './containers/psychologist/personal_account/PsychologistAccountPage.tsx';
 import PsychologistDetailedProfileContainer from './containers/psychologist/detailed_profile/PsychologistDetailedProfileContainer.tsx';
 import PatientAccountPage from './containers/patient/personal_account/PatientAccountPage.tsx';
-import { BusinessPage } from './containers/businessPage/BusinessPage.tsx';
+import { BusinessPage } from './components/businessPage/BusinessPage.tsx';
 import { ArticlePageContainer } from './containers/articles/ArticlePageContainer.tsx';
 import { ArticleDetailed } from './components/article/articleDetailed/ArticleDetailed.tsx';
 import { PsychologistsListContainer } from './containers/psychologists/catalog/PsychologistsListContainer.tsx';
@@ -47,9 +47,9 @@ dayjs.extend(utc);
 dayjs.locale('ru');
 
 const queryClient = new QueryClient();
-
 const App = () => {
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
@@ -125,7 +125,6 @@ const App = () => {
 								path="/articles/:id"
 								element={<ArticleDetailed id={1} />}
 							/>
-
 							<Route path="/patient" element={<PatientAccountPage />}>
 								<Route path="profile" element={<PatientProfile />} />
 								<Route path="records" element={<MyRecords />} />

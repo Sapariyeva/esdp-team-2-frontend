@@ -36,7 +36,7 @@ const AboutService = () => {
 						отменить и перенести сессию в случае ф-м.
 					</Typography>
 				</div>
-				<div className="about-service__item">
+				<div className="about-service__item ">
 					<Typography className="title">пакеты сессий</Typography>
 					<Typography className="text">
 						Можно приобретать 5–10 и более сессий в пакете и проходить
