@@ -4,7 +4,7 @@ import person from '../../assets/icon/person.svg';
 import heart_and_hand from '../../assets/icon/heart_and_hand.svg';
 import flower from '../../assets/icon/flower.svg';
 import cloud from '../../assets/icon/cloud.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal } from 'antd';
 
 export const BusinessPage = () => {
