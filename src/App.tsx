@@ -47,9 +47,9 @@ dayjs.extend(utc);
 dayjs.locale('ru');
 
 const queryClient = new QueryClient();
-
 const App = () => {
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
@@ -125,7 +125,6 @@ const App = () => {
 								path="/articles/:id"
 								element={<ArticleDetailed id={1} />}
 							/>
-
 							<Route path="/patient" element={<PatientAccountPage />}>
 								<Route path="profile" element={<PatientProfile />} />
 								<Route path="records" element={<MyRecords />} />

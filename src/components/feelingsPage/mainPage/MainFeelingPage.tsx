@@ -3,7 +3,7 @@ import { useGetAllPosts } from '../../../features/queryHooks/queryHooks';
 import './MainFeelingPage.scss';
 import { Link } from 'react-router-dom';
 import { IPost } from '../../../interfaces/IPost';
-import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
+import dayjs from 'dayjs';
 
 export const MainFeelingPage = () => {
 	const { data: allPosts = [], isPending } = useGetAllPosts();
@@ -37,21 +37,16 @@ export const MainFeelingPage = () => {
 							>
 								<div className="mainPage-block-item-text">
 									<img
-										src={`http://localhost:8000/uploads/${post.image}`}
+										src={`${import.meta.env.VITE_API_URL}/uploads/${
+											post.image
+										}`}
 										alt={post.title}
 										className="mainPage-block-item-text-image"
 									/>
 									<p className="mainPage-block-item-text-title">{post.title}</p>
 									<p className="mainPage-block-item-text-date">
-										9 января 2024 года
+										{dayjs(post.publicationDate).format('DD MMMM YYYY года')}
 									</p>
-									<div className="mainPage-block-item-text-description">
-										<FroalaEditorView
-											model={
-												post.description ? post.description : 'No description'
-											}
-										/>
-									</div>
 								</div>
 							</Link>
 						))}
