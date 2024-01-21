@@ -74,6 +74,7 @@ const PsychologistFilterForm = ({
 				form.setFieldsValue(parsedFormValues);
 			}
 		} catch (error) {
+			setCost([0, 50000]);
 			localStorage.removeItem('psychologistFilterForm');
 		}
 
@@ -95,6 +96,7 @@ const PsychologistFilterForm = ({
 		form.resetFields();
 		localStorage.removeItem('psychologistFilterForm');
 		onFilter({});
+		setCost([0, 50000]);
 	};
 
 	return (
