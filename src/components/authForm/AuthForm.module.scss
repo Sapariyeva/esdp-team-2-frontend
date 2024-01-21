@@ -5,7 +5,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #FBF9FF;
+	background-color: #fbf9ff;
 	font-family: Montserrat !important;
 	border-radius: 20px;
 	min-height: 80svh;
@@ -31,13 +31,12 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		max-width: 400px;
+		width: 400px;
 		padding: 20px 30px;
 		border-radius: 20px;
 		background: #fff;
-
-		@media (max-width: 400px) {
-			max-width: 350px;
+		@media (max-width: 600px) {
+			max-width: 300px;
 		}
 		.formItem {
 			margin-bottom: 10px;

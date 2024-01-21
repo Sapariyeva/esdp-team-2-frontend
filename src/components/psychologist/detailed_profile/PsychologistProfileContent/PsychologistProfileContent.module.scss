@@ -1,7 +1,7 @@
 @import '../../../../assets/styles/_config.scss';
 
 .psychologist_profile_content {
-	width:100%;
+	width: 100%;
 	position: relative;
 	@media screen and (max-width: 900px) {
 		width: 100%;
@@ -96,7 +96,7 @@
 	}
 
 	.img_certificate {
-		width: 180px;
+		width: 180px !important;
 		height: 180px;
 		border-radius: 20px;
 		margin: 5px 5px 5px 0;
