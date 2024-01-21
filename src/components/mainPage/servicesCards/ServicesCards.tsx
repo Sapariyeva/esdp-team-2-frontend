@@ -9,7 +9,7 @@ import { Typography } from 'antd';
 const { Title } = Typography;
 const ServicesCards = () => {
 	return (
-		<Row id="services" className="services-cards">
+		<Row className="services-cards">
 			<Col
 				xs={10}
 				sm={10}

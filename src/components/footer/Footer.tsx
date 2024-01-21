@@ -24,7 +24,7 @@ export const FooterMenu = () => {
 				<div className={styles.footer_container_item_link}>
 					<div className={styles.footer_container_item}>
 						<h2 className={styles.footer_item_title}>продукт</h2>
-						<a className={styles.footer_item_link} href="/#services">
+						<a className={styles.footer_item_link} href="#">
 							о сервисе
 						</a>
 						<a className={styles.footer_item_link} href="#">
@@ -36,10 +36,9 @@ export const FooterMenu = () => {
 					</div>
 					<div className={styles.footer_container_item}>
 						<h2 className={styles.footer_item_title}>для тебя</h2>
-
-						<NavLink className={styles.footer_item_link} to={'/psychologists'}>
+						<a className={styles.footer_item_link} href="#">
 							психологи
-						</NavLink>
+						</a>
 						<a className={styles.footer_item_link} href="#">
 							соло-курсы
 						</a>
@@ -55,7 +54,7 @@ export const FooterMenu = () => {
 						<a className={styles.footer_item_link} href="#">
 							решение конфликтов
 						</a>
-						<a className={styles.footer_item_link} href="/#busines">
+						<a className={styles.footer_item_link} href="#">
 							корпоративный психолог
 						</a>
 					</div>

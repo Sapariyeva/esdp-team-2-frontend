@@ -1,4 +1,5 @@
 import { Button, MenuProps } from 'antd';
+import { NavLink } from 'react-router-dom';
 import React from 'react';
 import logo from '../../assets/icon/logo.svg';
 import styles from './Header.module.scss';
@@ -12,7 +13,6 @@ import history from '../../assets/icon/history.svg';
 import heart from '../../assets/icon/heart.svg';
 import book from '../../assets/icon/book-saved.svg';
 import logout from '../../assets/icon/logout.svg';
-import { NavLink } from 'react-router-dom';
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
@@ -26,7 +26,6 @@ type Options = {
 	style?: React.CSSProperties;
 	className?: string;
 	disable?: boolean;
-	anchor?: boolean;
 };
 
 type GetItem = (options: Options) => MenuItem;
@@ -41,16 +40,9 @@ export const getItem: GetItem = ({
 	style,
 	className,
 	disable,
-	anchor = false,
 }) => {
 	return {
-		label: anchor ? (
-			<a href={key}>{label}</a>
-		) : isLink ? (
-			<NavLink to={key}>{label}</NavLink>
-		) : (
-			label
-		),
+		label: isLink ? <NavLink to={key}>{label}</NavLink> : label,
 		key,
 		icon,
 		children,
@@ -114,7 +106,7 @@ export const patientItems: MenuProps['items'] = [
 			}),
 			getItem({
 				label: 'Курсы',
-				key: '#',
+				key: 'patient/course',
 				isLink: true,
 				icon: <img className={styles.item_icon} src={book} alt="book" />,
 			}),
@@ -262,8 +254,8 @@ export const loginAuth: MenuProps['items'] = [
 export const commonItems: MenuProps['items'] = [
 	getItem({
 		label: 'о сервисе',
-		key: '/#services',
-		anchor: true,
+		key: 'service',
+		isLink: true,
 	}),
 	getItem({
 		label: 'психологи',
@@ -293,7 +285,7 @@ export const commonItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'соло-курсы',
-		key: '/#',
+		key: '/selfwork',
 		isLink: true,
 	}),
 	getItem({
