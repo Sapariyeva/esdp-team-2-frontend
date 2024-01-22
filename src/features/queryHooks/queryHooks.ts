@@ -27,6 +27,7 @@ import {
 	IFilteringValues,
 } from '../../interfaces/IFilteringValues.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
+import { IRecordConfirmation } from '../../interfaces/IRecordConfirmation.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -279,6 +280,21 @@ export const useRecordTransferQuery = () => {
 	return useMutation({
 		mutationFn: async (data: ITransferRecord) => {
 			return await axiosInstance.put(`/records`, data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetActualRecordPatient'],
+			});
+		},
+	});
+};
+
+export const useRecordConfirmation = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (data: IRecordConfirmation) => {
+			return await axiosInstance.put(`/records/presence`, data);
 		},
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
