@@ -86,13 +86,12 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 					<div className={styles.cover}>
 						<img
 							alt={psychologist.fullName}
-							src={
-								psychologist.photos && psychologist.photos.length > 0
-									? `http://localhost:8000/uploads/${psychologist.photos[0].photo}`
-									: ''
-							}
+							src={`${import.meta.env.VITE_API_URL}/uploads/${
+								psychologist.photos[0].photo
+							}`}
 							className={styles.card_img}
 						/>
+
 						<div
 							className={styles.experienceYears}
 						>{`Опыт ${psychologist.experienceYears} лет`}</div>
@@ -151,7 +150,9 @@ export const PsychologistCard = ({ psychologist, switchFavorite }: Props) => {
 									? `${psychologist.description.slice(0, 80)}...`
 									: psychologist.description}
 							</p>
-							<p className={styles.cost}>{`${psychologist.cost} тг`}</p>
+							<p
+								className={styles.cost}
+							>{`${psychologist.cost.toLocaleString()} тг`}</p>
 						</>
 					}
 				/>

@@ -50,7 +50,7 @@ export const Header: React.FC<ToolbarProps> = ({ isAuthenticated, user }) => {
 					className={styles.logoMenu}
 				/>
 				<AntMenu
-					className={`${styles.menuCommon} menu-burger`}
+					className={`${styles.menuCommon}`}
 					overflowedIndicator={<RxHamburgerMenu className={styles.burger} />}
 					mode="horizontal"
 					items={commonItems}

@@ -5,7 +5,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #FBF9FF;
+	background-color: #fbf9ff;
 	font-family: Montserrat !important;
 	border-radius: 20px;
 	min-height: 80svh;
@@ -13,7 +13,7 @@
 	.title {
 		color: #2e2e2e;
 		text-align: left;
-		font-size: 40px;
+		font-size: 32px;
 		font-style: normal;
 		font-weight: 600;
 		line-height: normal;
@@ -35,9 +35,8 @@
 		padding: 20px 30px;
 		border-radius: 20px;
 		background: #fff;
-
-		@media (max-width: 400px) {
-			max-width: 350px;
+		@media (max-width: 600px) {
+			max-width: 300px;
 		}
 		.formItem {
 			margin-bottom: 10px;

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Button } from 'antd';
 import back from '../../../../public/arrow-left.svg';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
-import { useAppointmentsSelectDayQuery } from '../../../features/queryHooks/queryHooks.ts';
+import { useGetUpcomingRecordings } from '../../../features/queryHooks/queryHooks.ts';
 import 'dayjs/locale/ru';
 import { useState } from 'react';
 import TimeSlot from './timeSlot/TimeSlot.tsx';
@@ -25,11 +25,8 @@ const SelectionBookingTime = ({
 }: Props) => {
 	const [selectedTime, setSelectedTime] = useState<null | string>(null);
 	const [selectedDate, setSelectedDate] = useState<null | string>(null);
-	const currentDay = dayjs().format('YYYY-MM-DD');
-	const { data: currentDayRecords = [] } = useAppointmentsSelectDayQuery(
-		psychologistId,
-		currentDay
-	);
+	const { data: currentDayRecords = [] } =
+		useGetUpcomingRecordings(psychologistId);
 
 	const handleTimeClick = (date: ITimeSlot) => {
 		const selectedDate = dayjs(`${date.date}T${date.time}`).format(

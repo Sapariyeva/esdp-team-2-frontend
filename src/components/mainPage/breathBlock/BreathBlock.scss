@@ -1,0 +1,9 @@
+.breath-block {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 15%;
+	&__gif {
+		width: 40vw;
+	}
+}

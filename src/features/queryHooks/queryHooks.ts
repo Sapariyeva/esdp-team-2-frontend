@@ -1,27 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { message } from 'antd';
+import axios, { AxiosError } from 'axios';
+import { NavigateFunction } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import axiosInstance from '../../api/axiosInstance';
-import { ITechnique } from '../../interfaces/ITechnique';
-import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
-import { ISymptom } from '../../interfaces/ISymptom';
-import { ICity } from '../../interfaces/IPsychologistForm';
+import { IPatient } from '../../interfaces/IPatient';
+import { IPost } from '../../interfaces/IPost.ts';
 import {
 	IPsychologist,
 	IPsychologistRegisterData,
 	IPsychologistWithLikes,
 } from '../../interfaces/IPsychologist';
-import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
-import { IPatient } from '../../interfaces/IPatient';
-import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
-import { message } from 'antd';
-import { NavigateFunction } from 'react-router-dom';
-import { IRecordPost } from '../../interfaces/IRecordpost';
-import IFilteringValues from '../../interfaces/IFilteringValues';
-import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
+import { ICity } from '../../interfaces/IPsychologistForm';
 import { IRecord } from '../../interfaces/IRecord.ts';
+import { IRecordPost } from '../../interfaces/IRecordpost';
+import { ISymptom } from '../../interfaces/ISymptom';
+import { ITechnique } from '../../interfaces/ITechnique';
+import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
+import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
-import axios from 'axios';
+import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
 import { saveUser } from '../user/userSlice.ts';
-import { Dispatch } from 'redux';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../interfaces/IFilteringValues.ts';
+import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -134,7 +139,9 @@ export const useGetOnePsychologist = (id: number) => {
 	});
 };
 
-export const useGetPsychologists = (filterValues: IFilteringValues | null) => {
+export const useGetPsychologists = (
+	filterValues: IFilteringValues | null | IFilteringConsultationType
+) => {
 	return useQuery({
 		queryFn: async () => {
 			const { data } = await axiosInstance.post<IPsychologistWithLikes[]>(
@@ -278,7 +285,7 @@ export const useGetUpcomingRecordings = (psychologistId: number) => {
 		queryKey: ['getAppointmentsDay'],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
-				`appointments/nearest/${psychologistId}`
+				`/appointments/nearest/${psychologistId}`
 			);
 			return response.data;
 		},
@@ -332,7 +339,7 @@ export const useGetRecordsActualPsychologists = (
 	status: boolean
 ) => {
 	return useQuery<IRecord[]>({
-		queryKey: ['useGetRecordsActualPsychologists', date],
+		queryKey: ['useGetRecordsActualPsychologists', date, status],
 		queryFn: async () => {
 			const response = await axiosInstance.get(
 				`/psychologists/records/actual`,
@@ -362,7 +369,7 @@ export const useGetAllPosts = () => {
 	return useQuery({
 		queryKey: ['useGetAllPosts'],
 		queryFn: async () => {
-			const response = await axiosInstance.get(`/posts`);
+			const response = await axiosInstance.get<IPost[]>(`/posts`);
 			return response.data;
 		},
 	});
@@ -372,7 +379,7 @@ export const usePostOnePosts = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			const response = await axiosInstance.post('posts/create', data);
+			const response = await axiosInstance.post<IPost>('posts/create', data);
 			return response.data;
 		},
 		onSuccess: async () => {
@@ -404,7 +411,7 @@ export const usePostEditText = () => {
 export const usePostEditPhoto = () => {
 	return useMutation({
 		mutationFn: async (data: FormData) => {
-			return await axiosInstance.put(
+			return await axiosInstance.put<IPost>(
 				`posts/${data.get('id')}/change-image`,
 				data
 			);
@@ -743,6 +750,53 @@ export const useEditEmail = () => {
 			password: string;
 		}) => {
 			return await axiosInstance.put('auth/edit', data);
+    
+export const useGetAllFeelings = () => {
+	return useQuery({
+		queryKey: ['useGetAllFeelings'],
+		queryFn: async () => {
+			const response = await axiosInstance.get(`/posts`);
+			return response.data;
+		},
+	});
+};
+
+export const useGetOneFeeling = (id: number) => {
+	return useQuery<IPost, AxiosError<ServerFormValidationResponse>>({
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPost>(`/posts/${id}`);
+			return response.data;
+		},
+		queryKey: ['useGetOneFeeling', id],
+	});
+};
+
+export const usePostCommentPatient = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: ({ comment, id }: { comment: string; id: number }) => {
+			return axiosInstance.post(`records/comment/patient/${id}`, { comment });
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['GetRecordsHistoryPatient'],
+			});
+		},
+	});
+};
+
+export const usePostCommentPsychologist = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: ({ comment, id }: { comment: string; id: number }) => {
+			return axiosInstance.post(`records/comment/psychologist/${id}`, {
+				comment,
+			});
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['useGetRecordsActualPsychologists'],
+			});
 		},
 	});
 };

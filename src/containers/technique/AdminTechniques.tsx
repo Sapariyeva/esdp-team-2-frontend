@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Collapse, Tabs, Spin, Form, Input } from 'antd';
+import { Button, Collapse, Tabs, Form, Input, Spin } from 'antd';
 import {
 	useDeleteTechnique,
 	useEditTechnique,
@@ -12,7 +12,7 @@ import { ITechnique } from '../../interfaces/ITechnique';
 const { Panel } = Collapse;
 
 export const AdminTechniques = () => {
-	const { data: technique = [], isPending, refetch } = useGetAllTechnique();
+	const { data: technique = [], isLoading, refetch } = useGetAllTechnique();
 	const { mutate: editTechnique } = useEditTechnique();
 	const { mutate: postTechnique } = usePostOneTechnique();
 	const { mutate: deleteTechnique } = useDeleteTechnique();
@@ -178,20 +178,20 @@ export const AdminTechniques = () => {
 		},
 	];
 
+	if (isLoading) {
+		return <Spin className={'spinner'} size="large" />;
+	}
+
 	return (
 		<div key={renderKey}>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Tabs
-						activeKey={activeTabKey}
-						defaultActiveKey="1"
-						items={items}
-						onChange={(key) => setActiveTabKey(key)}
-					/>
-				</>
-			)}
+			<>
+				<Tabs
+					activeKey={activeTabKey}
+					defaultActiveKey="1"
+					items={items}
+					onChange={(key) => setActiveTabKey(key)}
+				/>
+			</>
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 .cardWrapper {
 	position: relative;
-	
+
 	.heartContainer {
 		position: absolute;
 		right: 16px;
@@ -21,13 +21,11 @@
 
 .card {
 	display: flex;
-	width: 630px;
 	padding: 20px;
 	align-items: flex-start;
 	flex-shrink: 0;
 	min-height: 290px;
-	justify-content: space-between;
-
+	justify-content: flex-start;
 	.cover {
 		position: relative;
 		width: 100%;
@@ -161,7 +159,7 @@
 	.description {
 		color: #4a4a4a;
 		font-family: Montserrat;
-		font-size: 13px;
+		font-size: 12px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
@@ -192,13 +190,12 @@
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
-	max-width: 263px;
+	max-width: 360px;
 }
 
 @media screen and (max-width: 1468px) {
 	.card {
 		display: flex;
-		width: 550px;
 		padding: 16px;
 		align-items: flex-start;
 		min-height: 270px;
@@ -276,9 +273,12 @@
 }
 
 @media (max-width: 1290px) {
+	.cardWrapper {
+		width: 249px;
+	}
 	.card {
 		display: block;
-		width: 248px;
+		width: 248px !important;
 		padding: 10px;
 		height: 470px;
 

@@ -16,14 +16,14 @@ import {
 	usePostOnePosts,
 	usePublishPost,
 } from '../../features/queryHooks/queryHooks';
-import { IPost } from '../../interfaces/IPost';
+import { IPost, IPostCreation } from '../../interfaces/IPost';
 import './AdminPosts.scss';
 import { UploadOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 
 export const AdminPost = () => {
-	const { data: posts = [], isPending, refetch } = useGetAllPosts();
+	const { data: posts = [], isLoading, refetch } = useGetAllPosts();
 	const { mutate: editText } = usePostEditText();
 	const { mutate: editPhoto } = usePostEditPhoto();
 	const { mutate: postPosts } = usePostOnePosts();
@@ -37,10 +37,8 @@ export const AdminPost = () => {
 	const [form] = Form.useForm();
 	const [activeTabKey, setActiveTabKey] = useState('1');
 
-	const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
-
-	const activePosts = sortedPosts.filter((post: IPost) => post.isPublish);
-	const inProgressPosts = sortedPosts.filter((post: IPost) => !post.isPublish);
+	const activePosts = posts.filter((post: IPost) => post.isPublish);
+	const inProgressPosts = posts.filter((post: IPost) => !post.isPublish);
 
 	const [renderKey, setRenderKey] = useState(0);
 
@@ -53,7 +51,7 @@ export const AdminPost = () => {
 		await refetch();
 	};
 
-	const handleUpload = async (values: IPost) => {
+	const handleUpload = async (values: IPostCreation) => {
 		const formData = new FormData();
 		formData.append('title', values.title);
 		formData.append('description', descriptionInput);
@@ -207,7 +205,7 @@ export const AdminPost = () => {
 								<img
 									key={`image-${post.id}`}
 									alt={post.title}
-									src={`http://localhost:8000/uploads/${post.image}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${post.image}`}
 									className="posts-block-item-image"
 								/>
 							</Panel>
@@ -228,7 +226,7 @@ export const AdminPost = () => {
 								<img
 									key={`image-${post.id}`}
 									alt={post.title}
-									src={`http://localhost:8000/uploads/${post.image}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${post.image}`}
 									className="posts-block-item-image"
 								/>
 								<br />
@@ -302,20 +300,17 @@ export const AdminPost = () => {
 		},
 	];
 
+	if (isLoading) {
+		return <Spin className={'spinner'} size="large" />;
+	}
 	return (
 		<div key={renderKey}>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Tabs
-						activeKey={activeTabKey}
-						defaultActiveKey="1"
-						items={items}
-						onChange={(key) => setActiveTabKey(key)}
-					/>
-				</>
-			)}
+			<Tabs
+				activeKey={activeTabKey}
+				defaultActiveKey="1"
+				items={items}
+				onChange={(key) => setActiveTabKey(key)}
+			/>
 		</div>
 	);
 };

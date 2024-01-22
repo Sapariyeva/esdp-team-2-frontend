@@ -12,7 +12,7 @@ import '../technique/AdminTechniques.scss';
 const { Panel } = Collapse;
 
 export const AdminMethod = () => {
-	const { data: method = [], isPending, refetch } = useGetAllMethod();
+	const { data: method = [], isLoading, refetch } = useGetAllMethod();
 	const { mutate: editMethod } = useEditMethod();
 	const { mutate: postMethod } = usePostOneMethod();
 	const { mutate: deleteMethod } = useDeleteMethod();
@@ -171,20 +171,19 @@ export const AdminMethod = () => {
 		},
 	];
 
+	if (isLoading) {
+		return <Spin className={'spinner'} size="large" />;
+	}
 	return (
 		<div key={renderKey}>
-			{isPending ? (
-				<Spin />
-			) : (
-				<>
-					<Tabs
-						activeKey={activeTabKey}
-						defaultActiveKey="1"
-						items={items}
-						onChange={(key) => setActiveTabKey(key)}
-					/>
-				</>
-			)}
+			<>
+				<Tabs
+					activeKey={activeTabKey}
+					defaultActiveKey="1"
+					items={items}
+					onChange={(key) => setActiveTabKey(key)}
+				/>
+			</>
 		</div>
 	);
 };

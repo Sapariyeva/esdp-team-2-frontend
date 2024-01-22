@@ -181,9 +181,12 @@ export const PsychologistForm = ({
 			'therapyMethodIds',
 			values.therapyMethodIds
 		);
-
+		appendArrayToFormData(
+			formData,
+			'consultationType',
+			values.consultationType
+		);
 		appendValuesToFormData(formData, values);
-
 		submit(formData);
 	};
 
@@ -892,10 +895,16 @@ export const PsychologistForm = ({
 									}
 								>
 									<Option value="solo" className="option">
-										Один человек
+										Индивидуальная
 									</Option>
 									<Option value="duo" className="option">
-										Вдвоем
+										Семейная
+									</Option>
+									<Option value="children" className="option">
+										Детская
+									</Option>
+									<Option value="group" className="option">
+										Групповая
 									</Option>
 								</Select>
 							</Form.Item>

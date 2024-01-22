@@ -1,15 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUser, IUserAdminLogin } from '../../interfaces/IUser.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { AxiosError, isAxiosError } from 'axios';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
+
 import {
 	IPsychologist,
 	IPsychologistRegisterData,
 } from '../../interfaces/IPsychologist.ts';
 import { IPhoto } from '../../interfaces/IPhoto.ts';
+
+import { IPatient } from '../../interfaces/IPatient.ts';
+import { message } from 'antd';
+
 
 interface AuthUserData {
 	email: string;
@@ -82,10 +87,32 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 	return response.data;
 });
 
-export const updateUser = createAsyncThunk(
-	'auth/edit',
-	async (data: IUserEdit) => {
+export const updateUser = createAsyncThunk<
+	IUserEdit,
+	IUserEdit,
+	{ rejectValue: ServerFormValidationResponse }
+>('auth/edit', async (data: IUserEdit, { rejectWithValue }) => {
+	try {
 		const response = await axiosInstance.put(`auth/edit`, data);
+		return response.data;
+	} catch (err) {
+		if (isAxiosError(err)) {
+			const error: AxiosError<ServerFormValidationResponse> = err;
+			if (error.response?.data) {
+				return rejectWithValue(error.response.data);
+			}
+		}
+		throw err;
+	}
+});
+
+export const updatePatientName = createAsyncThunk(
+	'patientName/edit',
+	async (data: { name: string; userId: number | undefined }) => {
+		const response = await axiosInstance.put(
+			`patients/edit/${data.userId}`,
+			data
+		);
 
 		return response.data;
 	}
@@ -154,6 +181,8 @@ interface UserState {
 	loginError: ServerFormValidationResponse | null;
 	logged: boolean;
 	dataPsychologist: IPsychologist | null;
+	pagelock: boolean;
+
 }
 
 const initialState: UserState = {
@@ -163,6 +192,8 @@ const initialState: UserState = {
 	loading: false,
 	logged: false,
 	dataPsychologist: null,
+	pagelock: false,
+
 };
 
 const userSlice = createSlice({
@@ -186,6 +217,8 @@ const userSlice = createSlice({
 		},
 		setPsychologist: (state, { payload }: { payload: IPsychologist }) => {
 			state.dataPsychologist = payload;
+		changePageLock: (state, { payload }) => {
+			state.pagelock = payload;
 		},
 	},
 	extraReducers(builder) {
@@ -259,11 +292,33 @@ const userSlice = createSlice({
 				return initialState;
 			})
 			.addCase(updateUser.fulfilled, (state, { payload }) => {
-				state.userInfo = payload;
+				state.loginError = null;
+				state.pagelock = false;
+				if (state.userInfo) {
+					state.userInfo.email = payload.email as string;
+					state.userInfo.phone = payload.phone as string;
+				}
+				message.success('Ваши изменения приняты');
+			})
+			.addCase(updateUser.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.pagelock = true;
+				state.loginError = {
+					message: payload?.message ?? 'Error occurred',
+					errors: payload?.errors ?? [],
+				};
 			})
 			.addCase(editUser.fulfilled, (state, { payload }) => {
 				state.userInfo = payload;
 			})
+			.addCase(
+				updatePatientName.fulfilled,
+				(state, action: PayloadAction<IPatient>) => {
+					if (state.userInfo && state.userInfo.patient) {
+						state.userInfo.patient.name = action.payload.name;
+					}
+				}
+			)
 			.addCase(activateEmail.pending, (state) => {
 				state.loading = true;
 			})
@@ -292,5 +347,7 @@ export const {
 	setPhotoPsychologist,
 	setPsychologist,
 } = userSlice.actions;
+export const { resetErrors, resetUser, saveUser, changePageLock } =
+	userSlice.actions;
 
 export default userSlice;
