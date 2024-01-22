@@ -69,6 +69,7 @@ export const PsychologistForm = ({
 	cities,
 }: Props) => {
 	const [сurrentPassword, setCurrentPassword] = useState('');
+	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const user = useAppSelector((state: RootState) => state.users.userInfo);
 	const { mutate: editPsychologist } = useEditPsychologist(
@@ -104,6 +105,7 @@ export const PsychologistForm = ({
 			// eslint-disable-next-line react-hooks/rules-of-hooks
 			dispatch(setPsychologist(psychologist as IPsychologist));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	function formatDateString(dateString: Date | string | undefined): string {
@@ -248,6 +250,7 @@ export const PsychologistForm = ({
 		const data = {
 			email: email,
 			сurrentPassword: сurrentPassword,
+			password: password,
 		};
 
 		editEmail(data);
@@ -257,6 +260,10 @@ export const PsychologistForm = ({
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
 		setCurrentPassword(e.target.value);
+	};
+
+	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPassword(e.target.value);
 	};
 
 	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -342,7 +349,11 @@ export const PsychologistForm = ({
 							</Form.Item>
 						</Col>
 						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
-							<label className="label">Пароль</label>
+							{user?.accessToken ? (
+								<label className="label">Новый пароль</label>
+							) : (
+								<label className="label">Пароль</label>
+							)}
 							<Form.Item
 								name="password"
 								hasFeedback
@@ -361,13 +372,19 @@ export const PsychologistForm = ({
 									className="input--grey input"
 									placeholder="Минимум 6 символов"
 									autoComplete="on"
+									value={password}
+									onChange={handlePasswordChange}
 									size="small"
 								/>
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={6} xl={6}>
-							<label className="label">Повторите пароль</label>
+							{user?.accessToken ? (
+								<label className="label">Старый пароль</label>
+							) : (
+								<label className="label">Повторите пароль</label>
+							)}
 							<Form.Item
 								name="confirm"
 								dependencies={['password']}
@@ -379,14 +396,14 @@ export const PsychologistForm = ({
 									},
 									({ getFieldValue }) => ({
 										validator(_, value) {
-											if (!value || getFieldValue('password') === value) {
+											if (!user?.accessToken) {
+												if (!value || getFieldValue('password') === value) {
+													return Promise.resolve();
+												}
+												return Promise.reject(new Error('Неверный пароль'));
+											} else {
 												return Promise.resolve();
 											}
-											return Promise.reject(
-												new Error(
-													'The new password that you entered do not match!'
-												)
-											);
 										},
 									}),
 								]}

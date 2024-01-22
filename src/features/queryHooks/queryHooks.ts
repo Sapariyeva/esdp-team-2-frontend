@@ -737,7 +737,11 @@ export const useDeleteCertificatesPsychologist = () => {
 
 export const useEditEmail = () => {
 	return useMutation({
-		mutationFn: async (data: { email: string; сurrentPassword: string }) => {
+		mutationFn: async (data: {
+			email: string;
+			сurrentPassword: string;
+			password: string;
+		}) => {
 			return await axiosInstance.put('auth/edit', data);
 		},
 	});
