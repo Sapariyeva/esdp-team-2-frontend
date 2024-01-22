@@ -3,6 +3,7 @@
 	font-size: 14px;
 	min-width: 120px;
 	vertical-align: middle;
+	cursor: pointer;
 }
 
 .colum::before {
@@ -110,15 +111,15 @@
 	}
 	.disable {
 		cursor: not-allowed;
-		position: absolute;
+		margin-right: 10px;
 		left: -35px;
 		top: -1px;
-		padding: 4px;
 		width: 25px;
 		height: 25px;
 		font-size: 17px;
 		background-color: #f5f5f5;
 		border-radius: 5px;
+		padding: 5px !important;
 	}
 }
 .spinner {

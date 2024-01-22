@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { CiCircleInfo } from 'react-icons/ci';
 import { IRecord } from '../../../../interfaces/IRecord';
 import ChangePsychologistComment from './ClientsHistory/ScrollableText/ChangePsychologistComment.tsx';
+import RecordConfirmation from '../../../patient/patient_account/records/RecordConfirmation.tsx';
 
 type RecordColumnName =
 	| 'patientName'
@@ -42,15 +43,7 @@ const columns: IRecordAllColumn = {
 		dataIndex: 'address',
 		responsive: ['md'],
 		reactNode: (record) => (
-			<>
-				{record.format === 'offline' ? (
-					<span>{record.address}</span>
-				) : (
-					<a href={record.broadcast} className={styles.colum}>
-						Ссылка
-					</a>
-				)}
-			</>
+			<RecordConfirmation record={record} role={'psychologistAbsent'} />
 		),
 	},
 	date: {
@@ -82,9 +75,7 @@ const columns: IRecordAllColumn = {
 		dataIndex: 'status',
 		responsive: ['xl'],
 		reactNode: (record) => (
-			<div style={{ wordWrap: 'break-word' }}>
-				{record.status === 'active' ? 'Активный' : 'Неактивный'}
-			</div>
+			<div style={{ wordWrap: 'break-word' }}>{record.status}</div>
 		),
 	},
 	psychologistComment: {
