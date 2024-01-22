@@ -43,7 +43,6 @@ import ClientsHistory from './components/psychologist/psychologist_account/clien
 import MyRecords from './components/patient/patient_account/records/myRecords/MyRecords.tsx';
 import RecordsHistory from './components/patient/patient_account/records/recordsHistory/RecordsHistory.tsx';
 
-
 dayjs.extend(utc);
 dayjs.locale('ru');
 

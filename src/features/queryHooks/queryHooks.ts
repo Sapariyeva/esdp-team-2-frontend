@@ -750,7 +750,10 @@ export const useEditEmail = () => {
 			password: string;
 		}) => {
 			return await axiosInstance.put('auth/edit', data);
-    
+		},
+	});
+};
+
 export const useGetAllFeelings = () => {
 	return useQuery({
 		queryKey: ['useGetAllFeelings'],

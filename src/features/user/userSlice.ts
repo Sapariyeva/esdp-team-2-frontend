@@ -15,7 +15,6 @@ import { IPhoto } from '../../interfaces/IPhoto.ts';
 import { IPatient } from '../../interfaces/IPatient.ts';
 import { message } from 'antd';
 
-
 interface AuthUserData {
 	email: string;
 	phone: string;
@@ -182,7 +181,6 @@ interface UserState {
 	logged: boolean;
 	dataPsychologist: IPsychologist | null;
 	pagelock: boolean;
-
 }
 
 const initialState: UserState = {
@@ -193,7 +191,6 @@ const initialState: UserState = {
 	logged: false,
 	dataPsychologist: null,
 	pagelock: false,
-
 };
 
 const userSlice = createSlice({
@@ -217,6 +214,7 @@ const userSlice = createSlice({
 		},
 		setPsychologist: (state, { payload }: { payload: IPsychologist }) => {
 			state.dataPsychologist = payload;
+		},
 		changePageLock: (state, { payload }) => {
 			state.pagelock = payload;
 		},
@@ -340,13 +338,7 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
-export const {
-	resetErrors,
-	resetUser,
-	saveUser,
-	setPhotoPsychologist,
-	setPsychologist,
-} = userSlice.actions;
+export const { setPhotoPsychologist, setPsychologist } = userSlice.actions;
 export const { resetErrors, resetUser, saveUser, changePageLock } =
 	userSlice.actions;
 

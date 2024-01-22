@@ -1,4 +1,3 @@
-
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { RootState } from '../../../../store';
 import {
@@ -442,7 +441,7 @@ export const Profile = () => {
 												</Select>
 											</Form.Item>
 										</Col>
-                    
+
 										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 											<label className="label">Специализация</label>
 											<Form.Item name="education">
