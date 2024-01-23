@@ -14,13 +14,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CustomLayout } from './components/layout/Layout.tsx';
 import Favorites from './components/patient/patient_account/favorites/Favorites.tsx';
 import { useAppSelector } from './store/hooks.ts';
-import { RootState } from './store/index.ts';
 import { ActivePage } from './containers/auth/activeMailPage/ActivePage/ActivePage.tsx';
 import { MailConfirmation } from './containers/auth/activeMailPage/MailConfirmation/MailConfirmation.tsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import Calendars from './components/psychologist/psychologist_account/calendar/Calendar.tsx';
-import Profile from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
 import PatientProfile from './components/patient/patient_account/profile/PatientProfile.tsx';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.tsx';
 import PsychologistRegister from './containers/register/PsychologistRegister.tsx';
@@ -42,6 +40,8 @@ import ClientsTable from './components/psychologist/psychologist_account/clients
 import ClientsHistory from './components/psychologist/psychologist_account/clients/ClientsHistory/ClientsHistory.tsx';
 import MyRecords from './components/patient/patient_account/records/myRecords/MyRecords.tsx';
 import RecordsHistory from './components/patient/patient_account/records/recordsHistory/RecordsHistory.tsx';
+import { Profile } from './components/psychologist/psychologist_account/ProfileContent/ProfileContent.tsx';
+import { RootState } from './store';
 
 dayjs.extend(utc);
 dayjs.locale('ru');

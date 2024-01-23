@@ -1,67 +1,10 @@
-@import "../../../../assets/styles/config";
-.profile_container {
-	@extend %bgcolor-soft-purple;
-	text-align: center;
-	margin: 10px;
-	box-shadow: 1px 2px 20px $hover-color;
-	border-radius: 10px;
-	@media screen and (min-width: 300px) {
-		padding: 5px;
+.form-edit-btn {
+	background-color: #9f67fd;
+	color: white;
+	width: 135px;
+	margin: 0 10px 40px 0;
+	&-grey{
+		background-color: #F5F5F5;
+		border: none;
 	}
-	@media screen and (min-width: 400px) {
-		padding: 30px;
-	}
-	.profile_content {
-		background: rgba(242, 255, 246, 0.302);
-		border-radius: 10px;
-		padding: 10px;
-	}
-}
-
-.avatar {
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.331);
-	@media screen and (min-width: 300px) {
-		width: 100px;
-		height: 100px;
-	}
-	@media screen and (min-width: 700px) {
-		width: 200px;
-		height: 200px;
-	}
-}
-
-.user-info,
-.edit-button,
-.avatar {
-	margin-bottom: 20px;
-}
-
-.additional-info {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 5px;
-
-	.paragraph {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 3px;
-		align-items: center;
-		@media screen and (max-width: 400px) {
-			font-size: 10px;
-		}
-		@media screen and (min-width: 1000px) {
-			font-size: 18px;
-		}
-	}
-
-	strong {
-		margin-right: 5px;
-		@extend %color-purple;
-	}
-}
-
-.youtube-video {
-	height: 30%;
-	margin-top: 20px;
 }

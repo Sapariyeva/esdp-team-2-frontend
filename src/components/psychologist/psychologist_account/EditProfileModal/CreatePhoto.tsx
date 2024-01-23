@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Modal, Upload, Button, Form } from 'antd';
-import { photoCreate } from '../ProfileContent/ProfileContent';
+import { photoCreate } from '../profileContent/ProfileContent';
 
 type Props = {
 	open: boolean;

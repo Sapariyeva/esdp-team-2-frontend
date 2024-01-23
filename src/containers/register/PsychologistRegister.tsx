@@ -31,7 +31,9 @@ function PsychologistRegister() {
 	};
 
 	return (
-		<>
+		<div
+			style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}
+		>
 			<PsychologistForm
 				techniques={techniques}
 				cities={cities}
@@ -39,7 +41,7 @@ function PsychologistRegister() {
 				therapyMethods={therapyMethod}
 				submit={handleRegister}
 			/>
-		</>
+		</div>
 	);
 }
 
