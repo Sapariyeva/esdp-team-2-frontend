@@ -20,14 +20,17 @@
 			color: #4a4a4a;
 			font-size: 3vw;
 			font-weight: 900;
+			@media (max-width: 450px) {
+				font-size: 23px;
+			}
 		}
 		.title {
 			color: #9f67fd;
 			font-family: Montserrat;
 			font-size: 1.5vw;
 			font-weight: 500;
-			@media (max-width: 500px) {
-				font-size: 10px;
+			@media (max-width: 450px) {
+				font-size: 16px;
 			}
 		}
 		.text {
@@ -36,8 +39,8 @@
 			color: #4a4a4a;
 			font-style: normal;
 			font-weight: 400;
-			@media (max-width: 500px) {
-				font-size: 7px;
+			@media (max-width: 450px) {
+				font-size: 13px;
 			}
 		}
 	}
