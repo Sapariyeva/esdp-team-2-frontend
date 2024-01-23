@@ -42,6 +42,7 @@ import ClientsTable from './components/psychologist/psychologist_account/clients
 import ClientsHistory from './components/psychologist/psychologist_account/clients/ClientsHistory/ClientsHistory.tsx';
 import MyRecords from './components/patient/patient_account/records/myRecords/MyRecords.tsx';
 import RecordsHistory from './components/patient/patient_account/records/recordsHistory/RecordsHistory.tsx';
+import Profit from './components/psychologist/psychologist_account/Profit/Profit.tsx';
 
 dayjs.extend(utc);
 dayjs.locale('ru');
@@ -137,6 +138,7 @@ const App = () => {
 								<Route path="records" element={<ClientsTable />} />
 								<Route path="history" element={<ClientsHistory />} />
 								<Route path="calendar" element={<Calendars />} />
+								<Route path="profit" element={<Profit />} />
 							</Route>
 
 							<Route path="/admin">

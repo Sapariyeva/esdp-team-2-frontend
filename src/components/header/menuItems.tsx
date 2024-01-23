@@ -12,6 +12,8 @@ import history from '../../assets/icon/history.svg';
 import heart from '../../assets/icon/heart.svg';
 import book from '../../assets/icon/book-saved.svg';
 import logout from '../../assets/icon/logout.svg';
+import profit from '../../assets/icon/empty-wallet.svg';
+
 import { NavLink } from 'react-router-dom';
 
 export type MenuItem = Required<MenuProps>['items'][number];
@@ -224,6 +226,12 @@ export const psychologistItems: MenuProps['items'] = [
 				icon: <img className={styles.item_icon} src={history} alt="history" />,
 			}),
 			getItem({
+				label: 'Доход',
+				key: 'psychologist/profit',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={profit} alt="profit" />,
+			}),
+			getItem({
 				label: (
 					<LogoutBtn>
 						<img className={styles.item_icon} src={logout} alt="history" />
@@ -370,6 +378,12 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		key: 'history',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
+	}),
+	getItem({
+		label: 'Доход',
+		key: 'profit',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={profit} alt="profit" />,
 	}),
 ];
 
