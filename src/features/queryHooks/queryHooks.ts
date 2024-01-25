@@ -5,6 +5,10 @@ import { NavigateFunction } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import axiosInstance from '../../api/axiosInstance';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../interfaces/IFilteringValues.ts';
 import { IPatient } from '../../interfaces/IPatient';
 import { IPost } from '../../interfaces/IPost.ts';
 import {
@@ -21,12 +25,8 @@ import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
-import { saveUser } from '../user/userSlice.ts';
-import {
-	IFilteringConsultationType,
-	IFilteringValues,
-} from '../../interfaces/IFilteringValues.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
+import { saveUser } from '../user/userSlice.ts';
 import { IRecordConfirmation } from '../../interfaces/IRecordConfirmation.ts';
 
 export const useTechniqueQuery = () => {
@@ -230,10 +230,14 @@ export const useGetFavourites = (authUser: IUser | null) => {
 };
 
 export const useSwitchFavourite = () => {
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
 			return await axiosInstance.post(`/patients/favorites`, data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ['GetFavourites'] });
 		},
 	});
 };
