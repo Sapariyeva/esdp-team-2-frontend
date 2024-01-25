@@ -92,6 +92,19 @@
 	}
 }
 
+.label {
+	padding-top: 15px;
+		align-items: center;
+		gap: 10px;
+		border-radius: 10px;
+		color: #9f9f9f;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 140%;
+}
+
+
 .flex_input {
 	display: flex;
 	gap: 20px;
@@ -99,6 +112,23 @@
 	@media only screen and (max-width: 768px) {
 		gap: 5px;
 	}
+}
+
+.input {
+		color: #3c3c3c;
+		width: 100%;
+		padding: 15px 10px;
+		font-size: 18px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-left: 3px;
+		border-radius: 10px;
+		border: none;
+		outline: none;
+		background-color: #f5f5f5;
+		input {
+			background-color: #f5f5f5;
+		}
 }
 
 .input_block_top {
@@ -131,6 +161,7 @@
 		font-style: normal;
 		font-weight: 400;
 		line-height: 140%;
+		
 	}
 }
 .input_block_small {

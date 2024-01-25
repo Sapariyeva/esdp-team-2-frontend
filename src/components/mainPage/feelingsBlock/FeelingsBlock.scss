@@ -12,8 +12,6 @@
 		}
 		@media (max-width: 800px) {
 			width: 100%;
-		}
-		@media (max-width: 800px) {
 			margin-bottom: 10px;
 		}
 
@@ -26,16 +24,16 @@
 			@media (max-width: 800px) {
 				margin-bottom: 1%;
 			}
-			@media (max-width: 500px) {
-				font-size: 10px;
+			@media (max-width: 450px) {
+				font-size: 23px;
 			}
 		}
 		.text {
 			font-family: Montserrat;
 			color: #4a4a4a;
-			font-size: 1vw;
-			@media (max-width: 500px) {
-				font-size: 8px;
+			font-size: 1.5vw;
+			@media (max-width: 450px) {
+				font-size: 16px;
 			}
 		}
 	}
@@ -71,7 +69,8 @@
 				border: 1px solid rgba(159, 103, 253, 0.5);
 				margin: 1px;
 			}
-			@media (max-width: 500px) {
+			@media (max-width: 450px) {
+				font-size: 8px;
 				padding: 1.5vw 5vw !important;
 			}
 

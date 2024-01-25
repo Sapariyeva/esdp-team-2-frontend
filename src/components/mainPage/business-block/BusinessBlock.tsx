@@ -1,9 +1,11 @@
 import './BusinessBlock.scss';
 import { Button, Typography } from 'antd';
 import illustration from '../../../../public/main-page/business-illustration.svg';
+import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
 const BusinessBlock = () => {
+	const navigate = useNavigate();
 	return (
 		<div id="busines" className="business-block">
 			<div className="business-block__text">
@@ -32,7 +34,12 @@ const BusinessBlock = () => {
 						Помощь владельцам и руководителям компаниям заботиться о сотрудниках
 					</Typography>
 				</div>
-				<Button className="business-block__button">оставить заявку</Button>
+				<Button
+					onClick={() => navigate('/business')}
+					className="business-block__button"
+				>
+					оставить заявку
+				</Button>
 			</div>
 			<div className="business-block__illustration">
 				<img

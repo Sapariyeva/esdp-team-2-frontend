@@ -1,385 +1,558 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, Col, Image, Row, Tag, Typography, UploadFile } from 'antd';
-import { useState } from 'react';
-import YouTube, { YouTubeProps } from 'react-youtube';
-import youtubeVideoId from 'youtube-video-id';
-import axiosInstance from '../../../../api/axiosInstance.ts';
-import { IPsychologist } from '../../../../interfaces/IPsychologist';
-import { ICity } from '../../../../interfaces/IPsychologistForm';
-import { ISymptom } from '../../../../interfaces/ISymptom';
-import { ITechnique } from '../../../../interfaces/ITechnique';
-import { ITherapyMethod } from '../../../../interfaces/ITherapyMethod';
-import { CreateCertificate } from '../EditProfileModal/CreateCertificate';
-import { CreatePhoto } from '../EditProfileModal/CreatePhoto';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { RootState } from '../../../../store';
 import {
-	EditProfileModal,
-	ModalFormState,
-} from '../EditProfileModal/EditProfileModal';
+	Layout,
+	Row,
+	Col,
+	Typography,
+	Form,
+	Button,
+	Input,
+	Select,
+	InputNumber,
+} from 'antd';
+import Alert from '../../../ui/Alert/Alert.tsx';
+import infoIcon from '../../../../assets/icon/info-circle.svg';
+import InformationText from '../../../ui/Text/InformationText.tsx';
 import './ProfileContent.scss';
+import { PsychologistForm } from '../../../psychologistForm/form/PsychologistForm.tsx';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+	useTechniqueQuery,
+	useTherapyMethodQuery,
+	useSymptomQuery,
+	useCityQuery,
+	usePostPsychologist,
+	useGetOnePsychologist,
+} from '../../../../features/queryHooks/queryHooks.ts';
 
-export interface photoCreate {
-	photos: {
-		fileList: UploadFile[];
+const { Option } = Select;
+
+export const Profile = () => {
+	const user = useAppSelector((state: RootState) => state.users.userInfo);
+	const [editing, setEditing] = useState(false);
+
+	const { data: psychologist } = useGetOnePsychologist(
+		Number(user?.psychologist?.id)
+	);
+
+	const handleEditClick = () => {
+		setEditing(true);
 	};
-}
-export interface certificateCreate {
-	certificates: {
-		fileList: UploadFile[];
-	};
-}
-const Profile = () => {
-	const { data: psychologist } = useQuery<IPsychologist>({
-		queryKey: ['reposData'],
-		queryFn: async () => {
-			const response = await axiosInstance.get<IPsychologist>(`/psychologists`);
 
-			return response.data;
-		},
-	});
-
-	const [editModalVisible, setEditModalVisible] = useState(false);
-	const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
-	const [isCertificateModalVisible, setIsCertificateModalVisible] =
-		useState(false);
-	const [error] = useState<string | null>(null);
-	const videoId = psychologist?.video ? youtubeVideoId(psychologist.video) : '';
-	const opts: YouTubeProps['opts'] = {
-		height: '100%',
-		width: '100%',
-		maxWidth: 800,
-	};
-	const client = useQueryClient();
-
-	const { data: techniquesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITechnique[]>(`/techniques`);
-		},
-		queryKey: ['GetTechniques'],
-	});
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const { data: techniquesData } = useTechniqueQuery();
 	const techniques = techniquesData?.data ?? [];
 
-	const { data: therapyMethodsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ITherapyMethod[]>(`/methods`);
-		},
-		queryKey: ['GetTherapyMethod'],
-	});
-	const therapyMethods = therapyMethodsData?.data ?? [];
+	const { data: therapyMethodsData } = useTherapyMethodQuery();
+	const therapyMethod = therapyMethodsData?.data ?? [];
 
-	const { data: symptomsData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ISymptom[]>(`/symptoms`);
-		},
-		queryKey: ['GetSymptoms'],
-	});
+	const { data: symptomsData } = useSymptomQuery();
 	const symptoms = symptomsData?.data ?? [];
 
-	const { data: citiesData } = useQuery({
-		queryFn: () => {
-			return axiosInstance.get<ICity[]>(`/cities`);
-		},
-		queryKey: ['GetCities'],
-	});
+	const { data: citiesData } = useCityQuery();
 	const cities = citiesData?.data ?? [];
 
-	const handleEdit = () => {
-		setEditModalVisible(true);
+	const { mutate: postPsychologist } = usePostPsychologist(navigate, dispatch);
+
+	const handleRegister = async (data: FormData) => {
+		postPsychologist(data);
 	};
 
-	const handleCancelEdit = () => {
-		setEditModalVisible(false);
-	};
+	function formatDateString(dateString: Date | string | undefined): string {
+		if (!dateString) return '';
 
-	const handleSaveEdit = async (values: ModalFormState) => {
-		psychologistEdit(values);
-		setEditModalVisible(false);
-	};
-
-	const { mutate: psychologistEdit } = useMutation({
-		mutationFn: async (psychologist: ModalFormState) => {
-			const response = await axiosInstance.put(
-				'/psychologists/edit',
-				psychologist
-			);
-
-			return response.data;
-		},
-		onSuccess: () => {
-			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
-		},
-	});
-
-	const showModalPhoto = () => {
-		setIsPhotoModalVisible(true);
-	};
-
-	const handleCancelPhoto = () => {
-		setIsPhotoModalVisible(false);
-	};
-
-	const photoCreate = async (values: photoCreate) => {
-		const formData = new FormData();
-		if (values.photos && values.photos.fileList) {
-			values.photos.fileList.forEach((file: UploadFile) => {
-				formData.append('photo', file.originFileObj as Blob);
-			});
-		}
-
-		try {
-			await axiosInstance.post('/photos/create', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
-			setIsPhotoModalVisible(false);
-		} catch (error) {
-			console.error('Error uploading photo:', error);
-		}
-	};
-
-	const handleDeletePhoto = async (id: number) => {
-		await axiosInstance.delete(`/photos/${id}`);
-		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
-	};
-
-	const showModalCertificate = () => {
-		setIsCertificateModalVisible(true);
-	};
-
-	const handleCancelCertificate = () => {
-		setIsCertificateModalVisible(false);
-	};
-
-	const certificateCreate = async (certificate: certificateCreate) => {
-		console.log(certificate);
-
-		const formData = new FormData();
-		if (certificate.certificates && certificate.certificates.fileList) {
-			certificate.certificates.fileList.forEach((file: UploadFile) => {
-				formData.append('certificate', file.originFileObj as Blob);
-			});
-		}
-
-		try {
-			await axiosInstance.post('/certificates/create', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-			client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
-			setIsCertificateModalVisible(false);
-		} catch (error) {
-			console.error('Error uploading certificate:', error);
-		}
-	};
-
-	const handleDeleteCertificate = async (id: number) => {
-		await axiosInstance.delete(`/certificates/${id}`);
-		client.invalidateQueries({ queryKey: ['GetPsychologistId'] });
-	};
-	if (error || !psychologist) {
-		return <div>Error loading psychologist data</div>;
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		return `${year}-${month}-${day}`;
 	}
+	const formattedBirthday = formatDateString(psychologist?.birthday);
 
 	return (
-		<div className="profile_container">
-			<Image.PreviewGroup>
-				{psychologist.photos && psychologist.photos.length > 0 ? (
-					psychologist.photos.map((photo) => (
-						<div
-							key={photo.id}
-							style={{
-								display: 'inline-block',
-								marginRight: 8,
-								marginBottom: 8,
-								position: 'relative',
-							}}
-						>
-							<Image
-								width={200}
-								src={`http://localhost:8000/uploads/${photo.photo}`}
-							/>
-							<Button
-								onClick={() => handleDeletePhoto(photo.id)}
-								style={{
-									position: 'absolute',
-									top: 5,
-									right: 5,
-									background: 'none',
-									border: 'none',
-									color: 'red',
-									cursor: 'pointer',
-								}}
-								icon={<DeleteOutlined />}
-							/>
-						</div>
-					))
-				) : (
-					<span>Фотографий нет</span>
-				)}
-			</Image.PreviewGroup>
-			<Button type="link" icon={<PlusOutlined />} onClick={showModalPhoto} />
+		<>
+			{psychologist ? (
+				<>
+					<div>
+						<Layout className="layout">
+							{editing ? (
+								<PsychologistForm
+									techniques={techniques}
+									cities={cities}
+									symptoms={symptoms}
+									therapyMethods={therapyMethod}
+									submit={handleRegister}
+								/>
+							) : (
+								<Form name="register-form" className="form">
+									<Button className="form-edit-btn" onClick={handleEditClick}>
+										Редактировать
+									</Button>
+									<InformationText text=" Вся ниже указанная информация будет отображаться в вашей анкете психолога, кроме номера телефона и почты. Адрес, только при выборе работы оффлайн." />
+									<Row gutter={16}>
+										<Col xs={24} sm={24} md={12} lg={12} xl={12}>
+											<label className="label">Почта</label>
+											<Form.Item className="form-item" name="email" hasFeedback>
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={user?.email}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Пароль</label>
+											<Form.Item name="password" hasFeedback>
+												<Input.Password
+													className="input--grey input"
+													autoComplete="on"
+													size="small"
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
 
-			<Typography.Title className="user-info" level={4}>
-				{psychologist.fullName}
-			</Typography.Title>
-			<Button
-				onClick={handleEdit}
-				className="edit-button"
-				type="primary"
-				icon={<EditOutlined />}
-			>
-				Редактировать
-			</Button>
-			<Row className="profile_content">
-				<Col xs={{ span: 24 }} lg={{ span: 12 }} className="additional-info">
-					<Typography.Paragraph className="paragraph">
-						<strong>Адрес:</strong> {psychologist.address}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>День рождения:</strong>{' '}
-						{new Date(psychologist.birthday).toLocaleDateString()}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Пол:</strong> {psychologist.gender}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Тип консультации:</strong> {psychologist.consultationType}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Стоимость:</strong> {psychologist.cost} тг / сеанс
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>О себе:</strong> {psychologist.description}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Образование:</strong> {psychologist.education}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Опыт работы:</strong> {psychologist.experienceYears}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Формат работы:</strong> {psychologist.format}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Язык консультаций:</strong>
-						{Array.isArray(psychologist.languages) ? (
-							psychologist.languages.map((item) => (
-								<Tag key={item} color="processing">
-									{item}
-								</Tag>
-							))
-						) : (
-							<Tag color="processing">{psychologist.languages}</Tag>
-						)}
-					</Typography.Paragraph>
-					<Typography.Paragraph className="paragraph">
-						<strong>Самотерапия:</strong> {psychologist.selfTherapy}
-					</Typography.Paragraph>
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Повторите пароль</label>
+											<Form.Item
+												name="confirm"
+												dependencies={['password']}
+												hasFeedback
+											>
+												<Input.Password
+													className="input--grey input"
+													autoComplete="on"
+													size="small"
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+									</Row>
 
-					{psychologist.techniques && psychologist.techniques.length > 0 && (
-						<>
-							<Typography.Title level={5}>
-								Технологические техники
-							</Typography.Title>
-							{psychologist.techniques.map((technique: ITechnique) => (
-								<Typography.Paragraph key={technique.id} className="technique">
-									{technique.name}
-								</Typography.Paragraph>
-							))}
-						</>
-					)}
-					{psychologist.symptoms && psychologist.symptoms.length > 0 && (
-						<>
-							<Typography.Title level={5}>Симптомы</Typography.Title>
-							{psychologist.symptoms.map((symptom: ISymptom) => (
-								<Typography.Paragraph key={symptom.id} className="symptom">
-									{symptom.name}
-								</Typography.Paragraph>
-							))}
-						</>
-					)}
-				</Col>
-
-				<Col xs={{ span: 24 }} lg={{ span: 12 }}>
-					{videoId && (
-						<YouTube className="youtube-video" videoId={videoId} opts={opts} />
-					)}
-					<Image.PreviewGroup>
-						{psychologist.certificates &&
-						psychologist.certificates.length > 0 ? (
-							psychologist.certificates.map((certificate) => (
-								<div
-									key={certificate.id}
-									style={{
-										position: 'relative',
-										display: 'inline-block',
-										marginRight: 8,
-										marginBottom: 8,
-									}}
-								>
-									<Image
-										width={200}
-										src={`http://localhost:8000/uploads/${certificate.certificate}`}
-									/>
-									<button
-										onClick={() => handleDeleteCertificate(certificate.id)}
-										style={{
-											position: 'absolute',
-											top: 5,
-											right: 5,
-											background: 'none',
-											border: 'none',
-											color: 'red',
-											cursor: 'pointer',
-										}}
+									<Typography style={{ fontSize: 18 }} className="text">
+										Личная информация
+									</Typography>
+									<Row
+										gutter={16}
+										style={{ display: 'flex', alignItems: 'center' }}
 									>
-										<DeleteOutlined />
-									</button>
-								</div>
-							))
-						) : (
-							<span>Сертификатов нет</span>
-						)}
-					</Image.PreviewGroup>
-					<Button
-						type="link"
-						icon={<PlusOutlined />}
-						onClick={showModalCertificate}
-					/>
-				</Col>
-			</Row>
-			<CreatePhoto
-				open={isPhotoModalVisible}
-				onCancel={handleCancelPhoto}
-				onSave={photoCreate}
-			/>
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">ФИО</label>
+											<Form.Item name="fullName">
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={`${psychologist?.fullName}`}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
 
-			<CreateCertificate
-				open={isCertificateModalVisible}
-				onCancel={handleCancelCertificate}
-				onSave={certificateCreate}
-			/>
-			<EditProfileModal
-				open={editModalVisible}
-				onCancel={handleCancelEdit}
-				onSave={handleSaveEdit}
-				psychologist={psychologist}
-				techniques={techniques}
-				therapyMethods={therapyMethods}
-				symptoms={symptoms}
-				cities={cities}
-			/>
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Город</label>
+											<Form.Item name="cityId">
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={`${psychologist?.city.name}`}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Пол</label>
+											<Form.Item name="gender">
+												<Select
+													placeholder="Выберите пол"
+													style={{ display: 'flex', alignItems: 'center' }}
+													defaultValue={psychologist?.gender}
+													disabled
+												>
+													<Option className="option" value="male">
+														Мужской
+													</Option>
+													<Option className="option" value="female">
+														Женский
+													</Option>
+												</Select>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">Дата рождения</label>
+											<Form.Item name="birthday">
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={formattedBirthday}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+									</Row>
 
-			{error && (
-				<div className="error-message">
-					<Typography.Text type="danger">{error}</Typography.Text>
-				</div>
+									<Typography style={{ fontSize: 18 }} className="text">
+										Профессиональная информация
+									</Typography>
+									<Row
+										gutter={16}
+										style={{ display: 'flex', alignItems: 'center' }}
+									>
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Языки</label>
+											<Form.Item name="languages">
+												<Select
+													mode="multiple"
+													placeholder="Выберите язык"
+													defaultValue={
+														user?.accessToken
+															? psychologist?.languages
+															: undefined
+													}
+													disabled
+												>
+													<Option className="option" value="kazakh">
+														Казахский
+													</Option>
+													<Option className="option" value="russian">
+														Русский
+													</Option>
+													<Option className="option" value="english">
+														Английский
+													</Option>
+												</Select>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={6} xl={6}>
+											<label className="label">Личная терапия (в годах)</label>
+											<Form.Item name="selfTherapy">
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={psychologist?.selfTherapy}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">Психологические техники</label>
+											<Form.Item name="techniqueIds">
+												{user?.psychologist?.techniques &&
+												user?.psychologist?.techniques.length > 0 ? (
+													<Select
+														mode="multiple"
+														showSearch={false}
+														defaultValue={psychologist?.techniques.map(
+															(technique) => technique.name
+														)}
+														disabled
+													>
+														{psychologist?.techniques.map(
+															(technique, index) => (
+																<Select.Option
+																	key={index}
+																	value={technique.name}
+																>
+																	{technique.name}
+																</Select.Option>
+															)
+														)}
+													</Select>
+												) : (
+													<Input
+														className="input--grey input"
+														size="small"
+														defaultValue="Техники отсутствуют"
+														readOnly
+													/>
+												)}
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label">Стаж (в годах)</label>
+											<Form.Item name="experienceYears">
+												<InputNumber
+													className="input--grey input"
+													style={{ width: '100%' }}
+													defaultValue={psychologist?.experienceYears}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label">Оплата за консультацию</label>
+											<Form.Item name="cost">
+												<InputNumber
+													prefix="KZT"
+													className="input--grey input"
+													style={{ width: '100%' }}
+													defaultValue={psychologist?.cost}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">Методы терапии</label>
+											<Form.Item name="therapyMethodIds">
+												{psychologist?.therapyMethods &&
+												psychologist?.therapyMethods.length > 0 ? (
+													<Select
+														mode="multiple"
+														showSearch={false}
+														defaultValue={psychologist?.therapyMethods.map(
+															(method) => method.name
+														)}
+														disabled
+													>
+														{psychologist?.therapyMethods.map(
+															(method, index) => (
+																<Select.Option key={index} value={method.name}>
+																	{method.name}
+																</Select.Option>
+															)
+														)}
+													</Select>
+												) : (
+													<Typography.Text>Методы отсутствуют</Typography.Text>
+												)}
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label label_info">
+												<p>Работа с LGBT</p>
+												<Alert
+													title="Работа с LGBT"
+													message="Выбирая в фильтр (Да), вы даете согласие на то, что люди из сообщества ЛГБТ могут обращаться к вам за помощью."
+												>
+													<img src={infoIcon} width={15} alt="Информация" />
+												</Alert>
+											</label>
+											<Form.Item name="lgbt">
+												<Input
+													className="input--grey input"
+													size="small"
+													defaultValue={psychologist?.lgbt ? 'Да' : 'Нет'}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label">Формат работы</label>
+											<Form.Item name="format">
+												<Select
+													mode="multiple"
+													placeholder="Выберите формат"
+													defaultValue={psychologist?.format}
+													disabled
+												>
+													<Option value="online" className="option">
+														Онлайн
+													</Option>
+													<Option value="offline" className="option">
+														Оффлайн
+													</Option>
+												</Select>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">Симптомы</label>
+											<Form.Item name="symptomIds">
+												{psychologist?.symptoms &&
+												psychologist?.symptoms.length > 0 ? (
+													<Select
+														mode="multiple"
+														showSearch={false}
+														defaultValue={psychologist?.symptoms.map(
+															(symptom) => symptom.name
+														)}
+														disabled
+													>
+														{psychologist?.symptoms.map((symptom, index) => (
+															<Select.Option key={index} value={symptom.name}>
+																{symptom.name}
+															</Select.Option>
+														))}
+													</Select>
+												) : (
+													<Typography.Text>
+														Симптомы отсутствуют
+													</Typography.Text>
+												)}
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label label_info">
+												<p>Адрес</p>
+												<Alert
+													title="Запись на консультацию"
+													message="Адрес вы указываете только при выборе консультации в формате офлайн (указывайте адрес, где будете проводить встречи с пациентом)."
+												>
+													<img src={infoIcon} width={15} alt="Информация" />
+												</Alert>
+											</label>
+											<Form.Item name="address">
+												{psychologist?.address ? (
+													<Input
+														placeholder="ул. психолога, д.21"
+														className="input--grey input"
+														style={{ width: '100%' }}
+														defaultValue={psychologist?.address}
+													/>
+												) : (
+													<Input
+														placeholder="ул. психолога, д.21"
+														className="input--grey input"
+														style={{ width: '100%' }}
+														defaultValue={'Адрес отсутствует'}
+													/>
+												)}
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+											<label className="label">Вид консультации</label>
+											<Form.Item name="consultationType">
+												<Select
+													mode="multiple"
+													placeholder="Вид консультации"
+													defaultValue={
+														user?.accessToken
+															? psychologist?.consultationType
+															: undefined
+													}
+													disabled
+												>
+													<Option value="solo" className="option">
+														Один человек
+													</Option>
+													<Option value="duo" className="option">
+														Вдвоем
+													</Option>
+												</Select>
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={12} lg={12} xl={12}>
+											<label className="label">Специализация</label>
+											<Form.Item name="education">
+												<Input
+													className="input--grey input"
+													defaultValue={psychologist?.education}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+
+										<Col span={24}>
+											<label className="label">О себе</label>
+											<Form.Item name="description">
+												<Input.TextArea
+													className="input--grey input text-area"
+													defaultValue={psychologist?.description}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+
+										<Col span={24}>
+											<label className="label">Видео</label>
+											<Form.Item name="video">
+												<Input
+													className="input--grey input"
+													defaultValue={
+														psychologist?.video
+															? psychologist?.video
+															: 'Видео отсутствует'
+													}
+													readOnly
+												/>
+											</Form.Item>
+										</Col>
+										<Col span={24} style={{ marginLeft: 2 }}>
+											<label className="label">Фото</label>
+											<Form.Item className="photo-upload-form" name="photos">
+												<div style={{ display: 'flex' }}>
+													{psychologist?.photos.map((photo, index) => (
+														<div key={index} style={{ marginRight: 10 }}>
+															{photo && photo.photo ? (
+																<img
+																	src={`${
+																		import.meta.env.VITE_API_URL
+																	}/uploads/${photo.photo}`}
+																	alt={`Техника ${index + 1}`}
+																	style={{
+																		width: '100px',
+																		height: '100px',
+																	}}
+																/>
+															) : (
+																<Typography.Text>
+																	Изображение отсутствует
+																</Typography.Text>
+															)}
+														</div>
+													))}
+												</div>
+											</Form.Item>
+										</Col>
+
+										<Col span={24}>
+											<label className="label">Диплом, сертификаты</label>
+											<Form.Item
+												name="certificates"
+												valuePropName="fileList"
+												getValueFromEvent={(e) => {
+													if (Array.isArray(e)) {
+														return e;
+													}
+													return e && e.fileList;
+												}}
+											>
+												<div style={{ display: 'flex' }}>
+													{psychologist?.certificates.map(
+														(certificate, index) => (
+															<div key={index} style={{ marginRight: 10 }}>
+																{certificate && certificate.certificate ? (
+																	<img
+																		src={`${
+																			import.meta.env.VITE_API_URL
+																		}/uploads/${certificate.certificate}`}
+																		alt={`Техника ${index + 1}`}
+																		style={{
+																			width: '100px',
+																			height: '100px',
+																		}}
+																	/>
+																) : (
+																	<Typography.Text>
+																		Сертификат отсутствует
+																	</Typography.Text>
+																)}
+															</div>
+														)
+													)}
+												</div>
+											</Form.Item>
+										</Col>
+									</Row>
+								</Form>
+							)}
+						</Layout>
+					</div>
+				</>
+			) : (
+				<></>
 			)}
-		</div>
+		</>
 	);
 };
-
-export default Profile;

@@ -5,6 +5,10 @@ import { NavigateFunction } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import fetchViewedPsychologists from '../../api/apiHandlers/fetchViewedPsychologists';
 import axiosInstance from '../../api/axiosInstance';
+import {
+	IFilteringConsultationType,
+	IFilteringValues,
+} from '../../interfaces/IFilteringValues.ts';
 import { IPatient } from '../../interfaces/IPatient';
 import { IPost } from '../../interfaces/IPost.ts';
 import {
@@ -21,12 +25,8 @@ import { ITherapyMethod } from '../../interfaces/ITherapyMethod';
 import { ITimeSlot, ITimeSlotDate } from '../../interfaces/ITimeSlot';
 import { ITransferRecord } from '../../interfaces/ITransferRecord.ts';
 import { IPasswordForgot, IPasswordReset, IUser } from '../../interfaces/IUser';
-import { saveUser } from '../user/userSlice.ts';
-import {
-	IFilteringConsultationType,
-	IFilteringValues,
-} from '../../interfaces/IFilteringValues.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
+import { saveUser } from '../user/userSlice.ts';
 import { IRecordConfirmation } from '../../interfaces/IRecordConfirmation.ts';
 import { IProfit } from '../../interfaces/IProfit.ts';
 
@@ -89,6 +89,29 @@ export const usePostPsychologist = (
 	});
 };
 
+export const useEditPsychologist = (id: number) => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (data: FormData) => {
+			return axiosInstance.put('/psychologists/edit', data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ['getOnePsychologist', id],
+			});
+			window.location.reload();
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				const serverMessage = error.response.data.message;
+				message.error(serverMessage || 'Произошла ошибка при отправке анкеты.');
+			} else {
+				message.error('Произошла неизвестная ошибка.');
+			}
+		},
+	});
+};
+
 export const useViewedPsychologists = (user: IUser | null) => {
 	return useQuery({
 		queryKey: ['GetViewedPsychologists'],
@@ -98,10 +121,23 @@ export const useViewedPsychologists = (user: IUser | null) => {
 
 export const useGetPsychologist = (id: string) => {
 	return useQuery({
+		queryKey: ['GetPsychologist'],
 		queryFn: () => {
 			return axiosInstance.get<IPsychologist>(`/psychologists/${id}`);
 		},
-		queryKey: ['GetPsychologist'],
+	});
+};
+
+export const useGetOnePsychologist = (id: number) => {
+	return useQuery({
+		queryKey: ['getOnePsychologist'],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IPsychologist>(
+				`/psychologists/${id}`
+			);
+
+			return response.data;
+		},
 	});
 };
 
@@ -195,10 +231,14 @@ export const useGetFavourites = (authUser: IUser | null) => {
 };
 
 export const useSwitchFavourite = () => {
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async (psychologistId: number) => {
 			const data = { psychologistId };
 			return await axiosInstance.post(`/patients/favorites`, data);
+		},
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ['GetFavourites'] });
 		},
 	});
 };
@@ -687,6 +727,50 @@ export const useDeleteMethod = () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetAllMethod'],
 			});
+		},
+	});
+};
+
+export const usePostPhotoPsychologist = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.post(`photos/create`, data);
+		},
+	});
+};
+
+export const useDeletePhotoPsychologist = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			return await axiosInstance.delete(`photos/${id}`);
+		},
+	});
+};
+
+export const usePostCertificatesPsychologist = () => {
+	return useMutation({
+		mutationFn: async (data: FormData) => {
+			return await axiosInstance.post(`certificates/create`, data);
+		},
+	});
+};
+
+export const useDeleteCertificatesPsychologist = () => {
+	return useMutation({
+		mutationFn: async (id: number) => {
+			return await axiosInstance.delete(`certificates/${id}`);
+		},
+	});
+};
+
+export const useEditEmail = () => {
+	return useMutation({
+		mutationFn: async (data: {
+			email: string;
+			сurrentPassword: string;
+			password: string;
+		}) => {
+			return await axiosInstance.put('auth/edit', data);
 		},
 	});
 };
