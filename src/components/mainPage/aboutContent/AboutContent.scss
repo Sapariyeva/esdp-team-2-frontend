@@ -1,24 +1,33 @@
 .about-content {
 	display: flex;
 	align-items: center;
+	@media (max-width: 450px) {
+		flex-direction: column;
+	}
 	&__text {
 		width: 45%;
+		@media (max-width: 450px) {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+		}
 		.title {
 			color: #9f67fd;
 			font-family: Montserrat;
 			font-size: 4.3vw;
 			font-weight: 900;
 			margin-bottom: 3%;
-			@media (max-width: 500px) {
-				font-size: 15px;
+			@media (max-width: 450px) {
+				font-size: 26px;
 			}
 		}
 		.text {
 			font-family: Montserrat;
-			font-size: 1vw;
+			font-size: 1.5vw;
 			color: #4a4a4a;
-			@media (max-width: 500px) {
-				font-size: 7px;
+			@media (max-width: 450px) {
+				font-size: 16px;
 			}
 		}
 		.button-text {
@@ -27,13 +36,17 @@
 			align-items: center;
 			gap: 1%;
 			margin-top: 7%;
-			font-size: 1vw;
+			font-size: 1.5vw;
 			font-family: Montserrat;
 			.magic-pen-icon {
 				width: 2vw;
+				@media (max-width: 450px) {
+					width: 30px;
+				}
 			}
-			@media (max-width: 500px) {
-				font-size: 7px;
+			@media (max-width: 450px) {
+				font-size: 15px;
+				white-space: nowrap;
 			}
 		}
 		.button {
@@ -50,7 +63,7 @@
 			margin-top: 1%;
 			font-size: 1vw;
 			@media (max-width: 500px) {
-				font-size: 7px;
+				font-size: 16px;
 			}
 			&:hover {
 				background-color: #7ed957;
@@ -61,6 +74,10 @@
 	&__illustration {
 		width: 55%;
 		height: 100%;
+		@media (max-width: 450px) {
+			margin-top: 20px;
+			width: 100%;
+		}
 		.main-illustration {
 			width: 100%;
 			height: 100%;

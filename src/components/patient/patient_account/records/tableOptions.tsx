@@ -7,6 +7,7 @@ import { IRecord } from '../../../../interfaces/IRecord';
 import ChangePatientComment from '../../../psychologist/psychologist_account/clients/ClientsHistory/ScrollableText/ChangePatientComment.tsx';
 import { Link } from 'react-router-dom';
 import ChangeRecord from './ChangeRecord.tsx';
+import RecordConfirmation from './RecordConfirmation.tsx';
 
 type RecordColumnName =
 	| 'psychologistName'
@@ -25,7 +26,6 @@ export interface IRecordColumn {
 	responsive?: Breakpoint[];
 	reactNode: (record: IRecord) => JSX.Element;
 }
-
 interface IRecordAllColumn extends Record<RecordColumnName, IRecordColumn> {}
 
 const columns: IRecordAllColumn = {
@@ -52,15 +52,7 @@ const columns: IRecordAllColumn = {
 		dataIndex: 'address',
 		responsive: ['md'],
 		reactNode: (record) => (
-			<>
-				{record.format === 'offline' ? (
-					<span>{record.address}</span>
-				) : (
-					<a href={record.broadcast} className={styles.colum}>
-						Ссылка
-					</a>
-				)}
-			</>
+			<RecordConfirmation record={record} role={'patientAbsent'} />
 		),
 	},
 	date: {
@@ -92,9 +84,7 @@ const columns: IRecordAllColumn = {
 		dataIndex: 'status',
 		responsive: ['xl'],
 		reactNode: (record) => (
-			<div style={{ wordWrap: 'break-word' }}>
-				{record.status === 'active' ? 'Активный' : 'Неактивный'}
-			</div>
+			<div style={{ wordWrap: 'break-word' }}>{record.status}</div>
 		),
 	},
 	commentPatient: {
