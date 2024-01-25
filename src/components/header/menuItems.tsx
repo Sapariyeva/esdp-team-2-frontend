@@ -135,7 +135,7 @@ export const patientItems: MenuProps['items'] = [
 
 export const adminItems: MenuProps['items'] = [
 	getItem({
-		key: '/search',
+		key: '#',
 		label: <img src={search} alt={'logo'} className={styles.customIcon} />,
 		isLink: true,
 	}),
@@ -192,7 +192,7 @@ export const adminItems: MenuProps['items'] = [
 
 export const psychologistItems: MenuProps['items'] = [
 	getItem({
-		key: '/search',
+		key: '#',
 		label: <img src={search} alt={'logo'} className={styles.customIcon} />,
 		isLink: true,
 	}),
@@ -246,7 +246,7 @@ export const psychologistItems: MenuProps['items'] = [
 
 export const loginAuth: MenuProps['items'] = [
 	getItem({
-		key: '/search',
+		key: '#',
 		label: <img src={search} alt={'logo'} className={styles.customIcon} />,
 		isLink: true,
 	}),
@@ -302,7 +302,7 @@ export const commonItems: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'соло-курсы',
-		key: '/#',
+		key: '#',
 		isLink: true,
 	}),
 	getItem({
