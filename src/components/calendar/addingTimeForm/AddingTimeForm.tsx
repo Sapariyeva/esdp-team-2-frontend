@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import styles from './AddingTimeForm.module.scss';
 import AddingTimeHeader from './addingTimeHeader/addingTimeHeader.tsx';
 import { ITimeSlot } from '../../../interfaces/ITimeSlot.ts';
@@ -6,7 +6,6 @@ import AvailableTimeSlots from './availableTimeSlots/AvailableTimeSlots.tsx';
 import AddingTimeBlock from './addingTimeBlock/AddingTimeBlock.tsx';
 import UnavailableTimeSlots from './unavailableTimeSlots/UnavailableTimeSlots.tsx';
 import Wrapper from '../../ui/Wrapper/Wrapper.tsx';
-import Loading from '../../ui/Loading/Loading.tsx';
 import { useAddingTimeForm } from '../../../features/queryHooks/queryHooks.ts';
 
 type Props = {
@@ -36,7 +35,7 @@ const AddingTimeForm = ({ active, setActive, date }: Props) => {
 		<>
 			<Wrapper active={active} onClick={handleCancel}>
 				{isPending ? (
-					<Loading />
+					<Spin style={{ padding: 40 }} size="large" />
 				) : (
 					<>
 						<AddingTimeHeader date={date} />

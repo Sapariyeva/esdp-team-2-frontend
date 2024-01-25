@@ -28,6 +28,7 @@ import {
 } from '../../interfaces/IFilteringValues.ts';
 import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidationResponse.ts';
 import { IRecordConfirmation } from '../../interfaces/IRecordConfirmation.ts';
+import { IProfit } from '../../interfaces/IProfit.ts';
 
 export const useTechniqueQuery = () => {
 	return useQuery({
@@ -736,6 +737,29 @@ export const usePostCommentPsychologist = () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['useGetRecordsActualPsychologists'],
 			});
+		},
+	});
+};
+
+export const useGetOnePsychologistProfit = (id: number) => {
+	return useQuery({
+		queryKey: ['useGetOnePsychologistProfit', id],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IProfit[]>(
+				`/psychologists/analytics/profit/${id}`
+			);
+			return response.data;
+		},
+	});
+};
+export const useGetPsychologistProfit = () => {
+	return useQuery({
+		queryKey: ['useGetPsychologistProfit'],
+		queryFn: async () => {
+			const response = await axiosInstance.get<IProfit[]>(
+				`/psychologists/analytics/profit/`
+			);
+			return response.data;
 		},
 	});
 };

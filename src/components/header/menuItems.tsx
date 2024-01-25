@@ -13,6 +13,7 @@ import heart from '../../assets/icon/heart.svg';
 import book from '../../assets/icon/book-saved.svg';
 import logout from '../../assets/icon/logout.svg';
 import profit from '../../assets/icon/empty-wallet.svg';
+import calendar from '../../assets/icon/calendar.svg';
 
 import { NavLink } from 'react-router-dom';
 
@@ -211,7 +212,7 @@ export const psychologistItems: MenuProps['items'] = [
 				label: 'Календарь',
 				key: 'psychologist/calendar',
 				isLink: true,
-				icon: <img className={styles.item_icon} src={record} alt="record" />,
+				icon: <img className={styles.item_icon} src={calendar} alt="record" />,
 			}),
 			getItem({
 				label: 'Мои Клиенты',
@@ -365,7 +366,7 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		label: 'Календарь',
 		key: 'calendar',
 		isLink: true,
-		icon: <img className={styles.item_icon} src={record} alt="record" />,
+		icon: <img className={styles.item_icon} src={calendar} alt="record" />,
 	}),
 	getItem({
 		label: 'Мои Клиенты',
