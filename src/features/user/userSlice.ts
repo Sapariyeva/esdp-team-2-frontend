@@ -5,6 +5,13 @@ import { AxiosError, isAxiosError } from 'axios';
 import { RootState } from '../../store';
 import axiosInstance from '../../api/axiosInstance.ts';
 import { IUserEdit } from '../../interfaces/IUserEdit.ts';
+
+import {
+	IPsychologist,
+	IPsychologistRegisterData,
+} from '../../interfaces/IPsychologist.ts';
+import { IPhoto } from '../../interfaces/IPhoto.ts';
+
 import { IPatient } from '../../interfaces/IPatient.ts';
 import { message } from 'antd';
 
@@ -110,6 +117,14 @@ export const updatePatientName = createAsyncThunk(
 	}
 );
 
+export const editUser = createAsyncThunk(
+	'psychologists/edit',
+	async (data: IPsychologistRegisterData) => {
+		const response = await axiosInstance.put(`psychologists/edit`, data);
+		return response.data;
+	}
+);
+
 interface ActivateEmailArgs {
 	id: string | undefined;
 	role: string | null;
@@ -121,7 +136,6 @@ export const activateEmail = createAsyncThunk<
 	{ rejectValue: ServerFormValidationResponse }
 >('auth/activate', async ({ id, role }, { rejectWithValue }) => {
 	try {
-		console.log(role, id);
 		const response = await axiosInstance.get<IUser>(
 			`/auth/activate/${id}?role=${role}`
 		);
@@ -165,6 +179,7 @@ interface UserState {
 	registerError: ServerFormValidationResponse | null;
 	loginError: ServerFormValidationResponse | null;
 	logged: boolean;
+	dataPsychologist: IPsychologist | null;
 	pagelock: boolean;
 }
 
@@ -174,6 +189,7 @@ const initialState: UserState = {
 	loginError: null,
 	loading: false,
 	logged: false,
+	dataPsychologist: null,
 	pagelock: false,
 };
 
@@ -190,6 +206,14 @@ const userSlice = createSlice({
 		},
 		saveUser: (state, { payload }) => {
 			state.userInfo = payload;
+		},
+		setPhotoPsychologist: (state, { payload }: { payload: IPhoto[] }) => {
+			if (state.dataPsychologist) {
+				state.dataPsychologist.photos = payload;
+			}
+		},
+		setPsychologist: (state, { payload }: { payload: IPsychologist }) => {
+			state.dataPsychologist = payload;
 		},
 		changePageLock: (state, { payload }) => {
 			state.pagelock = payload;
@@ -282,6 +306,9 @@ const userSlice = createSlice({
 					errors: payload?.errors ?? [],
 				};
 			})
+			.addCase(editUser.fulfilled, (state, { payload }) => {
+				state.userInfo = payload;
+			})
 			.addCase(
 				updatePatientName.fulfilled,
 				(state, action: PayloadAction<IPatient>) => {
@@ -311,6 +338,7 @@ export const userSelect = (state: RootState) => {
 	return state.users.userInfo;
 };
 
+export const { setPhotoPsychologist, setPsychologist } = userSlice.actions;
 export const { resetErrors, resetUser, saveUser, changePageLock } =
 	userSlice.actions;
 
