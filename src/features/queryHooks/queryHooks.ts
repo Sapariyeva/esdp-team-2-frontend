@@ -189,6 +189,7 @@ export const useGetFavourites = (authUser: IUser | null) => {
 		},
 		queryKey: ['GetFavourites'],
 		enabled: !!(authUser && authUser.patient),
+		staleTime: 0,
 	});
 };
 
@@ -199,8 +200,9 @@ export const useSwitchFavourite = () => {
 			const data = { psychologistId };
 			return await axiosInstance.post(`/patients/favorites`, data);
 		},
-		onSuccess: async () => {
+		onSettled: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['GetFavourites'] });
+			await queryClient.refetchQueries({ queryKey: ['GetFavourites'] });
 		},
 	});
 };
