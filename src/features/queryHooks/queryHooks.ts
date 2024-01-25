@@ -29,7 +29,6 @@ import { ServerFormValidationResponse } from '../../interfaces/ServerFormValidat
 import { saveUser } from '../user/userSlice.ts';
 import { IRecordConfirmation } from '../../interfaces/IRecordConfirmation.ts';
 
-
 export const useTechniqueQuery = () => {
 	return useQuery({
 		queryFn: () => {
