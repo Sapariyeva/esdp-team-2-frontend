@@ -71,7 +71,7 @@ export const logoItem: MenuProps['items'] = [
 
 export const patientItems: MenuProps['items'] = [
 	getItem({
-		key: '/search',
+		key: '#',
 		label: <img src={search} alt={'logo'} className={styles.customIcon} />,
 		isLink: true,
 	}),
@@ -340,7 +340,7 @@ export const itemsSideBar: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'Курсы',
-		key: 'course',
+		key: '#',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={book} alt="book" />,
 	}),
