@@ -12,6 +12,9 @@ import history from '../../assets/icon/history.svg';
 import heart from '../../assets/icon/heart.svg';
 import book from '../../assets/icon/book-saved.svg';
 import logout from '../../assets/icon/logout.svg';
+import profit from '../../assets/icon/empty-wallet.svg';
+import calendar from '../../assets/icon/calendar.svg';
+
 import { NavLink } from 'react-router-dom';
 
 export type MenuItem = Required<MenuProps>['items'][number];
@@ -71,7 +74,7 @@ export const logoItem: MenuProps['items'] = [
 
 export const patientItems: MenuProps['items'] = [
 	getItem({
-		key: '/search',
+		key: '#',
 		label: <img src={search} alt={'logo'} className={styles.customIcon} />,
 		isLink: true,
 	}),
@@ -209,7 +212,7 @@ export const psychologistItems: MenuProps['items'] = [
 				label: 'Календарь',
 				key: 'psychologist/calendar',
 				isLink: true,
-				icon: <img className={styles.item_icon} src={record} alt="record" />,
+				icon: <img className={styles.item_icon} src={calendar} alt="record" />,
 			}),
 			getItem({
 				label: 'Мои Клиенты',
@@ -222,6 +225,12 @@ export const psychologistItems: MenuProps['items'] = [
 				key: 'psychologist/history',
 				isLink: true,
 				icon: <img className={styles.item_icon} src={history} alt="history" />,
+			}),
+			getItem({
+				label: 'Доход',
+				key: 'psychologist/profit',
+				isLink: true,
+				icon: <img className={styles.item_icon} src={profit} alt="profit" />,
 			}),
 			getItem({
 				label: (
@@ -340,7 +349,7 @@ export const itemsSideBar: MenuProps['items'] = [
 	}),
 	getItem({
 		label: 'Курсы',
-		key: 'course',
+		key: '#',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={book} alt="book" />,
 	}),
@@ -357,7 +366,7 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		label: 'Календарь',
 		key: 'calendar',
 		isLink: true,
-		icon: <img className={styles.item_icon} src={record} alt="record" />,
+		icon: <img className={styles.item_icon} src={calendar} alt="record" />,
 	}),
 	getItem({
 		label: 'Мои Клиенты',
@@ -370,6 +379,12 @@ export const itemsSideBarPsychologists: MenuProps['items'] = [
 		key: 'history',
 		isLink: true,
 		icon: <img className={styles.item_icon} src={history} alt="history" />,
+	}),
+	getItem({
+		label: 'Доход',
+		key: 'profit',
+		isLink: true,
+		icon: <img className={styles.item_icon} src={profit} alt="profit" />,
 	}),
 ];
 

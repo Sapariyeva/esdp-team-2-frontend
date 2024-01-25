@@ -9,6 +9,7 @@ import {
 } from '../../../features/queryHooks/queryHooks';
 import { useState } from 'react';
 import TabPane from 'antd/es/tabs/TabPane';
+import Profit from '../Profit/Profit.tsx';
 
 const Psychologists = () => {
 	const [activePage, setActive] = useState(false);
@@ -82,6 +83,11 @@ const Psychologists = () => {
 					Просмотреть
 				</Button>
 			),
+		},
+		{
+			title: 'Доход',
+			key: 'view',
+			render: (psycho: IPsychologist) => <Profit id={psycho.id} />,
 		},
 	];
 

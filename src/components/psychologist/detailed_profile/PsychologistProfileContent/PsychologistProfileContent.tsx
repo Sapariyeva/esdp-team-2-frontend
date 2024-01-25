@@ -9,6 +9,7 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 import youtubeVideoId from 'youtube-video-id';
 import { Image } from 'antd';
 import { useAppSelector } from '../../../../store/hooks';
+import { useState } from 'react';
 
 type PsychologistProfileContentProps = {
 	psychologist: IPsychologist;
@@ -20,6 +21,7 @@ const PsychologistProfileContent = ({
 	switchFavorite,
 }: PsychologistProfileContentProps) => {
 	const authUser = useAppSelector((state) => state.users.userInfo);
+	const [showVideo, setShowVideo] = useState(false);
 
 	if (!psychologist || Object.keys(psychologist).length === 0) {
 		return <Empty description="No psychologist details found" />;
@@ -28,7 +30,11 @@ const PsychologistProfileContent = ({
 	const opts: YouTubeProps['opts'] = {
 		width: '100%',
 		height: '400px',
+		playerVars: {
+			autoplay: 1,
+		},
 	};
+
 	const videoId = psychologist.video
 		? youtubeVideoId(psychologist.video)
 		: null;
@@ -46,6 +52,10 @@ const PsychologistProfileContent = ({
 		else message.success('Психолог был успешно удален из списка избранных.');
 
 		psychologist.isFavorite = !psychologist.isFavorite;
+	};
+
+	const handleImageClick = () => {
+		setShowVideo(!showVideo);
 	};
 
 	return (
@@ -112,8 +122,39 @@ const PsychologistProfileContent = ({
 			{videoId ? (
 				<>
 					<h5 className={styles.title_video}>видео визитка</h5>
-					<div style={{ borderRadius: '20px', overflow: 'hidden' }}>
-						<YouTube videoId={videoId} opts={opts} />
+					<div
+						style={{
+							borderRadius: '20px',
+							overflow: 'hidden',
+							position: 'relative',
+						}}
+					>
+						<YouTube videoId={showVideo ? videoId : ''} opts={opts} />
+						{!showVideo && (
+							<>
+								<div
+									onClick={handleImageClick}
+									style={{
+										position: 'absolute',
+										top: 0,
+										left: 0,
+										width: '100%',
+										height: '100%',
+										cursor: 'pointer',
+									}}
+								>
+									<img
+										src="/Video_preview.png"
+										alt="Video_preview"
+										style={{
+											width: '100%',
+											height: '100%',
+											objectFit: 'cover',
+										}}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 				</>
 			) : (

@@ -1,14 +1,14 @@
 import { Button, Col, Form, Input, Layout, Row } from 'antd';
-import { IUserEdit } from '../../../../interfaces/IUserEdit';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useEffect, useState } from 'react';
-import styles from './PatientProfile.module.scss';
 import {
 	changePageLock,
 	resetErrors,
 	updatePatientName,
 	updateUser,
 } from '../../../../features/user/userSlice';
+import { IUserEdit } from '../../../../interfaces/IUserEdit';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import styles from './PatientProfile.module.scss';
 function PatientProfile() {
 	const dispatch = useAppDispatch();
 	const errors = useAppSelector((state) => state.users.loginError);
@@ -139,7 +139,7 @@ function PatientProfile() {
 				>
 					<Row>
 						{!active && (
-							<Col xs={26} sm={8} md={9} lg={9} xl={7}>
+							<Col xs={26} sm={8} md={9} lg={9} xl={10}>
 								<Form.Item>
 									<Button
 										className={styles.btn_confirm}
@@ -152,14 +152,14 @@ function PatientProfile() {
 						)}
 						{active && (
 							<>
-								<Col xs={24} sm={12} md={9} lg={9} xl={7}>
+								<Col xs={24} sm={12} md={9} lg={10} xl={10}>
 									<Form.Item>
 										<Button className={styles.btn_confirm} htmlType="submit">
 											Применить изменения
 										</Button>
 									</Form.Item>
 								</Col>
-								<Col xs={24} sm={7} md={9} lg={9} xl={5}>
+								<Col xs={24} sm={7} md={9} lg={10} xl={10}>
 									<Form.Item>
 										<Button
 											className={styles.btn_cancel}
@@ -175,7 +175,7 @@ function PatientProfile() {
 
 					<Row gutter={16}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
-							<label className="label">Почта</label>
+							<label className={styles.label}>Почта</label>
 							<Form.Item
 								className="form-item"
 								name="email"
@@ -211,7 +211,7 @@ function PatientProfile() {
 								}
 							>
 								<Input
-									className="input--grey input"
+									className={styles.input}
 									placeholder="example@gmail.com"
 									disabled={!active}
 									onChange={handleEmailChange}
@@ -219,7 +219,7 @@ function PatientProfile() {
 							</Form.Item>
 						</Col>
 						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
-							<label className="label">Имя</label>
+							<label className={styles.label}>Имя</label>
 							<Form.Item
 								name="name"
 								rules={[
@@ -228,7 +228,7 @@ function PatientProfile() {
 							>
 								<Input
 									placeholder="Введите Имя"
-									className="input--grey input"
+									className={styles.input}
 									disabled={!active}
 								/>
 							</Form.Item>
@@ -236,7 +236,7 @@ function PatientProfile() {
 					</Row>
 					<Row gutter={16}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
-							<label className="label">Текущий Пароль</label>
+							<label className={styles.label}>Текущий Пароль</label>
 							<Form.Item
 								name="сurrentPassword"
 								hasFeedback
@@ -250,7 +250,7 @@ function PatientProfile() {
 								}
 							>
 								<Input.Password
-									className="input--grey input"
+									className={styles.input}
 									placeholder="Пароль"
 									autoComplete="on"
 									disabled={!active}
@@ -260,7 +260,7 @@ function PatientProfile() {
 						</Col>
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
-							<label className="label">Новый пароль</label>
+							<label className={styles.label}>Новый пароль</label>
 							<Form.Item
 								name="password"
 								dependencies={['сurrentPassword']}
@@ -281,7 +281,7 @@ function PatientProfile() {
 							>
 								<Input.Password
 									placeholder="Новый пароль"
-									className="input--grey input"
+									className={styles.input}
 									autoComplete="on"
 									disabled={!active}
 									onChange={handlePasswordChange}

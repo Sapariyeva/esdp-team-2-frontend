@@ -486,7 +486,9 @@ export const Profile = () => {
 														<div key={index} style={{ marginRight: 10 }}>
 															{photo && photo.photo ? (
 																<img
-																	src={`http://localhost:8000/uploads/${photo.photo}`}
+																	src={`${
+																		import.meta.env.VITE_API_URL
+																	}/uploads/${photo.photo}`}
 																	alt={`Техника ${index + 1}`}
 																	style={{
 																		width: '100px',
@@ -522,7 +524,9 @@ export const Profile = () => {
 															<div key={index} style={{ marginRight: 10 }}>
 																{certificate && certificate.certificate ? (
 																	<img
-																		src={`http://localhost:8000/uploads/${certificate.certificate}`}
+																		src={`${
+																			import.meta.env.VITE_API_URL
+																		}/uploads/${certificate.certificate}`}
 																		alt={`Техника ${index + 1}`}
 																		style={{
 																			width: '100px',

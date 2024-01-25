@@ -5,6 +5,8 @@ import {
 } from '../../../features/queryHooks/queryHooks';
 import PsychologistDetailedProfile from '../../../components/psychologist/detailed_profile/PsychologistDetailedProfile';
 import { useAppSelector } from '../../../store/hooks';
+import { Spin } from 'antd';
+import styles from '../../../components/patient/patient_account/records/Record.module.scss';
 
 const PsychologistDetailedProfileContainer = () => {
 	const { id } = useParams();
@@ -20,7 +22,7 @@ const PsychologistDetailedProfileContainer = () => {
 	};
 
 	if (isLoading) {
-		return <div>LOADING...</div>;
+		return <Spin className={styles.spinner} size="large" />;
 	}
 
 	return (

@@ -4,16 +4,17 @@
 	grid-gap: 20px;
 	grid-auto-flow: row dense;
 	@media (max-width: 1700px) {
-		justify-items: center;
-		grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
-		grid-column-gap: 6px;
-		grid-row-gap: 6px;
+		display: flex;
+		width: 700px !important;
+		flex-direction: column;
+		justify-content: start;
 	}
-	@media (max-width: 1300px) {
-		justify-items: center;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		grid-column-gap: 6px;
-		grid-row-gap: 6px;
+	@media (max-width: 1290px) {
+		width: 100% !important;
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		flex-wrap: wrap;
 	}
 }
 .spin {
